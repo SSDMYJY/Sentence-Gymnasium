@@ -1,0 +1,65 @@
+// Prisma schema for Sentence Gymnasium (Cloudflare D1 / SQLite via @prisma/adapter-d1)
+// Note: D1 is SQLite-compatible. SQLite has no native JSON type, so JSON-shaped
+// fields (options / extraData / feedback) are stored as String and parsed at the
+// code layer with JSON.parse / JSON.stringify.
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "sqlite"
+  // Used only by the Prisma CLI (migrate diff). At runtime the D1 binding is used.
+  url = env("DATABASE_URL")
+}
+
+model User {
+  id              String   @id @default(cuid())
+  email           String   @unique
+  passwordHash    String
+  name            String?
+  credits         Int      @default(20)
+  totalAttempts   Int      @default(0)
+  correctAttempts Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  attempts        Attempt[]
+  generatedQuestions GeneratedQuestion[]
+
+  @@map("users")
+}
+
+model GeneratedQuestion {
+  id            String   @id @default(cuid())
+  category      String // 'practice' | 'paraphrase' | 'grammar'
+  languagePair  String? // 'ja-en' etc.; for paraphrase stores source lang e.g. 'ja'
+  grammarTag    String? // 'te-form', 'present-perfect', ...
+  questionText  String // displayed prompt text
+  correctAnswer String // canonical answer
+  options       String? // JSON string for choice questions
+  extraData     String? // JSON string (e.g. paraphrase original text, grammar notes)
+  usedCount     Int      @default(0)
+  createdAt     DateTime @default(now())
+  generatedById String?
+  generatedBy   User?    @relation(fields: [generatedById], references: [id])
+  attempts      Attempt[]
+
+  @@index([category, languagePair, grammarTag])
+  @@map("questions")
+}
+
+model Attempt {
+  id         String   @id @default(cuid())
+  userId     String
+  questionId String
+  userAnswer String
+  isCorrect  Boolean
+  feedback   String? // JSON string with AI explanation/suggestion
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id])
+  question   GeneratedQuestion @relation(fields: [questionId], references: [id])
+
+  @@index([userId, createdAt])
+  @@map("attempts")
+}
