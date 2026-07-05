@@ -87,5 +87,26 @@
       "email_taken": "该邮箱已注册",
       "invalid_credentials": "邮箱或密码错误"
     }
+  },
+  "dashboard": {
+    "stats": {
+      "credits": "Credits",
+      "total": "总题数",
+      "correct": "正确数",
+      "accuracy": "正确率"
+    },
+    "perBoard": {
+      "title": "各板块统计",
+      "board": "板块",
+      "total": "题数",
+      "correct": "正确",
+      "rate": "正确率"
+    },
+    "recharge": {
+      "button": "模拟充值 +20",
+      "done": "充值成功 +20",
+      "loading": "处理中…"
+    },
+    "empty": "还没有训练记录，开始第一次训练吧"
   }
 }

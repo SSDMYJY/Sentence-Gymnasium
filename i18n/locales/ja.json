@@ -87,5 +87,26 @@
       "email_taken": "このメールアドレスはすでに登録されています",
       "invalid_credentials": "メールアドレスまたはパスワードが正しくありません"
     }
+  },
+  "dashboard": {
+    "stats": {
+      "credits": "Credits",
+      "total": "総問題数",
+      "correct": "正解数",
+      "accuracy": "正答率"
+    },
+    "perBoard": {
+      "title": "ボード別統計",
+      "board": "ボード",
+      "total": "問題数",
+      "correct": "正解",
+      "rate": "正答率"
+    },
+    "recharge": {
+      "button": "模擬チャージ +20",
+      "done": "チャージ成功 +20",
+      "loading": "処理中…"
+    },
+    "empty": "まだトレーニング記録がありません、最初のトレーニングを始めましょう"
   }
 }

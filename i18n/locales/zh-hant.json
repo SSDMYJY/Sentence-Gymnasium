@@ -87,5 +87,26 @@
       "email_taken": "該電郵已註冊",
       "invalid_credentials": "電郵或密碼錯誤"
     }
+  },
+  "dashboard": {
+    "stats": {
+      "credits": "Credits",
+      "total": "總題數",
+      "correct": "正確數",
+      "accuracy": "正確率"
+    },
+    "perBoard": {
+      "title": "各板塊統計",
+      "board": "板塊",
+      "total": "題數",
+      "correct": "正確",
+      "rate": "正確率"
+    },
+    "recharge": {
+      "button": "模擬儲值 +20",
+      "done": "儲值成功 +20",
+      "loading": "處理中…"
+    },
+    "empty": "還沒有訓練記錄，開始第一次訓練吧"
   }
 }
