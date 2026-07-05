@@ -87,5 +87,26 @@
       "email_taken": "That email is already registered",
       "invalid_credentials": "Wrong email or password"
     }
+  },
+  "dashboard": {
+    "stats": {
+      "credits": "Credits",
+      "total": "Total Attempts",
+      "correct": "Correct",
+      "accuracy": "Accuracy"
+    },
+    "perBoard": {
+      "title": "Per-board Breakdown",
+      "board": "Board",
+      "total": "Attempts",
+      "correct": "Correct",
+      "rate": "Accuracy"
+    },
+    "recharge": {
+      "button": "Recharge +20",
+      "done": "Recharged +20",
+      "loading": "Processing…"
+    },
+    "empty": "No attempts yet — start your first training session"
   }
 }
