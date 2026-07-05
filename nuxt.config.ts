@@ -6,7 +6,29 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-01',
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', 'nitro-cloudflare-dev'],
+  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', 'nitro-cloudflare-dev', '@nuxtjs/i18n'],
+  i18n: {
+    strategy: 'no_prefix',
+    defaultLocale: 'zh-CN',
+    langDir: 'locales',
+    locales: [
+      { code: 'zh-CN', language: 'zh-Hans', name: '简体中文', file: 'zh-CN.json' },
+      { code: 'zh-HK', language: 'zh-Hant', name: '繁體中文', file: 'zh-HK.json' },
+      { code: 'en', language: 'en', name: 'English', file: 'en.json' },
+      { code: 'ja', language: 'ja', name: '日本語', file: 'ja.json' },
+    ],
+    lazy: true,
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_locale',
+      redirectOn: 'root',
+      alwaysRedirect: false,
+      fallbackLocale: 'zh-CN',
+    },
+    bundle: {
+      optimizeTranslationDirective: false,
+    },
+  },
   css: ['~/assets/css/main.css'],
   nitro: {
     preset: 'cloudflare-module',
