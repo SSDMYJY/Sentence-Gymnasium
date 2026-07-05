@@ -48,13 +48,39 @@ function getAIConfig(event: H3Event): AIConfig {
   return { apiKey, baseUrl, model }
 }
 
+/**
+ * 自定义 fetch 包装器，用于跨运行时兼容（Cloudflare Workers + 本地 dev 的 undici fetch）。
+ * OpenAI SDK 的 Node.js shim 会做两件 fetch 不需要的事：
+ * 1. 注入 agentkeepalive 实例作为 `agent` 选项（Node http 模块概念，fetch 不识别）
+ * 2. 手动计算并设置 `content-length` header —— 在 cloudflare-module dev 环境中，
+ *    undici fetch 对 string body + 手动 content-length 的组合会抛出
+ *    "invalid content-length header" (UND_ERR_INVALID_ARG)。
+ * fetch 标准实现会根据 body 自动计算 content-length，因此这里安全地移除这两项。
+ */
+function edgeFetch(input: string | URL | Request, init?: any): Promise<Response> {
+  if (init) {
+    delete init.agent
+    const headers = init.headers
+    if (headers) {
+      if (headers instanceof Headers) {
+        headers.delete('content-length')
+      } else if (Array.isArray(headers)) {
+        init.headers = headers.filter(([k]: string[]) => k.toLowerCase() !== 'content-length')
+      } else if (typeof headers === 'object') {
+        delete headers['content-length']
+        delete headers['Content-Length']
+      }
+    }
+  }
+  return globalThis.fetch(input as any, init)
+}
+
 /** 获取 OpenAI 客户端（不复用单例，因为配置可能随请求变化） */
 function createClient(config: AIConfig): OpenAI {
   return new OpenAI({
     apiKey: config.apiKey,
     baseURL: config.baseUrl,
-    // Workers edge runtime 不支持 Node.js 的 http 模块，需用 fetch
-    fetch: globalThis.fetch,
+    fetch: edgeFetch as any,
   })
 }
 
