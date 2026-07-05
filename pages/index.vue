@@ -26,7 +26,7 @@
             class="hero-rise text-xs uppercase tracking-[0.32em] text-accent-soft sm:text-sm"
             style="animation-delay: 0.05s"
           >
-            AI Sentence Training · 多语言训练场
+            {{ t('hero.eyebrow') }}
           </p>
 
           <h1
@@ -40,14 +40,14 @@
             class="hero-rise mt-5 font-display text-xl text-stone-200 sm:text-2xl"
             style="animation-delay: 0.3s"
           >
-            句子健身房 · 把每一句练到本能
+            {{ t('hero.subtitle') }}
           </p>
 
           <p
             class="hero-rise mt-5 max-w-xl leading-relaxed text-stone-400"
             style="animation-delay: 0.42s"
           >
-            AI 出题、AI 判题、题目入库复用。翻译、改写、语法特训——三种训练方式构成一个完整闭环。
+            {{ t('hero.body') }}
           </p>
 
           <div
@@ -58,14 +58,14 @@
               href="#boards"
               class="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 text-sm font-semibold text-ink-950 transition hover:bg-accent-soft"
             >
-              开始训练
+              {{ t('hero.ctaPrimary') }}
               <span class="transition-transform group-hover:translate-x-0.5">→</span>
             </a>
             <a
               href="#flow"
               class="inline-flex items-center gap-2 rounded-full border border-white/15 px-7 py-3.5 text-sm font-medium text-stone-200 transition hover:border-white/40 hover:text-white"
             >
-              了解训练流程
+              {{ t('hero.ctaSecondary') }}
             </a>
           </div>
         </div>
@@ -74,7 +74,7 @@
       <div
         class="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.3em] text-stone-500"
       >
-        scroll
+        {{ t('hero.scroll') }}
       </div>
     </section>
 
@@ -82,12 +82,12 @@
     <section id="boards" class="relative border-t border-white/5">
       <div class="mx-auto max-w-7xl px-6 py-24 sm:py-32">
         <div v-reveal class="max-w-2xl">
-          <p class="text-xs uppercase tracking-[0.28em] text-accent-soft">三种训练方式</p>
+          <p class="text-xs uppercase tracking-[0.28em] text-accent-soft">{{ t('boards.eyebrow') }}</p>
           <h2 class="mt-4 font-display text-3xl font-semibold tracking-tight sm:text-5xl">
-            一个训练场，三种练法
+            {{ t('boards.title') }}
           </h2>
           <p class="mt-4 leading-relaxed text-stone-400">
-            每一种都对应一套完整的出题、作答、判题、反馈流程。选一种开始，或三种交替练。
+            {{ t('boards.body') }}
           </p>
         </div>
 
@@ -106,12 +106,12 @@
             />
             <span class="block font-display text-sm text-stone-500">{{ b.no }}</span>
             <span class="mt-6 block font-display text-2xl font-semibold">{{ b.title }}</span>
-            <span class="mt-1 block text-sm text-accent-soft">{{ b.cn }}</span>
+            <span class="mt-1 block text-sm text-accent-soft">{{ b.subtitle }}</span>
             <p class="mt-4 text-sm leading-relaxed text-stone-400">{{ b.desc }}</p>
             <span
               class="mt-8 inline-flex items-center gap-2 text-sm text-stone-300 transition-colors group-hover:text-white"
             >
-              进入
+              {{ t('boards.enter') }}
               <span class="transition-transform group-hover:translate-x-1">→</span>
             </span>
           </NuxtLink>
@@ -123,12 +123,12 @@
     <section id="flow" class="relative border-t border-white/5 bg-ink-900/40">
       <div class="mx-auto max-w-7xl px-6 py-24 sm:py-32">
         <div v-reveal class="max-w-2xl">
-          <p class="text-xs uppercase tracking-[0.28em] text-accent-soft">训练流程</p>
+          <p class="text-xs uppercase tracking-[0.28em] text-accent-soft">{{ t('flow.eyebrow') }}</p>
           <h2 class="mt-4 font-display text-3xl font-semibold tracking-tight sm:text-5xl">
-            一次完整的训练闭环
+            {{ t('flow.title') }}
           </h2>
           <p class="mt-4 leading-relaxed text-stone-400">
-            从出题到反馈，四步构成一次可复盘的训练。题目入库复用，越练越快。
+            {{ t('flow.body') }}
           </p>
         </div>
 
@@ -144,7 +144,7 @@
             <span class="absolute left-0 top-0 h-px w-10 bg-accent" />
             <span class="font-display text-sm text-accent">{{ s.no }}</span>
             <h3 class="mt-5 font-display text-xl font-semibold">{{ s.title }}</h3>
-            <p class="mt-1 text-sm text-stone-500">{{ s.en }}</p>
+            <p class="mt-1 text-sm text-stone-500">{{ s.caption }}</p>
             <p class="mt-4 text-sm leading-relaxed text-stone-400">{{ s.desc }}</p>
           </li>
         </ol>
@@ -158,10 +158,10 @@
           v-reveal
           class="font-display text-4xl font-semibold tracking-tight sm:text-6xl"
         >
-          准备好开始第一组训练了吗？
+          {{ t('cta.title') }}
         </h2>
         <p v-reveal class="mt-6 text-stone-400">
-          新用户赠送 20 Credits · 生成一题扣 1 Credit
+          {{ t('cta.body') }}
         </p>
         <div
           v-reveal
@@ -171,7 +171,7 @@
             to="/practice"
             class="group inline-flex items-center gap-2 rounded-full bg-accent px-8 py-4 text-sm font-semibold text-ink-950 transition hover:bg-accent-soft"
           >
-            进入训练场
+            {{ t('cta.button') }}
             <span class="transition-transform group-hover:translate-x-0.5">→</span>
           </NuxtLink>
         </div>
@@ -181,42 +181,34 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
+
 const heroPrompt =
   'cinematic moody photograph of a quiet minimalist study studio at dawn, warm amber rim light falling on an open book and a single wooden chair, deep shadow negative space on the left half, editorial photography, shallow depth of field, no people, no text, no signage, premium magazine aesthetic'
 const heroImg = `https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=${encodeURIComponent(
   heroPrompt,
 )}&image_size=landscape_16_9`
 
-const boards = [
-  {
-    no: '01',
-    title: 'Practice',
-    cn: '翻译练习',
-    desc: '6 个语言方向互译：ja-en / en-ja / ja-zh / zh-ja / en-zh / zh-en。AI 出题，AI 判题。',
-    to: '/practice',
-  },
-  {
-    no: '02',
-    title: 'Paraphrase',
-    cn: '同义改写',
-    desc: '源语言为日或英，换一种说法保留原意。AI 评价原意保留度与自然度。',
-    to: '/paraphrase',
-  },
-  {
-    no: '03',
-    title: 'Grammar Focus',
-    cn: '语法特训',
-    desc: '按语法点生成填空、选择、改错题。te-form、present-perfect 等专项突破。',
-    to: '/grammar',
-  },
-]
+const boardKeys = ['practice', 'paraphrase', 'grammar'] as const
+const boards = computed(() =>
+  boardKeys.map((k) => ({
+    no: t(`boards.${k}.no`),
+    title: t(`boards.${k}.title`),
+    subtitle: t(`boards.${k}.subtitle`),
+    desc: t(`boards.${k}.desc`),
+    to: `/${k}`,
+  })),
+)
 
-const steps = [
-  { no: '01', title: '出题', en: 'Generate', desc: 'AI 生成题目并入库，相同维度优先复用，越练越快。' },
-  { no: '02', title: '作答', en: 'Answer', desc: '翻译、改写或选择，提交你的答案。' },
-  { no: '03', title: '判题', en: 'Judge', desc: 'AI 比对标准答案与你的作答，给出对错。' },
-  { no: '04', title: '反馈', en: 'Feedback', desc: '解释、建议、示范句，落库历史与统计。' },
-]
+const stepKeys = ['generate', 'answer', 'judge', 'feedback'] as const
+const steps = computed(() =>
+  stepKeys.map((k) => ({
+    no: t(`flow.${k}.no`),
+    title: t(`flow.${k}.title`),
+    caption: t(`flow.${k}.caption`),
+    desc: t(`flow.${k}.desc`),
+  })),
+)
 
 // Scroll-reveal directive: add .reveal, flip to .reveal-visible on intersection.
 const vReveal = {

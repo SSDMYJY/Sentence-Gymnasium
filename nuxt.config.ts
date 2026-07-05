@@ -9,11 +9,11 @@ export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', 'nitro-cloudflare-dev', '@nuxtjs/i18n'],
   i18n: {
     strategy: 'no_prefix',
-    defaultLocale: 'zh-CN',
+    defaultLocale: 'zh-hans',
     langDir: 'locales',
     locales: [
-      { code: 'zh-CN', language: 'zh-Hans', name: '简体中文', file: 'zh-CN.json' },
-      { code: 'zh-HK', language: 'zh-Hant', name: '繁體中文', file: 'zh-HK.json' },
+      { code: 'zh-hans', language: 'zh-Hans', name: '简体中文', file: 'zh-hans.json' },
+      { code: 'zh-hant', language: 'zh-Hant', name: '繁體中文', file: 'zh-hant.json' },
       { code: 'en', language: 'en', name: 'English', file: 'en.json' },
       { code: 'ja', language: 'ja', name: '日本語', file: 'ja.json' },
     ],
@@ -23,7 +23,7 @@ export default defineNuxtConfig({
       cookieKey: 'i18n_locale',
       redirectOn: 'root',
       alwaysRedirect: false,
-      fallbackLocale: 'zh-CN',
+      fallbackLocale: 'zh-hans',
     },
     bundle: {
       optimizeTranslationDirective: false,
