@@ -1,0 +1,268 @@
+{
+  "brand": {
+    "name": "Sentence Gymnasium",
+    "subtitle": "句子健身房"
+  },
+  "nav": {
+    "training": "训练方式",
+    "flow": "流程",
+    "history": "训练记录"
+  },
+  "hero": {
+    "eyebrow": "AI 句子训练 · 多语言训练场",
+    "subtitle": "句子健身房 · 把每一句练到本能",
+    "body": "AI 出题、AI 判题、题目入库复用。翻译、改写、语法特训——三种训练方式构成一个完整闭环。",
+    "ctaPrimary": "开始训练",
+    "ctaSecondary": "了解训练流程",
+    "scroll": "scroll"
+  },
+  "boards": {
+    "eyebrow": "三种训练方式",
+    "title": "一个训练场，三种练法",
+    "body": "每一种都对应一套完整的出题、作答、判题、反馈流程。选一种开始，或三种交替练。",
+    "enter": "进入",
+    "practice": {
+      "no": "01",
+      "title": "Practice",
+      "subtitle": "翻译练习",
+      "desc": "6 个语言方向互译：ja-en / en-ja / ja-zh / zh-ja / en-zh / zh-en。AI 出题，AI 判题。"
+    },
+    "paraphrase": {
+      "no": "02",
+      "title": "Paraphrase",
+      "subtitle": "同义改写",
+      "desc": "源语言为日或英，换一种说法保留原意。AI 评价原意保留度与自然度。"
+    },
+    "grammar": {
+      "no": "03",
+      "title": "Grammar Focus",
+      "subtitle": "语法特训",
+      "desc": "按语法点生成填空、选择、改错题。te-form、present-perfect 等专项突破。"
+    }
+  },
+  "flow": {
+    "eyebrow": "训练流程",
+    "title": "一次完整的训练闭环",
+    "body": "从出题到反馈，四步构成一次可复盘的训练。题目入库复用，越练越快。",
+    "generate": {
+      "no": "01",
+      "title": "出题",
+      "caption": "Generate",
+      "desc": "AI 生成题目并入库，相同维度优先复用，越练越快。"
+    },
+    "answer": {
+      "no": "02",
+      "title": "作答",
+      "caption": "Answer",
+      "desc": "翻译、改写或选择，提交你的答案。"
+    },
+    "judge": {
+      "no": "03",
+      "title": "判题",
+      "caption": "Judge",
+      "desc": "AI 比对标准答案与你的作答，给出对错。"
+    },
+    "feedback": {
+      "no": "04",
+      "title": "反馈",
+      "caption": "Feedback",
+      "desc": "解释、建议、示范句，落库历史与统计。"
+    }
+  },
+  "cta": {
+    "title": "准备好开始第一组训练了吗？",
+    "body": "新用户赠送 20 Credits · 生成一题扣 1 Credit",
+    "button": "进入训练场"
+  },
+  "health": {
+    "step": "Step 1",
+    "title": "链路自检",
+    "body": "验证 Nuxt SSR → Cloudflare D1 binding → Prisma 链路是否接通。下方应返回 {okCode}。",
+    "endpoint": "GET /api/health",
+    "stack": "Nuxt 3 SSR · Cloudflare Workers · D1 · Prisma"
+  },
+  "footer": {
+    "stack": "Nuxt 3 SSR · Cloudflare Workers · D1 · Prisma"
+  },
+  "lang": {
+    "switch": "语言"
+  },
+  "auth": {
+    "login": "登录",
+    "register": "注册",
+    "logout": "登出",
+    "email": "邮箱",
+    "emailPlaceholder": "you{'@'}example.com",
+    "password": "密码",
+    "passwordPlaceholder": "至少 8 位",
+    "name": "昵称（可选）",
+    "namePlaceholder": "如何称呼你",
+    "loginTitle": "欢迎回来",
+    "loginSubtitle": "登录后继续你的训练",
+    "registerTitle": "创建账户",
+    "registerSubtitle": "新用户赠送 20 Credits",
+    "loginSubmit": "登录",
+    "registerSubmit": "注册并开始",
+    "toRegister": "还没有账户？去注册",
+    "toLogin": "已有账户？去登录",
+    "loading": "处理中…",
+    "welcome": "你好，{name}",
+    "dashboard": "仪表盘",
+    "errors": {
+      "invalid_email": "邮箱格式不正确",
+      "password_too_short": "密码至少 8 位",
+      "email_taken": "该邮箱已注册",
+      "invalid_credentials": "邮箱或密码错误"
+    }
+  },
+  "dashboard": {
+    "subtitle": "准备好今天的训练了吗？",
+    "stats": {
+      "energy": "能量",
+      "streak": "连续天数",
+      "accuracy": "正确率",
+      "total": "总题数"
+    },
+    "level": {
+      "title": "Newbie",
+      "label": "经验值到下一等级",
+      "hint": "继续训练来升级！升级时会获得 +5 额外能量。"
+    },
+    "quickActions": {
+      "title": "快速操作",
+      "startPractice": "开始练习",
+      "grammarFocus": "语法特训",
+      "reviewMistakes": "复习错误题目"
+    },
+    "recent": {
+      "title": "最近训练",
+      "label": "你最近的 5 题",
+      "noData": "暂无训练记录"
+    },
+    "recharge": {
+      "button": "模拟充值 +20",
+      "done": "充值成功 +20",
+      "loading": "处理中…"
+    }
+  },
+  "practice": {
+    "settings": "练习设置",
+    "languagePair": "语言方向",
+    "difficulty": "难度",
+    "diffEasy": "简单",
+    "diffMedium": "中等",
+    "diffHard": "困难",
+    "credits": "能量",
+    "cost": "消耗 {cost} 点",
+    "start": "开始练习",
+    "generating": "正在生成题目…",
+    "yourAnswer": "你的答案",
+    "answerPlaceholder": "在此输入翻译…",
+    "submit": "提交",
+    "judging": "正在判题…",
+    "question": "题目",
+    "referenceAnswer": "参考答案",
+    "feedback": "AI 反馈",
+    "errors": "错误点",
+    "suggestion": "改进建议",
+    "verdictCorrect": "正确",
+    "verdictPartial": "部分正确",
+    "verdictIncorrect": "错误",
+    "nextQuestion": "下一题",
+    "backToSettings": "返回设置",
+    "noCredits": "能量不足，请充值后再试。",
+    "generateError": "出题失败，请稍后重试。",
+    "judgeError": "判题失败，请稍后重试。"
+  },
+  "paraphrase": {
+    "settings": "改写设置",
+    "sourceLang": "源语言",
+    "difficulty": "难度",
+    "diffEasy": "简单",
+    "diffMedium": "中等",
+    "diffHard": "困难",
+    "credits": "能量",
+    "cost": "消耗 {cost} 点",
+    "start": "开始改写",
+    "generating": "正在生成题目…",
+    "hint": "提示",
+    "yourAnswer": "你的改写",
+    "answerHint": "用不同的话表达同样的意思",
+    "answerPlaceholder": "在此输入你的改写…",
+    "submit": "提交",
+    "judging": "正在评价…",
+    "originalText": "原文",
+    "referenceParaphrase": "参考改写",
+    "feedback": "AI 反馈",
+    "errors": "问题点",
+    "suggestion": "更好的改写",
+    "verdictCorrect": "优秀",
+    "verdictPartial": "尚可",
+    "verdictIncorrect": "需改进",
+    "nextQuestion": "下一题",
+    "backToSettings": "返回设置",
+    "noCredits": "能量不足，请充值后再试。",
+    "generateError": "出题失败，请稍后重试。",
+    "judgeError": "评价失败，请稍后重试。"
+  },
+  "grammar": {
+    "settings": "语法特训设置",
+    "grammarPoint": "语法点",
+    "questionType": "题型",
+    "difficulty": "难度",
+    "diffEasy": "简单",
+    "diffMedium": "中等",
+    "diffHard": "困难",
+    "credits": "能量",
+    "cost": "消耗 {cost} 点",
+    "start": "开始特训",
+    "generating": "正在生成题目…",
+    "yourAnswer": "你的答案",
+    "answerPlaceholder": "在此输入答案…",
+    "submit": "提交",
+    "judging": "正在判题…",
+    "question": "题目",
+    "correctAnswer": "正确答案",
+    "explanation": "语法点说明",
+    "feedback": "AI 反馈",
+    "errors": "错误点",
+    "suggestion": "改进建议",
+    "verdictCorrect": "正确",
+    "verdictPartial": "部分正确",
+    "verdictIncorrect": "错误",
+    "nextQuestion": "下一题",
+    "backToSettings": "返回设置",
+    "noCredits": "能量不足，请充值后再试。",
+    "generateError": "出题失败，请稍后重试。",
+    "judgeError": "判题失败，请稍后重试。",
+    "tagPresentPerfect": "现在完成时",
+    "tagPassive": "被动语态",
+    "tagConditionals": "条件句",
+    "tagRelativeClauses": "关系从句",
+    "tagParticles": "助词",
+    "tagHonorifics": "敬语",
+    "typeFillBlank": "填空题",
+    "typeChoice": "选择题",
+    "typeErrorCorrection": "改错题"
+  },
+  "history": {
+    "subtitle": "查看你的所有训练记录",
+    "loading": "加载中…",
+    "noData": "暂无训练记录",
+    "startPractice": "开始练习",
+    "catAll": "全部",
+    "yourAnswer": "你的答案",
+    "aiFeedback": "AI 反馈",
+    "verdict": "判定",
+    "verdictCorrect": "正确",
+    "verdictPartial": "部分正确",
+    "verdictIncorrect": "错误",
+    "pageInfo": "第 {page}/{total} 页 · 共 {count} 条",
+    "prev": "上一页",
+    "next": "下一页",
+    "justNow": "刚刚",
+    "minutesAgo": "{n} 分钟前",
+    "hoursAgo": "{n} 小时前",
+    "daysAgo": "{n} 天前"
+  }
+}

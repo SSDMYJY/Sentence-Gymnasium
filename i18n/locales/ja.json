@@ -1,0 +1,268 @@
+{
+  "brand": {
+    "name": "Sentence Gymnasium",
+    "subtitle": "センテンス・ジム"
+  },
+  "nav": {
+    "training": "トレーニング",
+    "flow": "流れ",
+    "history": "履歴"
+  },
+  "hero": {
+    "eyebrow": "AI センテンス・トレーニング · 多言語ジム",
+    "subtitle": "センテンス・ジム · 一文ずつ、体で覚えるまで鍛える",
+    "body": "AIが出題し、AIが採点し、問題をプールして再利用。翻訳・書き換え・文法特訓――3つのトレーニングがひとつのループを構成する。",
+    "ctaPrimary": "トレーニングを始める",
+    "ctaSecondary": "流れを見る",
+    "scroll": "scroll"
+  },
+  "boards": {
+    "eyebrow": "3つのトレーニング",
+    "title": "ひとつのジム、3つの練習法",
+    "body": "どれも出題・回答・採点・フィードバックの完全なループに対応。一つから始めるもよし、三つを交互に練るもよし。",
+    "enter": "始める",
+    "practice": {
+      "no": "01",
+      "title": "Practice",
+      "subtitle": "翻訳練習",
+      "desc": "6つの言語ペアを相互翻訳：ja-en / en-ja / ja-zh / zh-ja / en-zh / zh-en。AIが出題し、AIが採点。"
+    },
+    "paraphrase": {
+      "no": "02",
+      "title": "Paraphrase",
+      "subtitle": "言い換え",
+      "desc": "原文は日本語または英語。意味を保ったまま別の表現に。AIが原意の保持度と自然さを評価。"
+    },
+    "grammar": {
+      "no": "03",
+      "title": "Grammar Focus",
+      "subtitle": "文法特訓",
+      "desc": "文法ポイント別に穴埋め・選択・訂正問題を生成。te-form、present-perfectなどを重点的に突破。"
+    }
+  },
+  "flow": {
+    "eyebrow": "トレーニングの流れ",
+    "title": "完結するトレーニングループ",
+    "body": "出題からフィードバックまでの4ステップで、振り返り可能な1回のトレーニングが完結。問題はプールして再利用され、練れば練るほど速くなる。",
+    "generate": {
+      "no": "01",
+      "title": "出題",
+      "caption": "Generate",
+      "desc": "AIが問題を生成してプール。同じ条件の問題は再利用優先、練るほど速くなる。"
+    },
+    "answer": {
+      "no": "02",
+      "title": "回答",
+      "caption": "Answer",
+      "desc": "翻訳・書き換え・選択のいずれかで答えを提出。"
+    },
+    "judge": {
+      "no": "03",
+      "title": "採点",
+      "caption": "Judge",
+      "desc": "AIが模範解答とあなたの回答を照合し、正誤を判定。"
+    },
+    "feedback": {
+      "no": "04",
+      "title": "フィードバック",
+      "caption": "Feedback",
+      "desc": "解説・アドバイス・例文を提示し、履歴と統計に記録。"
+    }
+  },
+  "cta": {
+    "title": "最初の1セット、始めませんか？",
+    "body": "新規ユーザーに20 Creditsプレゼント · 1問生成ごとに1 Credit消費",
+    "button": "ジムに入る"
+  },
+  "health": {
+    "step": "Step 1",
+    "title": "ヘルスチェック",
+    "body": "Nuxt SSR → Cloudflare D1 binding → Prisma の経路を検証。下に {okCode} と表示されれば正常です。",
+    "endpoint": "GET /api/health",
+    "stack": "Nuxt 3 SSR · Cloudflare Workers · D1 · Prisma"
+  },
+  "footer": {
+    "stack": "Nuxt 3 SSR · Cloudflare Workers · D1 · Prisma"
+  },
+  "lang": {
+    "switch": "言語"
+  },
+  "auth": {
+    "login": "ログイン",
+    "register": "登録",
+    "logout": "ログアウト",
+    "email": "メールアドレス",
+    "emailPlaceholder": "you{'@'}example.com",
+    "password": "パスワード",
+    "passwordPlaceholder": "8文字以上",
+    "name": "表示名（任意）",
+    "namePlaceholder": "どう呼べばいいですか",
+    "loginTitle": "おかえりなさい",
+    "loginSubtitle": "ログインしてトレーニングを続けましょう",
+    "registerTitle": "アカウント作成",
+    "registerSubtitle": "新規ユーザーに20 Creditsプレゼント",
+    "loginSubmit": "ログイン",
+    "registerSubmit": "登録して始める",
+    "toRegister": "まだアカウントをお持ちでない？登録する",
+    "toLogin": "すでにアカウントがある？ログインする",
+    "loading": "処理中…",
+    "welcome": "こんにちは、{name}さん",
+    "dashboard": "ダッシュボード",
+    "errors": {
+      "invalid_email": "メールアドレスの形式が正しくありません",
+      "password_too_short": "パスワードは8文字以上で入力してください",
+      "email_taken": "このメールアドレスはすでに登録されています",
+      "invalid_credentials": "メールアドレスまたはパスワードが正しくありません"
+    }
+  },
+  "dashboard": {
+    "subtitle": "今日のトレーニング、準備はできていますか？",
+    "stats": {
+      "energy": "エネルギー",
+      "streak": "ストリーク",
+      "accuracy": "正答率",
+      "total": "合計"
+    },
+    "level": {
+      "title": "Newbie",
+      "label": "次のレベルまでのXP",
+      "hint": "トレーニングを続けてレベルアップ！レベルアップ時に+5ボーナスエネルギーを獲得。"
+    },
+    "quickActions": {
+      "title": "クイックアクション",
+      "startPractice": "練習を開始",
+      "grammarFocus": "文法特訓",
+      "reviewMistakes": "間違いを復習"
+    },
+    "recent": {
+      "title": "最近のトレーニング",
+      "label": "直近5問",
+      "noData": "最近の記録はありません"
+    },
+    "recharge": {
+      "button": "模擬チャージ +20",
+      "done": "チャージ成功 +20",
+      "loading": "処理中…"
+    }
+  },
+  "practice": {
+    "settings": "練習設定",
+    "languagePair": "言語ペア",
+    "difficulty": "難易度",
+    "diffEasy": "簡単",
+    "diffMedium": "中級",
+    "diffHard": "難しい",
+    "credits": "エネルギー",
+    "cost": "{cost} 消費",
+    "start": "練習開始",
+    "generating": "問題を生成中…",
+    "yourAnswer": "あなたの答え",
+    "answerPlaceholder": "ここに翻訳を入力…",
+    "submit": "送信",
+    "judging": "採点中…",
+    "question": "問題",
+    "referenceAnswer": "模範解答",
+    "feedback": "AI フィードバック",
+    "errors": "誤り",
+    "suggestion": "改善の提案",
+    "verdictCorrect": "正解",
+    "verdictPartial": "部分正解",
+    "verdictIncorrect": "不正解",
+    "nextQuestion": "次の問題",
+    "backToSettings": "設定に戻る",
+    "noCredits": "エネルギー不足です。充電してください。",
+    "generateError": "問題の生成に失敗しました。再試行してください。",
+    "judgeError": "採点に失敗しました。再試行してください。"
+  },
+  "paraphrase": {
+    "settings": "言い換え設定",
+    "sourceLang": "ソース言語",
+    "difficulty": "難易度",
+    "diffEasy": "簡単",
+    "diffMedium": "中級",
+    "diffHard": "難しい",
+    "credits": "エネルギー",
+    "cost": "{cost} 消費",
+    "start": "言い換え開始",
+    "generating": "問題を生成中…",
+    "hint": "ヒント",
+    "yourAnswer": "あなたの言い換え",
+    "answerHint": "同じ意味を違う言葉で表現してください",
+    "answerPlaceholder": "ここに言い換えを入力…",
+    "submit": "送信",
+    "judging": "評価中…",
+    "originalText": "原文",
+    "referenceParaphrase": "模範言い換え",
+    "feedback": "AI フィードバック",
+    "errors": "問題点",
+    "suggestion": "より良い言い換え",
+    "verdictCorrect": "優秀",
+    "verdictPartial": "まずまず",
+    "verdictIncorrect": "要改善",
+    "nextQuestion": "次の問題",
+    "backToSettings": "設定に戻る",
+    "noCredits": "エネルギー不足です。充電してください。",
+    "generateError": "問題の生成に失敗しました。再試行してください。",
+    "judgeError": "評価に失敗しました。再試行してください。"
+  },
+  "grammar": {
+    "settings": "文法特訓設定",
+    "grammarPoint": "文法ポイント",
+    "questionType": "問題タイプ",
+    "difficulty": "難易度",
+    "diffEasy": "簡単",
+    "diffMedium": "中級",
+    "diffHard": "難しい",
+    "credits": "エネルギー",
+    "cost": "{cost} 消費",
+    "start": "特訓開始",
+    "generating": "問題を生成中…",
+    "yourAnswer": "あなたの答え",
+    "answerPlaceholder": "ここに答えを入力…",
+    "submit": "送信",
+    "judging": "採点中…",
+    "question": "問題",
+    "correctAnswer": "正解",
+    "explanation": "文法ポイントの解説",
+    "feedback": "AI フィードバック",
+    "errors": "誤り",
+    "suggestion": "改善の提案",
+    "verdictCorrect": "正解",
+    "verdictPartial": "部分正解",
+    "verdictIncorrect": "不正解",
+    "nextQuestion": "次の問題",
+    "backToSettings": "設定に戻る",
+    "noCredits": "エネルギー不足です。充電してください。",
+    "generateError": "問題の生成に失敗しました。再試行してください。",
+    "judgeError": "採点に失敗しました。再試行してください。",
+    "tagPresentPerfect": "現在完了形",
+    "tagPassive": "受動態",
+    "tagConditionals": "条件文",
+    "tagRelativeClauses": "関係節",
+    "tagParticles": "助詞",
+    "tagHonorifics": "敬語",
+    "typeFillBlank": "穴埋め",
+    "typeChoice": "選択問題",
+    "typeErrorCorrection": "誤り訂正"
+  },
+  "history": {
+    "subtitle": "すべての訓練記録を表示",
+    "loading": "読み込み中…",
+    "noData": "記録がありません",
+    "startPractice": "練習開始",
+    "catAll": "すべて",
+    "yourAnswer": "あなたの答え",
+    "aiFeedback": "AI フィードバック",
+    "verdict": "判定",
+    "verdictCorrect": "正解",
+    "verdictPartial": "部分正解",
+    "verdictIncorrect": "不正解",
+    "pageInfo": "{page}/{total} ページ · {count} 件",
+    "prev": "前へ",
+    "next": "次へ",
+    "justNow": "たった今",
+    "minutesAgo": "{n}分前",
+    "hoursAgo": "{n}時間前",
+    "daysAgo": "{n}日前"
+  }
+}

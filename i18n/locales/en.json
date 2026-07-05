@@ -1,0 +1,268 @@
+{
+  "brand": {
+    "name": "Sentence Gymnasium",
+    "subtitle": "The Sentence Gym"
+  },
+  "nav": {
+    "training": "Training Modes",
+    "flow": "Workflow",
+    "history": "History"
+  },
+  "hero": {
+    "eyebrow": "AI Sentence Training · Multilingual Gym",
+    "subtitle": "Sentence Gym · Drill every sentence until it's instinct",
+    "body": "AI generates the questions, AI grades the answers, and every question is pooled for reuse. Translation, paraphrase, and grammar drills — three modes, one closed loop.",
+    "ctaPrimary": "Start Training",
+    "ctaSecondary": "See the Workflow",
+    "scroll": "scroll"
+  },
+  "boards": {
+    "eyebrow": "Three Training Modes",
+    "title": "One gym, three ways to train",
+    "body": "Each mode runs the full loop — generate, answer, judge, feedback. Pick one to start, or alternate between all three.",
+    "enter": "Enter",
+    "practice": {
+      "no": "01",
+      "title": "Practice",
+      "subtitle": "Translation",
+      "desc": "Bidirectional translation across six language pairs: ja-en / en-ja / ja-zh / zh-ja / en-zh / zh-en. AI generates, AI grades."
+    },
+    "paraphrase": {
+      "no": "02",
+      "title": "Paraphrase",
+      "subtitle": "Rephrase",
+      "desc": "Source in Japanese or English — rephrase it while keeping the meaning. AI scores fidelity and naturalness."
+    },
+    "grammar": {
+      "no": "03",
+      "title": "Grammar Focus",
+      "subtitle": "Targeted Drills",
+      "desc": "Fill-in-the-blank, multiple choice, and error correction keyed to grammar points. Focus on te-form, present-perfect, and more."
+    }
+  },
+  "flow": {
+    "eyebrow": "Workflow",
+    "title": "One complete training loop",
+    "body": "Four steps from question to feedback make each session reviewable. Questions are pooled and reused — the more you train, the faster it gets.",
+    "generate": {
+      "no": "01",
+      "title": "Generate",
+      "caption": "AI composes",
+      "desc": "AI generates the question and pools it. Matching dimensions are reused first — the more you train, the faster it gets."
+    },
+    "answer": {
+      "no": "02",
+      "title": "Answer",
+      "caption": "You respond",
+      "desc": "Translate, paraphrase, or choose — then submit your answer."
+    },
+    "judge": {
+      "no": "03",
+      "title": "Judge",
+      "caption": "AI evaluates",
+      "desc": "AI compares your answer to the reference and returns correct or incorrect."
+    },
+    "feedback": {
+      "no": "04",
+      "title": "Feedback",
+      "caption": "Review & record",
+      "desc": "Explanation, suggestions, and example sentences — saved to your history and stats."
+    }
+  },
+  "cta": {
+    "title": "Ready for your first set?",
+    "body": "20 free Credits for new users · 1 Credit per generated question",
+    "button": "Enter the Gym"
+  },
+  "health": {
+    "step": "Step 1",
+    "title": "Health Check",
+    "body": "Verify the Nuxt SSR → Cloudflare D1 binding → Prisma chain. The response below should return {okCode}.",
+    "endpoint": "GET /api/health",
+    "stack": "Nuxt 3 SSR · Cloudflare Workers · D1 · Prisma"
+  },
+  "footer": {
+    "stack": "Nuxt 3 SSR · Cloudflare Workers · D1 · Prisma"
+  },
+  "lang": {
+    "switch": "Language"
+  },
+  "auth": {
+    "login": "Sign in",
+    "register": "Sign up",
+    "logout": "Sign out",
+    "email": "Email",
+    "emailPlaceholder": "you{'@'}example.com",
+    "password": "Password",
+    "passwordPlaceholder": "At least 8 characters",
+    "name": "Display name (optional)",
+    "namePlaceholder": "What should we call you",
+    "loginTitle": "Welcome back",
+    "loginSubtitle": "Sign in to continue your training",
+    "registerTitle": "Create your account",
+    "registerSubtitle": "20 free Credits for new users",
+    "loginSubmit": "Sign in",
+    "registerSubmit": "Create account",
+    "toRegister": "No account yet? Sign up",
+    "toLogin": "Already have an account? Sign in",
+    "loading": "Working…",
+    "welcome": "Hi, {name}",
+    "dashboard": "Dashboard",
+    "errors": {
+      "invalid_email": "Please enter a valid email",
+      "password_too_short": "Password must be at least 8 characters",
+      "email_taken": "That email is already registered",
+      "invalid_credentials": "Wrong email or password"
+    }
+  },
+  "dashboard": {
+    "subtitle": "Ready for today's training?",
+    "stats": {
+      "energy": "Energy",
+      "streak": "Streak",
+      "accuracy": "Accuracy",
+      "total": "Total"
+    },
+    "level": {
+      "title": "Newbie",
+      "label": "XP to next level",
+      "hint": "Keep training to level up! Earn +5 bonus energy when you level up."
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "startPractice": "Start Practice",
+      "grammarFocus": "Grammar Focus",
+      "reviewMistakes": "Review Mistakes"
+    },
+    "recent": {
+      "title": "Recent Training",
+      "label": "Your last 5 attempts",
+      "noData": "No recent attempts"
+    },
+    "recharge": {
+      "button": "Recharge +20",
+      "done": "Recharged +20",
+      "loading": "Processing…"
+    }
+  },
+  "practice": {
+    "settings": "Practice Settings",
+    "languagePair": "Language Pair",
+    "difficulty": "Difficulty",
+    "diffEasy": "Easy",
+    "diffMedium": "Medium",
+    "diffHard": "Hard",
+    "credits": "credits",
+    "cost": "Costs {cost}",
+    "start": "Start Practice",
+    "generating": "Generating question…",
+    "yourAnswer": "Your Answer",
+    "answerPlaceholder": "Type your translation here…",
+    "submit": "Submit",
+    "judging": "Judging…",
+    "question": "Question",
+    "referenceAnswer": "Reference Answer",
+    "feedback": "AI Feedback",
+    "errors": "Errors",
+    "suggestion": "Suggestion",
+    "verdictCorrect": "Correct",
+    "verdictPartial": "Partial",
+    "verdictIncorrect": "Incorrect",
+    "nextQuestion": "Next Question",
+    "backToSettings": "Back to Settings",
+    "noCredits": "Not enough credits. Please recharge.",
+    "generateError": "Failed to generate question. Please try again.",
+    "judgeError": "Failed to judge answer. Please try again."
+  },
+  "paraphrase": {
+    "settings": "Paraphrase Settings",
+    "sourceLang": "Source Language",
+    "difficulty": "Difficulty",
+    "diffEasy": "Easy",
+    "diffMedium": "Medium",
+    "diffHard": "Hard",
+    "credits": "credits",
+    "cost": "Costs {cost}",
+    "start": "Start Paraphrase",
+    "generating": "Generating question…",
+    "hint": "Hint",
+    "yourAnswer": "Your Paraphrase",
+    "answerHint": "Express the same meaning using different words",
+    "answerPlaceholder": "Type your paraphrase here…",
+    "submit": "Submit",
+    "judging": "Evaluating…",
+    "originalText": "Original Text",
+    "referenceParaphrase": "Reference Paraphrase",
+    "feedback": "AI Feedback",
+    "errors": "Issues",
+    "suggestion": "Better Paraphrase",
+    "verdictCorrect": "Excellent",
+    "verdictPartial": "Acceptable",
+    "verdictIncorrect": "Needs Work",
+    "nextQuestion": "Next Question",
+    "backToSettings": "Back to Settings",
+    "noCredits": "Not enough credits. Please recharge.",
+    "generateError": "Failed to generate question. Please try again.",
+    "judgeError": "Failed to evaluate answer. Please try again."
+  },
+  "grammar": {
+    "settings": "Grammar Drill Settings",
+    "grammarPoint": "Grammar Point",
+    "questionType": "Question Type",
+    "difficulty": "Difficulty",
+    "diffEasy": "Easy",
+    "diffMedium": "Medium",
+    "diffHard": "Hard",
+    "credits": "credits",
+    "cost": "Costs {cost}",
+    "start": "Start Drill",
+    "generating": "Generating question…",
+    "yourAnswer": "Your Answer",
+    "answerPlaceholder": "Type your answer here…",
+    "submit": "Submit",
+    "judging": "Judging…",
+    "question": "Question",
+    "correctAnswer": "Correct Answer",
+    "explanation": "Grammar Explanation",
+    "feedback": "AI Feedback",
+    "errors": "Errors",
+    "suggestion": "Suggestion",
+    "verdictCorrect": "Correct",
+    "verdictPartial": "Partial",
+    "verdictIncorrect": "Incorrect",
+    "nextQuestion": "Next Question",
+    "backToSettings": "Back to Settings",
+    "noCredits": "Not enough credits. Please recharge.",
+    "generateError": "Failed to generate question. Please try again.",
+    "judgeError": "Failed to judge answer. Please try again.",
+    "tagPresentPerfect": "Present Perfect",
+    "tagPassive": "Passive Voice",
+    "tagConditionals": "Conditionals",
+    "tagRelativeClauses": "Relative Clauses",
+    "tagParticles": "Particles",
+    "tagHonorifics": "Honorifics",
+    "typeFillBlank": "Fill Blank",
+    "typeChoice": "Multiple Choice",
+    "typeErrorCorrection": "Error Correction"
+  },
+  "history": {
+    "subtitle": "View all your training records",
+    "loading": "Loading…",
+    "noData": "No records yet",
+    "startPractice": "Start Practice",
+    "catAll": "All",
+    "yourAnswer": "Your Answer",
+    "aiFeedback": "AI Feedback",
+    "verdict": "Verdict",
+    "verdictCorrect": "Correct",
+    "verdictPartial": "Partial",
+    "verdictIncorrect": "Incorrect",
+    "pageInfo": "Page {page}/{total} · {count} records",
+    "prev": "Prev",
+    "next": "Next",
+    "justNow": "just now",
+    "minutesAgo": "{n}m ago",
+    "hoursAgo": "{n}h ago",
+    "daysAgo": "{n}d ago"
+  }
+}
