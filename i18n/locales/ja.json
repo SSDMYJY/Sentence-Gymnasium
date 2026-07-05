@@ -25,7 +25,7 @@
       "no": "01",
       "title": "Practice",
       "subtitle": "翻訳練習",
-      "desc": "6つの言語ペアを相互翻訳：ja-en / en-ja / ja-zh / zh-ja / en-zh / zh-en。AIが出題し、AIが採点。"
+      "desc": "4つの言語ペアを相互翻訳：ja-en / en-ja / zh-ja / zh-en。"
     },
     "paraphrase": {
       "no": "02",
