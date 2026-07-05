@@ -65,7 +65,7 @@
       </form>
 
       <NuxtLink
-        to="/login"
+        :to="localePath('/login')"
         class="mt-8 inline-block text-sm text-stone-400 transition-colors hover:text-white"
       >
         {{ t('auth.toLogin') }} →
@@ -76,6 +76,7 @@
 
 <script setup lang="ts">
 const { t, te } = useI18n()
+const localePath = useLocalePath()
 const store = useUserStore()
 
 // SSR 阶段 store 尚未填充，需主动拉一次 session 判断登录态
@@ -83,7 +84,7 @@ if (!store.fetched) {
   await store.fetch()
 }
 if (store.isAuthenticated) {
-  await navigateTo('/dashboard')
+  await navigateTo(localePath('/dashboard'))
 }
 
 const email = ref('')
@@ -101,7 +102,7 @@ const onSubmit = async () => {
       password: password.value,
       name: name.value || undefined,
     })
-    await navigateTo('/dashboard')
+    await navigateTo(localePath('/dashboard'))
   } catch (e: any) {
     error.value = mapError(e)
   } finally {

@@ -8,7 +8,9 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', 'nitro-cloudflare-dev', '@nuxtjs/i18n'],
   i18n: {
-    strategy: 'no_prefix',
+    // 每种语言都有独立 URL 前缀：/zh-hans/... /zh-hant/... /en/... /ja/...
+    // 默认语言 zh-hans 也带前缀，避免默认语言无前缀导致的根路径歧义。
+    strategy: 'prefix',
     defaultLocale: 'zh-hans',
     langDir: 'locales',
     locales: [
@@ -18,6 +20,8 @@ export default defineNuxtConfig({
       { code: 'ja', language: 'ja', name: '日本語', file: 'ja.json' },
     ],
     lazy: true,
+    // 根路径 / 自动重定向到浏览器偏好语言（带前缀），cookie 记忆选择。
+    // redirectOn: 'root' 只在访问 / 时重定向，子路径不强制，避免循环跳转。
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: 'i18n_locale',
@@ -55,6 +59,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: 'Sentence Gymnasium · 句子健身房',
+      htmlAttrs: { lang: 'zh-Hans' },
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: 'AI 驱动的多语言句子翻译 / 改写 / 语法特训练习平台' },

@@ -168,7 +168,7 @@
           class="mt-10 flex flex-wrap items-center justify-center gap-4"
         >
           <NuxtLink
-            to="/practice"
+            :to="localePath('/practice')"
             class="group inline-flex items-center gap-2 rounded-full bg-accent px-8 py-4 text-sm font-semibold text-ink-950 transition hover:bg-accent-soft"
           >
             {{ t('cta.button') }}
@@ -182,6 +182,7 @@
 
 <script setup lang="ts">
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 const heroPrompt =
   'cinematic moody photograph of a quiet minimalist study studio at dawn, warm amber rim light falling on an open book and a single wooden chair, deep shadow negative space on the left half, editorial photography, shallow depth of field, no people, no text, no signage, premium magazine aesthetic'
@@ -196,7 +197,7 @@ const boards = computed(() =>
     title: t(`boards.${k}.title`),
     subtitle: t(`boards.${k}.subtitle`),
     desc: t(`boards.${k}.desc`),
-    to: `/${k}`,
+    to: localePath(`/${k}`),
   })),
 )
 

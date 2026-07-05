@@ -51,7 +51,7 @@
       </form>
 
       <NuxtLink
-        to="/register"
+        :to="localePath('/register')"
         class="mt-8 inline-block text-sm text-stone-400 transition-colors hover:text-white"
       >
         {{ t('auth.toRegister') }} →
@@ -62,6 +62,7 @@
 
 <script setup lang="ts">
 const { t, te } = useI18n()
+const localePath = useLocalePath()
 const store = useUserStore()
 const route = useRoute()
 
@@ -71,7 +72,7 @@ if (!store.fetched) {
 }
 // 已登录则直接回 dashboard / 目标页
 if (store.isAuthenticated) {
-  await navigateTo((route.query.redirect as string) || '/dashboard')
+  await navigateTo((route.query.redirect as string) || localePath('/dashboard'))
 }
 
 const email = ref('')
@@ -84,7 +85,7 @@ const onSubmit = async () => {
   loading.value = true
   try {
     await store.login(email.value, password.value)
-    await navigateTo((route.query.redirect as string) || '/dashboard')
+    await navigateTo((route.query.redirect as string) || localePath('/dashboard'))
   } catch (e: any) {
     error.value = mapError(e)
   } finally {

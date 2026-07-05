@@ -47,6 +47,7 @@ import type { SessionUser } from '~/stores/user'
 definePageMeta({ middleware: 'auth' })
 
 const { t } = useI18n()
+const localePath = useLocalePath()
 const store = useUserStore()
 const user = computed(() => store.user as SessionUser)
 
@@ -75,7 +76,7 @@ const boardEntries = computed(() =>
     no: t(`boards.${k}.no`),
     title: t(`boards.${k}.title`),
     subtitle: t(`boards.${k}.subtitle`),
-    to: `/${k}`,
+    to: localePath(`/${k}`),
   })),
 )
 
