@@ -34,12 +34,21 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 402, statusMessage: 'Insufficient credits' })
   }
 
-  // 调用 AI 出题
-  const generated = await generateQuestion(event, {
-    category: 'paraphrase',
-    sourceLang,
-    difficulty,
-  })
+  // 调用 AI 出题（带错误处理）
+  let generated
+  try {
+    generated = await generateQuestion(event, {
+      category: 'paraphrase',
+      sourceLang,
+      difficulty,
+    })
+  } catch (err: any) {
+    if (err.statusCode) throw err
+    throw createError({
+      statusCode: 503,
+      statusMessage: `Failed to generate question: ${err.message || 'AI service unavailable'}`,
+    })
+  }
 
   if (generated.category !== 'paraphrase') {
     throw createError({ statusCode: 500, statusMessage: 'AI returned wrong category' })
@@ -47,23 +56,32 @@ export default defineEventHandler(async (event) => {
 
   const q = generated.data
 
-  // 事务：扣减能量 + 存储题目
-  const [_, question] = await prisma.$transaction([
-    prisma.user.update({
-      where: { id: user.id },
-      data: { credits: { decrement: COST_PER_QUESTION } },
-    }),
-    prisma.generatedQuestion.create({
-      data: {
-        category: 'paraphrase',
-        languagePair: sourceLang,
-        questionText: q.questionText,
-        correctAnswer: q.correctAnswer,
-        extraData: JSON.stringify({ difficulty, hint: q.hint ?? null }),
-        generatedById: user.id,
-      },
-    }),
-  ])
+  // 事务：扣减能量 + 存储题目（带错误处理）
+  let question
+  try {
+    const [_, created] = await prisma.$transaction([
+      prisma.user.update({
+        where: { id: user.id },
+        data: { credits: { decrement: COST_PER_QUESTION } },
+      }),
+      prisma.generatedQuestion.create({
+        data: {
+          category: 'paraphrase',
+          languagePair: sourceLang,
+          questionText: q.questionText,
+          correctAnswer: q.correctAnswer,
+          extraData: JSON.stringify({ difficulty, hint: q.hint ?? null }),
+          generatedById: user.id,
+        },
+      }),
+    ])
+    question = created
+  } catch (err: any) {
+    throw createError({
+      statusCode: 500,
+      statusMessage: `Database error: ${err.message || 'Failed to save question'}`,
+    })
+  }
 
   return {
     questionId: question.id,
