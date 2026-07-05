@@ -10,6 +10,15 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   nitro: {
     preset: 'cloudflare-module',
+    // Required for Prisma's WASM query engine on Cloudflare Workers.
+    // `@prisma/client` (edge runtime) imports `./query_engine_bg.wasm?module`,
+    // where the `?module` suffix is a wrangler-specific WebAssembly ESM import.
+    // Rollup does not understand this suffix by default and fails the build
+    // with ENOENT. `experimental.wasm` teaches Nitro/Rollup to handle it.
+    // See https://github.com/prisma/prisma/issues/23500
+    experimental: {
+      wasm: true,
+    },
     cloudflare: {
       configPath: './wrangler.jsonc',
     },
