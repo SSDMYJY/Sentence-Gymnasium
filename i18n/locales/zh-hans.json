@@ -80,6 +80,7 @@
     "toLogin": "已有账户？去登录",
     "loading": "处理中…",
     "welcome": "你好，{name}",
+    "dashboard": "控制台",
     "errors": {
       "invalid_email": "邮箱格式不正确",
       "password_too_short": "密码至少 8 位",

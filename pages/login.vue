@@ -65,9 +65,13 @@ const { t, te } = useI18n()
 const store = useUserStore()
 const route = useRoute()
 
-// 已登录则直接回首页 / 目标页
+// SSR 阶段 store 尚未填充，需主动拉一次 session 判断登录态
+if (!store.fetched) {
+  await store.fetch()
+}
+// 已登录则直接回 dashboard / 目标页
 if (store.isAuthenticated) {
-  await navigateTo((route.query.redirect as string) || '/')
+  await navigateTo((route.query.redirect as string) || '/dashboard')
 }
 
 const email = ref('')
@@ -80,7 +84,7 @@ const onSubmit = async () => {
   loading.value = true
   try {
     await store.login(email.value, password.value)
-    await navigateTo((route.query.redirect as string) || '/')
+    await navigateTo((route.query.redirect as string) || '/dashboard')
   } catch (e: any) {
     error.value = mapError(e)
   } finally {
