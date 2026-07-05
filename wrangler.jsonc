@@ -3,7 +3,7 @@
   // `main` points to Nitro's cloudflare-module build output.
   // Local dev: nitro-cloudflare-dev reads this file to provide the D1 binding.
   // Prod deploy: run `npx wrangler deploy` after `npm run build`.
-  "name": "sentence-gym",
+  "name": "sentence-gymnasium",
   "main": "./.output/server/index.mjs",
   "compatibility_date": "2025-07-01",
   "compatibility_flags": ["nodejs_compat"],
