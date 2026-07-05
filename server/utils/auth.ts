@@ -1,5 +1,6 @@
 import { SignJWT, jwtVerify } from 'jose'
 import bcrypt from 'bcryptjs'
+import { getCookie, setCookie, deleteCookie, createError } from 'h3'
 import type { H3Event } from 'h3'
 import { usePrisma } from './prisma'
 
