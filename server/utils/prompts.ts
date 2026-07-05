@@ -2,7 +2,7 @@
 // 集中管理三种训练模式（practice / paraphrase / grammar）的出题与判题 prompt。
 // 所有 prompt 都要求模型以 JSON 格式返回，便于程序解析。
 
-import type { Category, GrammarTag, LangCode, LanguagePair } from '../types/ai'
+import type { Category, GrammarTag, LangCode, LanguagePair, UiLang } from '../types/ai'
 
 // 语言代码 → 自然名称
 const LANG_NAME: Record<LangCode, string> = {
@@ -27,6 +27,25 @@ const GRAMMAR_DESC: Record<GrammarTag, string> = {
   'relative-clauses': '关系从句',
   'particles': '助词',
   'honorifics': '敬语',
+}
+
+// 语法标签 → 语言代码
+const GRAMMAR_LANG: Record<GrammarTag, LangCode> = {
+  'te-form': 'ja',
+  'present-perfect': 'en',
+  'passive': 'en',
+  'conditionals': 'en',
+  'relative-clauses': 'en',
+  'particles': 'ja',
+  'honorifics': 'ja',
+}
+
+// 界面语言代码 → 自然语言名称（用于 AI 提示词）
+const UI_LANG_NAME: Record<UiLang, string> = {
+  'zh-hans': 'Chinese (Simplified)',
+  'zh-hant': 'Chinese (Traditional)',
+  'en': 'English',
+  'ja': 'Japanese',
 }
 
 // ---------- 系统 prompt ----------
@@ -85,8 +104,10 @@ export function practiceJudgePrompt(
   correctAnswer: string,
   userAnswer: string,
   languagePair: LanguagePair,
+  uiLang?: UiLang,
 ): { system: string; user: string } {
   const [, dst] = languagePair.split('-') as [LangCode, LangCode]
+  const feedbackLang = uiLang ? UI_LANG_NAME[uiLang] : LANG_NATIVE[dst]
 
   return {
     system: SYSTEM_JUDGE,
@@ -102,12 +123,14 @@ Evaluation criteria:
 - Is the grammar correct in ${LANG_NATIVE[dst]}?
 - Is the expression natural (not awkward or machine-translated)?
 
+CRITICAL: Respond in ${feedbackLang}. The feedback, suggestion, and errors fields MUST be in ${feedbackLang}, matching the user's interface language.
+
 Return ONLY this JSON shape:
 {
   "isCorrect": boolean,
-  "score": number (0-100),
+  "score": number (0-10),
   "verdict": "correct" | "partial" | "incorrect",
-  "feedback": "<concise explanation in Chinese>",
+  "feedback": "<concise explanation in ${feedbackLang}>",
   "suggestion": "<a better way to express it, or null if already great>",
   "errors": ["<specific error 1>", "<specific error 2>"]
 }`,
@@ -147,7 +170,10 @@ export function paraphraseJudgePrompt(
   correctAnswer: string,
   userAnswer: string,
   sourceLang: LangCode,
+  uiLang?: UiLang,
 ): { system: string; user: string } {
+  const feedbackLang = uiLang ? UI_LANG_NAME[uiLang] : LANG_NATIVE[sourceLang]
+
   return {
     system: SYSTEM_JUDGE,
     user: `Judge this paraphrase attempt.
@@ -163,12 +189,14 @@ Evaluation criteria:
 - Is the expression natural and different enough from the original?
 - Award credit for valid alternative phrasings, not just the reference answer.
 
+CRITICAL: Respond in ${feedbackLang}. The feedback, suggestion, and errors fields MUST be in ${feedbackLang}, matching the user's interface language.
+
 Return ONLY this JSON shape:
 {
   "isCorrect": boolean,
-  "score": number (0-100),
+  "score": number (0-10),
   "verdict": "correct" | "partial" | "incorrect",
-  "feedback": "<concise explanation in Chinese>",
+  "feedback": "<concise explanation in ${feedbackLang}>",
   "suggestion": "<an even better paraphrase, or null>",
   "errors": ["<specific issue 1>"]
 }`,
@@ -217,7 +245,11 @@ export function grammarJudgePrompt(
   userAnswer: string,
   grammarTag: GrammarTag,
   questionType: 'fill-blank' | 'choice' | 'error-correction',
+  uiLang?: UiLang,
 ): { system: string; user: string } {
+  const lang = GRAMMAR_LANG[grammarTag]
+  const feedbackLang = uiLang ? UI_LANG_NAME[uiLang] : LANG_NATIVE[lang]
+
   return {
     system: SYSTEM_JUDGE,
     user: `Judge this grammar exercise answer.
@@ -227,6 +259,7 @@ Correct answer: ${correctAnswer}
 Student's answer: ${userAnswer}
 Grammar point: ${GRAMMAR_DESC[grammarTag]}
 Question type: ${questionType}
+Language: ${LANG_NATIVE[lang]}
 
 Evaluation criteria:
 - Is the answer grammatically correct for the target grammar point?
@@ -234,12 +267,14 @@ Evaluation criteria:
 - For choice: must match the correct option.
 - For error-correction: did the student correctly identify and fix the error?
 
+CRITICAL: Respond in ${feedbackLang}. The feedback, suggestion, and errors fields MUST be in ${feedbackLang}, matching the user's interface language.
+
 Return ONLY this JSON shape:
 {
   "isCorrect": boolean,
-  "score": number (0-100),
+  "score": number (0-10),
   "verdict": "correct" | "partial" | "incorrect",
-  "feedback": "<concise explanation in Chinese>",
+  "feedback": "<concise explanation in ${feedbackLang}>",
   "suggestion": "<a correct alternative if applicable, or null>",
   "errors": ["<specific error 1>"]
 }`,
@@ -287,18 +322,19 @@ export function getJudgePrompt(
     sourceLang?: LangCode
     grammarTag?: GrammarTag
     questionType?: 'fill-blank' | 'choice' | 'error-correction'
+    uiLang?: UiLang
   },
   userAnswer: string,
 ): GeneratePromptResult {
   switch (category) {
     case 'practice':
       if (!question.languagePair) throw new Error('practice 判题需要 languagePair')
-      return practiceJudgePrompt(question.questionText, question.correctAnswer, userAnswer, question.languagePair)
+      return practiceJudgePrompt(question.questionText, question.correctAnswer, userAnswer, question.languagePair, question.uiLang)
     case 'paraphrase':
       if (!question.sourceLang) throw new Error('paraphrase 判题需要 sourceLang')
-      return paraphraseJudgePrompt(question.questionText, question.correctAnswer, userAnswer, question.sourceLang)
+      return paraphraseJudgePrompt(question.questionText, question.correctAnswer, userAnswer, question.sourceLang, question.uiLang)
     case 'grammar':
       if (!question.grammarTag || !question.questionType) throw new Error('grammar 判题需要 grammarTag 和 questionType')
-      return grammarJudgePrompt(question.questionText, question.correctAnswer, userAnswer, question.grammarTag, question.questionType)
+      return grammarJudgePrompt(question.questionText, question.correctAnswer, userAnswer, question.grammarTag, question.questionType, question.uiLang)
   }
 }

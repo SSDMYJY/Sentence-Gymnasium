@@ -264,5 +264,17 @@
     "minutesAgo": "{n}分前",
     "hoursAgo": "{n}時間前",
     "daysAgo": "{n}日前"
+  },
+  "ranking": {
+    "title": "リーダーボード",
+    "subtitle": "トッププレイヤーを見る",
+    "nav": "リーダーボード",
+    "yourRank": "あなたの順位",
+    "experience": "経験値",
+    "topPlayers": "トッププレイヤー",
+    "leaderboard": "スコアボード",
+    "attempts": "問題数",
+    "accuracy": "正答率",
+    "noData": "データがありません"
   }
 }
