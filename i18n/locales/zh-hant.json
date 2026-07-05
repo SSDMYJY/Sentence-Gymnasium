@@ -244,5 +244,25 @@
     "typeFillBlank": "填空題",
     "typeChoice": "選擇題",
     "typeErrorCorrection": "改錯題"
+  },
+  "history": {
+    "subtitle": "查看你的所有訓練記錄",
+    "loading": "載入中…",
+    "noData": "暫無訓練記錄",
+    "startPractice": "開始練習",
+    "catAll": "全部",
+    "yourAnswer": "你的答案",
+    "aiFeedback": "AI 回饋",
+    "verdict": "判定",
+    "verdictCorrect": "正確",
+    "verdictPartial": "部分正確",
+    "verdictIncorrect": "錯誤",
+    "pageInfo": "第 {page}/{total} 頁 · 共 {count} 條",
+    "prev": "上一頁",
+    "next": "下一頁",
+    "justNow": "剛剛",
+    "minutesAgo": "{n} 分鐘前",
+    "hoursAgo": "{n} 小時前",
+    "daysAgo": "{n} 天前"
   }
 }
