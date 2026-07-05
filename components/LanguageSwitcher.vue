@@ -2,10 +2,10 @@
   <Menu as="div" class="relative">
     <MenuButton
       v-slot="{ open }"
-      class="inline-flex items-center gap-1.5 rounded-full border border-white/10 px-3 py-1.5 text-xs text-stone-300 transition-colors hover:border-white/30 hover:text-white"
+      class="inline-flex items-center gap-1.5 rounded-full border border-white/10 p-2 text-xs text-stone-300 transition-colors hover:border-white/30 hover:text-white"
+      :aria-label="currentName"
     >
       <span class="leading-none">🌐</span>
-      <span class="font-medium">{{ currentName }}</span>
       <span
         :class="['text-stone-500 transition-transform duration-200', open ? 'rotate-180' : '']"
       >▾</span>
