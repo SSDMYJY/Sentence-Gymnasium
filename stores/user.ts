@@ -24,7 +24,10 @@ export const useUserStore = defineStore('user', {
       this.user = u
       this.fetched = true
     },
-    async fetch() {
+    async fetch(force = false) {
+      // SSR 阶段已由 auth.server.ts 插件填充 store，无需重复请求。
+      // force=true 时跳过缓存（客户端 fallback 场景使用）。
+      if (this.fetched && !force) return this.user
       try {
         // SSR 阶段 $fetch 不会自动转发浏览器请求的 Cookie，需手动带上，
         // 否则服务端拿不到会话 cookie，会误判为未登录。
