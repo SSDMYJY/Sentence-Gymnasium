@@ -1,6 +1,6 @@
 {
   "brand": { "name": "Sentence Gymnasium", "subtitle": "句子健身房" },
-  "nav": { "training": "训练方式", "flow": "流程" },
+  "nav": { "training": "训练方式", "flow": "流程", "history": "训练记录" },
   "hero": {
     "eyebrow": "AI 句子训练 · 多语言训练场",
     "subtitle": "句子健身房 · 把每一句练到本能",
@@ -80,7 +80,7 @@
     "toLogin": "已有账户？去登录",
     "loading": "处理中…",
     "welcome": "你好，{name}",
-    "dashboard": "控制台",
+    "dashboard": "仪表盘",
     "errors": {
       "invalid_email": "邮箱格式不正确",
       "password_too_short": "密码至少 8 位",
@@ -89,24 +89,33 @@
     }
   },
   "dashboard": {
+    "subtitle": "准备好今天的训练了吗？",
     "stats": {
-      "credits": "Credits",
-      "total": "总题数",
-      "correct": "正确数",
-      "accuracy": "正确率"
+      "energy": "能量",
+      "streak": "连续天数",
+      "accuracy": "正确率",
+      "total": "总题数"
     },
-    "perBoard": {
-      "title": "各板块统计",
-      "board": "板块",
-      "total": "题数",
-      "correct": "正确",
-      "rate": "正确率"
+    "level": {
+      "title": "Newbie",
+      "label": "经验值到下一等级",
+      "hint": "继续训练来升级！升级时会获得 +5 额外能量。"
+    },
+    "quickActions": {
+      "title": "快速操作",
+      "startPractice": "开始练习",
+      "grammarFocus": "语法特训",
+      "reviewMistakes": "复习错误题目"
+    },
+    "recent": {
+      "title": "最近训练",
+      "label": "你最近的 5 题",
+      "noData": "暂无训练记录"
     },
     "recharge": {
       "button": "模拟充值 +20",
       "done": "充值成功 +20",
       "loading": "处理中…"
-    },
-    "empty": "还没有训练记录，开始第一次训练吧"
+    }
   }
 }

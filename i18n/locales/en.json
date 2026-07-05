@@ -1,6 +1,6 @@
 {
   "brand": { "name": "Sentence Gymnasium", "subtitle": "The Sentence Gym" },
-  "nav": { "training": "Training Modes", "flow": "Workflow" },
+  "nav": { "training": "Training Modes", "flow": "Workflow", "history": "History" },
   "hero": {
     "eyebrow": "AI Sentence Training · Multilingual Gym",
     "subtitle": "Sentence Gym · Drill every sentence until it's instinct",
@@ -89,24 +89,33 @@
     }
   },
   "dashboard": {
+    "subtitle": "Ready for today's training?",
     "stats": {
-      "credits": "Credits",
-      "total": "Total Attempts",
-      "correct": "Correct",
-      "accuracy": "Accuracy"
+      "energy": "Energy",
+      "streak": "Streak",
+      "accuracy": "Accuracy",
+      "total": "Total"
     },
-    "perBoard": {
-      "title": "Per-board Breakdown",
-      "board": "Board",
-      "total": "Attempts",
-      "correct": "Correct",
-      "rate": "Accuracy"
+    "level": {
+      "title": "Newbie",
+      "label": "XP to next level",
+      "hint": "Keep training to level up! Earn +5 bonus energy when you level up."
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "startPractice": "Start Practice",
+      "grammarFocus": "Grammar Focus",
+      "reviewMistakes": "Review Mistakes"
+    },
+    "recent": {
+      "title": "Recent Training",
+      "label": "Your last 5 attempts",
+      "noData": "No recent attempts"
     },
     "recharge": {
       "button": "Recharge +20",
       "done": "Recharged +20",
       "loading": "Processing…"
-    },
-    "empty": "No attempts yet — start your first training session"
+    }
   }
 }

@@ -15,16 +15,30 @@
           </span>
           <span class="hidden text-xs text-stone-500 sm:inline">{{ t('brand.subtitle') }}</span>
         </NuxtLink>
-        <nav class="flex items-center gap-5 text-sm text-stone-400 sm:gap-7">
-          <a :href="localePath('/#boards')" class="transition-colors hover:text-white">{{ t('nav.training') }}</a>
-          <a :href="localePath('/#flow')" class="transition-colors hover:text-white">{{ t('nav.flow') }}</a>
+
+        <nav class="hidden items-center gap-1 text-sm font-medium sm:flex">
+          <NuxtLink
+            v-for="item in navItems"
+            :key="item.key"
+            :to="localePath(item.path)"
+            :class="[
+              'rounded-lg px-4 py-2 transition-colors',
+              route.path.includes(item.path) && route.path !== '/'
+                ? 'bg-accent/10 text-accent-soft'
+                : 'text-stone-400 hover:text-white',
+            ]"
+          >
+            {{ item.label }}
+          </NuxtLink>
+        </nav>
+
+        <div class="flex items-center gap-4">
           <LanguageSwitcher />
           <template v-if="user">
-            <span class="hidden items-center gap-2 sm:flex">
+            <div class="hidden items-center gap-1 rounded-full bg-ink-800 px-3 py-1 text-xs sm:flex">
               <span class="text-accent-soft">●</span>
               <span class="text-stone-300">{{ user.credits }}</span>
-              <span class="text-xs text-stone-500">Credits</span>
-            </span>
+            </div>
             <button
               type="button"
               :disabled="loggingOut"
@@ -43,7 +57,7 @@
               {{ t('auth.register') }}
             </NuxtLink>
           </template>
-        </nav>
+        </div>
       </div>
     </header>
 
@@ -70,9 +84,18 @@
 <script setup lang="ts">
 const { t } = useI18n()
 const localePath = useLocalePath()
+const route = useRoute()
 const store = useUserStore()
 const user = computed(() => store.user)
 const loggingOut = ref(false)
+
+const navItems = computed(() => [
+  { key: 'dashboard', label: t('auth.dashboard'), path: '/dashboard' },
+  { key: 'practice', label: t('boards.practice.title'), path: '/practice' },
+  { key: 'paraphrase', label: t('boards.paraphrase.title'), path: '/paraphrase' },
+  { key: 'grammar', label: t('boards.grammar.title'), path: '/grammar' },
+  { key: 'history', label: t('nav.history'), path: '/history' },
+])
 
 const onLogout = async () => {
   loggingOut.value = true
@@ -96,6 +119,6 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-  window.removeEventListener('scroll', onScroll)
+  window.removeEventListener('scroll', onScroll, { passive: true })
 })
 </script>

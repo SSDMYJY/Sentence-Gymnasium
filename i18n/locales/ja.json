@@ -1,6 +1,6 @@
 {
   "brand": { "name": "Sentence Gymnasium", "subtitle": "センテンス・ジム" },
-  "nav": { "training": "トレーニング", "flow": "流れ" },
+  "nav": { "training": "トレーニング", "flow": "流れ", "history": "履歴" },
   "hero": {
     "eyebrow": "AI センテンス・トレーニング · 多言語ジム",
     "subtitle": "センテンス・ジム · 一文ずつ、体で覚えるまで鍛える",
@@ -89,24 +89,33 @@
     }
   },
   "dashboard": {
+    "subtitle": "今日のトレーニング、準備はできていますか？",
     "stats": {
-      "credits": "Credits",
-      "total": "総問題数",
-      "correct": "正解数",
-      "accuracy": "正答率"
+      "energy": "エネルギー",
+      "streak": "ストリーク",
+      "accuracy": "正答率",
+      "total": "合計"
     },
-    "perBoard": {
-      "title": "ボード別統計",
-      "board": "ボード",
-      "total": "問題数",
-      "correct": "正解",
-      "rate": "正答率"
+    "level": {
+      "title": "Newbie",
+      "label": "次のレベルまでのXP",
+      "hint": "トレーニングを続けてレベルアップ！レベルアップ時に+5ボーナスエネルギーを獲得。"
+    },
+    "quickActions": {
+      "title": "クイックアクション",
+      "startPractice": "練習を開始",
+      "grammarFocus": "文法特訓",
+      "reviewMistakes": "間違いを復習"
+    },
+    "recent": {
+      "title": "最近のトレーニング",
+      "label": "直近5問",
+      "noData": "最近の記録はありません"
     },
     "recharge": {
       "button": "模擬チャージ +20",
       "done": "チャージ成功 +20",
       "loading": "処理中…"
-    },
-    "empty": "まだトレーニング記録がありません、最初のトレーニングを始めましょう"
+    }
   }
 }
