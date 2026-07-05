@@ -9,15 +9,15 @@
       ]"
     >
       <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-        <NuxtLink to="/" class="flex items-baseline gap-2">
+        <NuxtLink :to="localePath('/')" class="flex items-baseline gap-2">
           <span class="font-display text-base font-bold tracking-tight sm:text-lg">
             {{ t('brand.name') }}
           </span>
           <span class="hidden text-xs text-stone-500 sm:inline">{{ t('brand.subtitle') }}</span>
         </NuxtLink>
         <nav class="flex items-center gap-5 text-sm text-stone-400 sm:gap-7">
-          <a href="/#boards" class="transition-colors hover:text-white">{{ t('nav.training') }}</a>
-          <a href="/#flow" class="transition-colors hover:text-white">{{ t('nav.flow') }}</a>
+          <a :href="localePath('/#boards')" class="transition-colors hover:text-white">{{ t('nav.training') }}</a>
+          <a :href="localePath('/#flow')" class="transition-colors hover:text-white">{{ t('nav.flow') }}</a>
           <LanguageSwitcher />
           <template v-if="user">
             <span class="hidden items-center gap-2 sm:flex">
@@ -35,9 +35,9 @@
             </button>
           </template>
           <template v-else>
-            <NuxtLink to="/login" class="transition-colors hover:text-white">{{ t('auth.login') }}</NuxtLink>
+            <NuxtLink :to="localePath('/login')" class="transition-colors hover:text-white">{{ t('auth.login') }}</NuxtLink>
             <NuxtLink
-              to="/register"
+              :to="localePath('/register')"
               class="rounded-full border border-white/15 px-3 py-1 text-xs transition-colors hover:border-white/40 hover:text-white"
             >
               {{ t('auth.register') }}
@@ -69,6 +69,7 @@
 
 <script setup lang="ts">
 const { t } = useI18n()
+const localePath = useLocalePath()
 const store = useUserStore()
 const user = computed(() => store.user)
 const loggingOut = ref(false)
@@ -77,7 +78,7 @@ const onLogout = async () => {
   loggingOut.value = true
   try {
     await store.logout()
-    await navigateTo('/')
+    await navigateTo(localePath('/'))
   } finally {
     loggingOut.value = false
   }

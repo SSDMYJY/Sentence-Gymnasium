@@ -30,7 +30,7 @@
               active ? 'bg-white/5 text-white' : 'text-stone-300',
               l.code === locale ? 'text-accent-soft' : '',
             ]"
-            @click="setLocale(l.code)"
+            @click="onChange(l.code)"
           >
             <span>{{ l.name }}</span>
             <span v-if="l.code === locale" class="text-xs">✓</span>
@@ -45,9 +45,20 @@
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 
 const { locale, locales, setLocale } = useI18n()
+const switchLocalePath = useSwitchLocalePath()
+const route = useRoute()
 
 const currentName = computed(() => {
   const list = locales.value as Array<{ code: string; name: string }>
   return list.find((l) => l.code === locale.value)?.name ?? locale.value
 })
+
+// 切换语言时跳转到当前页面的对应语言版本（带语言前缀）。
+// switchLocalePath 会保留当前路由，仅替换前缀。
+const onChange = async (code: string) => {
+  if (code === locale.value) return
+  const target = switchLocalePath(code as any)
+  await setLocale(code as any)
+  await navigateTo(target || route.fullPath)
+}
 </script>
