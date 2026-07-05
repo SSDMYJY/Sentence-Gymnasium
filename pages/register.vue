@@ -78,8 +78,12 @@
 const { t, te } = useI18n()
 const store = useUserStore()
 
+// SSR 阶段 store 尚未填充，需主动拉一次 session 判断登录态
+if (!store.fetched) {
+  await store.fetch()
+}
 if (store.isAuthenticated) {
-  await navigateTo('/')
+  await navigateTo('/dashboard')
 }
 
 const email = ref('')
@@ -97,7 +101,7 @@ const onSubmit = async () => {
       password: password.value,
       name: name.value || undefined,
     })
-    await navigateTo('/')
+    await navigateTo('/dashboard')
   } catch (e: any) {
     error.value = mapError(e)
   } finally {

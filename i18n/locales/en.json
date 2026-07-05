@@ -80,6 +80,7 @@
     "toLogin": "Already have an account? Sign in",
     "loading": "Working…",
     "welcome": "Hi, {name}",
+    "dashboard": "Dashboard",
     "errors": {
       "invalid_email": "Please enter a valid email",
       "password_too_short": "Password must be at least 8 characters",

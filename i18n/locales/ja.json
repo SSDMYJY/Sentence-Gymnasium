@@ -80,6 +80,7 @@
     "toLogin": "すでにアカウントがある？ログインする",
     "loading": "処理中…",
     "welcome": "こんにちは、{name}さん",
+    "dashboard": "ダッシュボード",
     "errors": {
       "invalid_email": "メールアドレスの形式が正しくありません",
       "password_too_short": "パスワードは8文字以上で入力してください",
