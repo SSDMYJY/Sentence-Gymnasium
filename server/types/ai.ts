@@ -6,11 +6,14 @@
 /** 训练模式 */
 export type Category = 'practice' | 'paraphrase' | 'grammar'
 
-/** 支持的语言代码 */
+/** 语言代码 */
 export type LangCode = 'ja' | 'en' | 'zh'
 
 /** 语言对，如 'ja-en'（日译英） */
 export type LanguagePair = `${LangCode}-${LangCode}`
+
+/** 界面语言代码 */
+export type UiLang = 'zh-hans' | 'zh-hant' | 'en' | 'ja'
 
 /** 语法标签（可扩展） */
 export type GrammarTag =
@@ -78,7 +81,7 @@ export type GeneratedQuestion =
 export interface JudgeResult {
   /** 是否正确 */
   isCorrect: boolean
-  /** 0-100 分数（部分正确可给分） */
+  /** 0-10 分数（部分正确可给分） */
   score: number
   /** 简短评价（正确/部分正确/错误） */
   verdict: 'correct' | 'partial' | 'incorrect'

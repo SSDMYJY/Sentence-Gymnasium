@@ -264,5 +264,17 @@
     "minutesAgo": "{n}m ago",
     "hoursAgo": "{n}h ago",
     "daysAgo": "{n}d ago"
+  },
+  "ranking": {
+    "title": "Leaderboard",
+    "subtitle": "See who's at the top",
+    "nav": "Leaderboard",
+    "yourRank": "Your Rank",
+    "experience": "Experience",
+    "topPlayers": "Top Players",
+    "leaderboard": "Scoreboard",
+    "attempts": "Attempts",
+    "accuracy": "Accuracy",
+    "noData": "No data yet"
   }
 }

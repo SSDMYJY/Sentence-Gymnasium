@@ -218,6 +218,7 @@ export interface JudgeParams {
   sourceLang?: LangCode
   grammarTag?: GrammarTag
   questionType?: 'fill-blank' | 'choice' | 'error-correction'
+  uiLang?: UiLang
 }
 
 /**
@@ -234,6 +235,7 @@ export async function judgeAnswer(
     sourceLang: params.sourceLang,
     grammarTag: params.grammarTag,
     questionType: params.questionType,
+    uiLang: params.uiLang,
   }, params.userAnswer)
 
   const response = await callAI<JudgeResult>(event, {
@@ -249,8 +251,8 @@ export async function judgeAnswer(
   if (typeof result.isCorrect !== 'boolean') {
     throw createError({ statusCode: 502, statusMessage: 'AI judge result missing isCorrect field' })
   }
-  if (typeof result.score !== 'number' || result.score < 0 || result.score > 100) {
-    result.score = result.isCorrect ? 100 : 0
+  if (typeof result.score !== 'number' || result.score < 0 || result.score > 10) {
+    result.score = result.isCorrect ? 10 : 0
   }
   if (!result.verdict || !['correct', 'partial', 'incorrect'].includes(result.verdict)) {
     result.verdict = result.isCorrect ? 'correct' : 'incorrect'

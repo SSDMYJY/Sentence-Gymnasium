@@ -25,7 +25,7 @@
       "no": "01",
       "title": "Practice",
       "subtitle": "翻譯練習",
-      "desc": "6 個語言方向互譯：ja-en / en-ja / ja-zh / zh-ja / en-zh / zh-en。AI 出題，AI 判題。"
+      "desc": "6 個語言方向互譯：ja-en / en-ja / zh-ja / zh-en 。"
     },
     "paraphrase": {
       "no": "02",
@@ -36,7 +36,7 @@
     "grammar": {
       "no": "03",
       "title": "Grammar Focus",
-      "subtitle": "語法特訓",
+      "subtitle": "文法特訓",
       "desc": "按語法點生成填空、選擇、改錯題。te-form、present-perfect 等專項突破。"
     }
   },
@@ -71,7 +71,7 @@
   },
   "cta": {
     "title": "準備好開始第一組訓練了嗎？",
-    "body": "新用戶贈送 20 Credits · 生成一題扣 1 Credit",
+    "body": "注冊即贈 20 Credits · 一條題消耗 1 Credit",
     "button": "進入訓練場"
   },
   "health": {
@@ -246,7 +246,7 @@
     "typeErrorCorrection": "改錯題"
   },
   "history": {
-    "subtitle": "查看你的所有訓練記錄",
+    "subtitle": "回顧你的練習歷史，從錯誤中學習。",
     "loading": "載入中…",
     "noData": "暫無訓練記錄",
     "startPractice": "開始練習",
@@ -264,5 +264,17 @@
     "minutesAgo": "{n} 分鐘前",
     "hoursAgo": "{n} 小時前",
     "daysAgo": "{n} 天前"
+  },
+  "ranking": {
+    "title": "排行榜",
+    "subtitle": "看看誰是頂尖選手",
+    "nav": "排行榜",
+    "yourRank": "你的排名",
+    "experience": "經驗值",
+    "topPlayers": "頂尖選手",
+    "leaderboard": "積分排行榜",
+    "attempts": "題目",
+    "accuracy": "正確率",
+    "noData": "暫無數據"
   }
 }
