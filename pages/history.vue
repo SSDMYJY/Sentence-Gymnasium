@@ -3,7 +3,6 @@
     <!-- 标题 -->
     <header class="mb-8">
       <div class="flex items-center gap-3">
-        <span class="text-3xl">📝</span>
         <div>
           <h1 class="font-display text-2xl font-bold tracking-tight text-stone-100 sm:text-3xl">
             {{ t('nav.history') }}
@@ -15,18 +14,12 @@
 
     <!-- 筛选栏 -->
     <div class="mb-6 flex flex-wrap items-center gap-3">
-      <button
-        v-for="cat in categories"
-        :key="cat.value"
-        type="button"
-        :class="[
-          'rounded-full border px-4 py-1.5 text-sm font-medium transition-colors',
-          selectedCategory === cat.value
-            ? 'border-accent bg-accent/10 text-accent-soft'
-            : 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
-        ]"
-        @click="onCategoryChange(cat.value)"
-      >
+      <button v-for="cat in categories" :key="cat.value" type="button" :class="[
+        'rounded-full border px-4 py-1.5 text-sm font-medium transition-colors',
+        selectedCategory === cat.value
+          ? 'border-accent bg-accent/10 text-accent-soft'
+          : 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
+      ]" @click="onCategoryChange(cat.value)">
         {{ cat.label }}
       </button>
     </div>
@@ -41,43 +34,34 @@
     <div v-else-if="entries.length === 0" class="rounded-2xl border border-white/10 bg-ink-900/50 p-12 text-center">
       <div class="text-5xl">📭</div>
       <p class="mt-4 text-sm text-stone-500">{{ t('history.noData') }}</p>
-      <NuxtLink
-        :to="localePath('/practice')"
-        class="mt-6 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-2 text-sm font-semibold text-ink-950 transition-colors hover:bg-stone-100"
-      >
+      <NuxtLink :to="localePath('/practice')"
+        class="mt-6 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-2 text-sm font-semibold text-ink-950 transition-colors hover:bg-stone-100">
         {{ t('history.startPractice') }}
       </NuxtLink>
     </div>
 
     <!-- 记录列表 -->
     <div v-else class="space-y-3">
-      <div
-        v-for="(entry, idx) in entries"
-        :key="entry.id"
-        class="rounded-xl border border-white/10 bg-ink-900/50 overflow-hidden"
-      >
+      <div v-for="(entry, idx) in entries" :key="entry.id"
+        class="rounded-xl border border-white/10 bg-ink-900/50 overflow-hidden">
         <!-- 记录头部（可点击展开） -->
-        <button
-          type="button"
+        <button type="button"
           class="flex w-full items-center gap-4 px-5 py-4 text-left transition-colors hover:bg-white/5"
-          @click="toggleExpand(entry.id)"
-        >
+          @click="toggleExpand(entry.id)">
           <!-- 序号 -->
           <span class="w-8 shrink-0 text-center text-xs text-stone-600">
             {{ (page - 1) * pageSize + idx + 1 }}
           </span>
 
           <!-- 对错标识 -->
-          <span
-            :class="[
-              'flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold',
-              entry.isCorrect
-                ? 'bg-green-500/15 text-green-400'
-                : entry.verdict === 'partial'
-                  ? 'bg-yellow-500/15 text-yellow-400'
-                  : 'bg-red-500/15 text-red-400',
-            ]"
-          >
+          <span :class="[
+            'flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold',
+            entry.isCorrect
+              ? 'bg-green-500/15 text-green-400'
+              : entry.verdict === 'partial'
+                ? 'bg-yellow-500/15 text-yellow-400'
+                : 'bg-red-500/15 text-red-400',
+          ]">
             {{ entry.isCorrect ? '✓' : entry.verdict === 'partial' ? '◐' : '✗' }}
           </span>
 
@@ -85,7 +69,8 @@
           <div class="min-w-0 flex-1">
             <p class="truncate text-sm text-stone-200">{{ entry.questionText }}</p>
             <div class="mt-1 flex items-center gap-2">
-              <span class="rounded bg-ink-800 px-2 py-0.5 text-xs text-stone-400">{{ categoryLabel(entry.category) }}</span>
+              <span class="rounded bg-ink-800 px-2 py-0.5 text-xs text-stone-400">{{ categoryLabel(entry.category)
+                }}</span>
               <span v-if="entry.topic" class="text-xs text-stone-500">{{ entry.topic }}</span>
               <span class="text-xs text-stone-600">·</span>
               <span class="text-xs text-stone-500">{{ formatDate(entry.createdAt) }}</span>
@@ -99,10 +84,8 @@
           </span>
 
           <!-- 展开图标 -->
-          <span
-            class="shrink-0 text-stone-500 transition-transform duration-200"
-            :class="{ 'rotate-180': expandedIds.has(entry.id) }"
-          >
+          <span class="shrink-0 text-stone-500 transition-transform duration-200"
+            :class="{ 'rotate-180': expandedIds.has(entry.id) }">
             ▾
           </span>
         </button>
@@ -139,20 +122,14 @@
           {{ t('history.pageInfo', { page, total: totalPages, count: total }) }}
         </span>
         <div class="flex gap-2">
-          <button
-            type="button"
-            :disabled="page <= 1"
+          <button type="button" :disabled="page <= 1"
             class="rounded-lg border border-white/10 px-4 py-2 text-sm text-stone-300 transition-colors hover:border-white/30 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
-            @click="onPageChange(page - 1)"
-          >
+            @click="onPageChange(page - 1)">
             {{ t('history.prev') }}
           </button>
-          <button
-            type="button"
-            :disabled="page >= totalPages"
+          <button type="button" :disabled="page >= totalPages"
             class="rounded-lg border border-white/10 px-4 py-2 text-sm text-stone-300 transition-colors hover:border-white/30 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
-            @click="onPageChange(page + 1)"
-          >
+            @click="onPageChange(page + 1)">
             {{ t('history.next') }}
           </button>
         </div>

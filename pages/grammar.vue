@@ -198,7 +198,7 @@
             <p class="font-display text-xl font-bold text-stone-100">
               {{ verdictLabel(judgeResult.verdict) }}
             </p>
-            <p class="text-sm text-stone-400">{{ judgeResult.score }} / 100</p>
+            <p class="text-sm text-stone-400">{{ judgeResult.score }} / 10</p>
           </div>
         </div>
       </div>
@@ -277,7 +277,7 @@ import type { GrammarTag } from '~/server/types/ai'
 
 definePageMeta({ middleware: 'auth' })
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const store = useUserStore()
 const user = computed(() => store.user as SessionUser)
 
@@ -409,6 +409,7 @@ async function onJudge() {
       body: {
         questionId: currentQuestion.value.questionId,
         userAnswer: userAnswer.value,
+        uiLang: locale.value,
       },
     })
     judgeResult.value = data

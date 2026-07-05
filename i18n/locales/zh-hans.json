@@ -25,7 +25,7 @@
       "no": "01",
       "title": "Practice",
       "subtitle": "翻译练习",
-      "desc": "6 个语言方向互译：ja-en / en-ja / ja-zh / zh-ja / en-zh / zh-en。AI 出题，AI 判题。"
+      "desc": "6 个语言方向互译：ja-en / en-ja / zh-ja / en-zh 。"
     },
     "paraphrase": {
       "no": "02",
@@ -71,7 +71,7 @@
   },
   "cta": {
     "title": "准备好开始第一组训练了吗？",
-    "body": "新用户赠送 20 Credits · 生成一题扣 1 Credit",
+    "body": "注册即赠 20 Credits · 一题消耗 1 Credit",
     "button": "进入训练场"
   },
   "health": {
@@ -246,7 +246,7 @@
     "typeErrorCorrection": "改错题"
   },
   "history": {
-    "subtitle": "查看你的所有训练记录",
+    "subtitle": "回顾你的练习历史，从错误中学习。",
     "loading": "加载中…",
     "noData": "暂无训练记录",
     "startPractice": "开始练习",
@@ -264,5 +264,17 @@
     "minutesAgo": "{n} 分钟前",
     "hoursAgo": "{n} 小时前",
     "daysAgo": "{n} 天前"
+  },
+  "ranking": {
+    "title": "排行榜",
+    "subtitle": "看看谁是顶尖选手",
+    "nav": "排行榜",
+    "yourRank": "你的排名",
+    "experience": "经验值",
+    "topPlayers": "顶尖选手",
+    "leaderboard": "积分排行榜",
+    "attempts": "题目",
+    "accuracy": "正确率",
+    "noData": "暂无数据"
   }
 }
