@@ -244,5 +244,25 @@
     "typeFillBlank": "Fill Blank",
     "typeChoice": "Multiple Choice",
     "typeErrorCorrection": "Error Correction"
+  },
+  "history": {
+    "subtitle": "View all your training records",
+    "loading": "Loading…",
+    "noData": "No records yet",
+    "startPractice": "Start Practice",
+    "catAll": "All",
+    "yourAnswer": "Your Answer",
+    "aiFeedback": "AI Feedback",
+    "verdict": "Verdict",
+    "verdictCorrect": "Correct",
+    "verdictPartial": "Partial",
+    "verdictIncorrect": "Incorrect",
+    "pageInfo": "Page {page}/{total} · {count} records",
+    "prev": "Prev",
+    "next": "Next",
+    "justNow": "just now",
+    "minutesAgo": "{n}m ago",
+    "hoursAgo": "{n}h ago",
+    "daysAgo": "{n}d ago"
   }
 }
