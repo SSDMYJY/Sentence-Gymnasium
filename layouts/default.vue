@@ -91,9 +91,9 @@ const loggingOut = ref(false)
 
 const navItems = computed(() => [
   { key: 'dashboard', label: t('auth.dashboard'), path: '/dashboard' },
-  { key: 'practice', label: t('boards.practice.title'), path: '/practice' },
-  { key: 'paraphrase', label: t('boards.paraphrase.title'), path: '/paraphrase' },
-  { key: 'grammar', label: t('boards.grammar.title'), path: '/grammar' },
+  { key: 'practice', label: t('boards.practice.subtitle'), path: '/practice' },
+  { key: 'paraphrase', label: t('boards.paraphrase.subtitle'), path: '/paraphrase' },
+  { key: 'grammar', label: t('boards.grammar.subtitle'), path: '/grammar' },
   { key: 'history', label: t('nav.history'), path: '/history' },
 ])
 
