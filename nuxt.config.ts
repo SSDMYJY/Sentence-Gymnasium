@@ -32,6 +32,13 @@ export default defineNuxtConfig({
     bundle: {
       optimizeTranslationDirective: false,
     },
+    experimental: {
+      // 禁用 Nitro 侧语言检测/重定向。v10 默认启用此特性，但在 Cloudflare Workers
+      // 无状态执行模型下，初始化 event.context.nuxtI18n 的 Nitro 插件无法正确运行，
+      // 导致 "Nuxt I18n server context has not been set up yet." 500 错误。
+      // 关闭后回退到客户端插件实现，语言检测/重定向仍由 detectBrowserLanguage 配置生效。
+      nitroContextDetection: false,
+    },
   },
   css: ['~/assets/css/main.css'],
   nitro: {
