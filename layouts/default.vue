@@ -11,13 +11,14 @@
       <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         <NuxtLink to="/" class="flex items-baseline gap-2">
           <span class="font-display text-base font-bold tracking-tight sm:text-lg">
-            Sentence Gymnasium
+            {{ t('brand.name') }}
           </span>
-          <span class="hidden text-xs text-stone-500 sm:inline">句子健身房</span>
+          <span class="hidden text-xs text-stone-500 sm:inline">{{ t('brand.subtitle') }}</span>
         </NuxtLink>
         <nav class="flex items-center gap-5 text-sm text-stone-400 sm:gap-7">
-          <a href="/#boards" class="transition-colors hover:text-white">训练方式</a>
-          <a href="/#flow" class="transition-colors hover:text-white">流程</a>
+          <a href="/#boards" class="transition-colors hover:text-white">{{ t('nav.training') }}</a>
+          <a href="/#flow" class="transition-colors hover:text-white">{{ t('nav.flow') }}</a>
+          <LanguageSwitcher />
         </nav>
       </div>
     </header>
@@ -31,11 +32,11 @@
         class="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-10 text-sm text-stone-500 sm:flex-row sm:items-center sm:justify-between"
       >
         <div class="flex items-baseline gap-3">
-          <span class="font-display text-stone-300">Sentence Gymnasium</span>
-          <span>· 句子健身房</span>
+          <span class="font-display text-stone-300">{{ t('brand.name') }}</span>
+          <span>· {{ t('brand.subtitle') }}</span>
         </div>
         <div class="text-xs tracking-wide">
-          Nuxt 3 SSR · Cloudflare Workers · D1 · Prisma
+          {{ t('footer.stack') }}
         </div>
       </div>
     </footer>
@@ -43,6 +44,8 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
+
 const scrolled = ref(false)
 
 const onScroll = () => {

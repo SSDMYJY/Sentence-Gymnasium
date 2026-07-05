@@ -1,0 +1,63 @@
+{
+  "brand": { "name": "Sentence Gymnasium", "subtitle": "センテンス・ジム" },
+  "nav": { "training": "トレーニング", "flow": "流れ" },
+  "hero": {
+    "eyebrow": "AI センテンス・トレーニング · 多言語ジム",
+    "subtitle": "センテンス・ジム · 一文ずつ、体で覚えるまで鍛える",
+    "body": "AIが出題し、AIが採点し、問題をプールして再利用。翻訳・書き換え・文法特訓――3つのトレーニングがひとつのループを構成する。",
+    "ctaPrimary": "トレーニングを始める",
+    "ctaSecondary": "流れを見る",
+    "scroll": "scroll"
+  },
+  "boards": {
+    "eyebrow": "3つのトレーニング",
+    "title": "ひとつのジム、3つの練習法",
+    "body": "どれも出題・回答・採点・フィードバックの完全なループに対応。一つから始めるもよし、三つを交互に練るもよし。",
+    "enter": "始める",
+    "practice": {
+      "no": "01",
+      "title": "Practice",
+      "subtitle": "翻訳練習",
+      "desc": "6つの言語ペアを相互翻訳：ja-en / en-ja / ja-zh / zh-ja / en-zh / zh-en。AIが出題し、AIが採点。"
+    },
+    "paraphrase": {
+      "no": "02",
+      "title": "Paraphrase",
+      "subtitle": "言い換え",
+      "desc": "原文は日本語または英語。意味を保ったまま別の表現に。AIが原意の保持度と自然さを評価。"
+    },
+    "grammar": {
+      "no": "03",
+      "title": "Grammar Focus",
+      "subtitle": "文法特訓",
+      "desc": "文法ポイント別に穴埋め・選択・訂正問題を生成。te-form、present-perfectなどを重点的に突破。"
+    }
+  },
+  "flow": {
+    "eyebrow": "トレーニングの流れ",
+    "title": "完結するトレーニングループ",
+    "body": "出題からフィードバックまでの4ステップで、振り返り可能な1回のトレーニングが完結。問題はプールして再利用され、練れば練るほど速くなる。",
+    "generate": { "no": "01", "title": "出題", "caption": "Generate", "desc": "AIが問題を生成してプール。同じ条件の問題は再利用優先、練るほど速くなる。" },
+    "answer": { "no": "02", "title": "回答", "caption": "Answer", "desc": "翻訳・書き換え・選択のいずれかで答えを提出。" },
+    "judge": { "no": "03", "title": "採点", "caption": "Judge", "desc": "AIが模範解答とあなたの回答を照合し、正誤を判定。" },
+    "feedback": { "no": "04", "title": "フィードバック", "caption": "Feedback", "desc": "解説・アドバイス・例文を提示し、履歴と統計に記録。" }
+  },
+  "cta": {
+    "title": "最初の1セット、始めませんか？",
+    "body": "新規ユーザーに20 Creditsプレゼント · 1問生成ごとに1 Credit消費",
+    "button": "ジムに入る"
+  },
+  "health": {
+    "step": "Step 1",
+    "title": "ヘルスチェック",
+    "body": "Nuxt SSR → Cloudflare D1 binding → Prisma の経路を検証。下に {okCode} と表示されれば正常です。",
+    "endpoint": "GET /api/health",
+    "stack": "Nuxt 3 SSR · Cloudflare Workers · D1 · Prisma"
+  },
+  "footer": {
+    "stack": "Nuxt 3 SSR · Cloudflare Workers · D1 · Prisma"
+  },
+  "lang": {
+    "switch": "言語"
+  }
+}

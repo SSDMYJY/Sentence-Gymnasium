@@ -1,0 +1,63 @@
+{
+  "brand": { "name": "Sentence Gymnasium", "subtitle": "句子健身房" },
+  "nav": { "training": "訓練方式", "flow": "流程" },
+  "hero": {
+    "eyebrow": "AI 句子訓練 · 多語言訓練場",
+    "subtitle": "句子健身房 · 把每一句練到本能",
+    "body": "AI 出題、AI 判題、題目入庫重用。翻譯、改寫、語法特訓——三種訓練方式構成一個完整閉環。",
+    "ctaPrimary": "開始訓練",
+    "ctaSecondary": "了解訓練流程",
+    "scroll": "scroll"
+  },
+  "boards": {
+    "eyebrow": "三種訓練方式",
+    "title": "一個訓練場，三種練法",
+    "body": "每一種都對應一套完整的出題、作答、判題、回饋流程。選一種開始，或三種交替練。",
+    "enter": "進入",
+    "practice": {
+      "no": "01",
+      "title": "Practice",
+      "subtitle": "翻譯練習",
+      "desc": "6 個語言方向互譯：ja-en / en-ja / ja-zh / zh-ja / en-zh / zh-en。AI 出題，AI 判題。"
+    },
+    "paraphrase": {
+      "no": "02",
+      "title": "Paraphrase",
+      "subtitle": "同義改寫",
+      "desc": "源語言為日或英，換一種說法保留原意。AI 評價原意保留度與自然度。"
+    },
+    "grammar": {
+      "no": "03",
+      "title": "Grammar Focus",
+      "subtitle": "語法特訓",
+      "desc": "按語法點生成填空、選擇、改錯題。te-form、present-perfect 等專項突破。"
+    }
+  },
+  "flow": {
+    "eyebrow": "訓練流程",
+    "title": "一次完整的訓練閉環",
+    "body": "從出題到回饋，四步構成一次可覆盤的訓練。題目入庫重用，越練越快。",
+    "generate": { "no": "01", "title": "出題", "caption": "Generate", "desc": "AI 生成題目並入庫，相同維度優先重用，越練越快。" },
+    "answer": { "no": "02", "title": "作答", "caption": "Answer", "desc": "翻譯、改寫或選擇，提交你的答案。" },
+    "judge": { "no": "03", "title": "判題", "caption": "Judge", "desc": "AI 比對標準答案與你的作答，給出對錯。" },
+    "feedback": { "no": "04", "title": "回饋", "caption": "Feedback", "desc": "解釋、建議、示範句，落庫歷史與統計。" }
+  },
+  "cta": {
+    "title": "準備好開始第一組訓練了嗎？",
+    "body": "新用戶贈送 20 Credits · 生成一題扣 1 Credit",
+    "button": "進入訓練場"
+  },
+  "health": {
+    "step": "Step 1",
+    "title": "鏈路自檢",
+    "body": "驗證 Nuxt SSR → Cloudflare D1 binding → Prisma 鏈路是否接通。下方應返回 {okCode}。",
+    "endpoint": "GET /api/health",
+    "stack": "Nuxt 3 SSR · Cloudflare Workers · D1 · Prisma"
+  },
+  "footer": {
+    "stack": "Nuxt 3 SSR · Cloudflare Workers · D1 · Prisma"
+  },
+  "lang": {
+    "switch": "語言"
+  }
+}
