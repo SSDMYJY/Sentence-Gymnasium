@@ -174,12 +174,6 @@
             进入训练场
             <span class="transition-transform group-hover:translate-x-0.5">→</span>
           </NuxtLink>
-          <NuxtLink
-            to="/health"
-            class="inline-flex items-center gap-2 rounded-full border border-white/15 px-8 py-4 text-sm font-medium text-stone-200 transition hover:border-white/40 hover:text-white"
-          >
-            链路自检
-          </NuxtLink>
         </div>
       </div>
     </section>

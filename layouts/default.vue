@@ -18,7 +18,6 @@
         <nav class="flex items-center gap-5 text-sm text-stone-400 sm:gap-7">
           <a href="/#boards" class="transition-colors hover:text-white">训练方式</a>
           <a href="/#flow" class="transition-colors hover:text-white">流程</a>
-          <NuxtLink to="/health" class="transition-colors hover:text-white">链路自检</NuxtLink>
         </nav>
       </div>
     </header>
