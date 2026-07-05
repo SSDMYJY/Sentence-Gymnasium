@@ -1,6 +1,13 @@
 {
-  "brand": { "name": "Sentence Gymnasium", "subtitle": "句子健身房" },
-  "nav": { "training": "训练方式", "flow": "流程", "history": "训练记录" },
+  "brand": {
+    "name": "Sentence Gymnasium",
+    "subtitle": "句子健身房"
+  },
+  "nav": {
+    "training": "训练方式",
+    "flow": "流程",
+    "history": "训练记录"
+  },
   "hero": {
     "eyebrow": "AI 句子训练 · 多语言训练场",
     "subtitle": "句子健身房 · 把每一句练到本能",
@@ -37,10 +44,30 @@
     "eyebrow": "训练流程",
     "title": "一次完整的训练闭环",
     "body": "从出题到反馈，四步构成一次可复盘的训练。题目入库复用，越练越快。",
-    "generate": { "no": "01", "title": "出题", "caption": "Generate", "desc": "AI 生成题目并入库，相同维度优先复用，越练越快。" },
-    "answer": { "no": "02", "title": "作答", "caption": "Answer", "desc": "翻译、改写或选择，提交你的答案。" },
-    "judge": { "no": "03", "title": "判题", "caption": "Judge", "desc": "AI 比对标准答案与你的作答，给出对错。" },
-    "feedback": { "no": "04", "title": "反馈", "caption": "Feedback", "desc": "解释、建议、示范句，落库历史与统计。" }
+    "generate": {
+      "no": "01",
+      "title": "出题",
+      "caption": "Generate",
+      "desc": "AI 生成题目并入库，相同维度优先复用，越练越快。"
+    },
+    "answer": {
+      "no": "02",
+      "title": "作答",
+      "caption": "Answer",
+      "desc": "翻译、改写或选择，提交你的答案。"
+    },
+    "judge": {
+      "no": "03",
+      "title": "判题",
+      "caption": "Judge",
+      "desc": "AI 比对标准答案与你的作答，给出对错。"
+    },
+    "feedback": {
+      "no": "04",
+      "title": "反馈",
+      "caption": "Feedback",
+      "desc": "解释、建议、示范句，落库历史与统计。"
+    }
   },
   "cta": {
     "title": "准备好开始第一组训练了吗？",
@@ -117,5 +144,34 @@
       "done": "充值成功 +20",
       "loading": "处理中…"
     }
+  },
+  "practice": {
+    "settings": "练习设置",
+    "languagePair": "语言方向",
+    "difficulty": "难度",
+    "diffEasy": "简单",
+    "diffMedium": "中等",
+    "diffHard": "困难",
+    "credits": "能量",
+    "cost": "消耗 {cost} 点",
+    "start": "开始练习",
+    "generating": "正在生成题目…",
+    "yourAnswer": "你的答案",
+    "answerPlaceholder": "在此输入翻译…",
+    "submit": "提交",
+    "judging": "正在判题…",
+    "question": "题目",
+    "referenceAnswer": "参考答案",
+    "feedback": "AI 反馈",
+    "errors": "错误点",
+    "suggestion": "改进建议",
+    "verdictCorrect": "正确",
+    "verdictPartial": "部分正确",
+    "verdictIncorrect": "错误",
+    "nextQuestion": "下一题",
+    "backToSettings": "返回设置",
+    "noCredits": "能量不足，请充值后再试。",
+    "generateError": "出题失败，请稍后重试。",
+    "judgeError": "判题失败，请稍后重试。"
   }
 }

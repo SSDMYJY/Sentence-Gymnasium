@@ -1,6 +1,13 @@
 {
-  "brand": { "name": "Sentence Gymnasium", "subtitle": "センテンス・ジム" },
-  "nav": { "training": "トレーニング", "flow": "流れ", "history": "履歴" },
+  "brand": {
+    "name": "Sentence Gymnasium",
+    "subtitle": "センテンス・ジム"
+  },
+  "nav": {
+    "training": "トレーニング",
+    "flow": "流れ",
+    "history": "履歴"
+  },
   "hero": {
     "eyebrow": "AI センテンス・トレーニング · 多言語ジム",
     "subtitle": "センテンス・ジム · 一文ずつ、体で覚えるまで鍛える",
@@ -37,10 +44,30 @@
     "eyebrow": "トレーニングの流れ",
     "title": "完結するトレーニングループ",
     "body": "出題からフィードバックまでの4ステップで、振り返り可能な1回のトレーニングが完結。問題はプールして再利用され、練れば練るほど速くなる。",
-    "generate": { "no": "01", "title": "出題", "caption": "Generate", "desc": "AIが問題を生成してプール。同じ条件の問題は再利用優先、練るほど速くなる。" },
-    "answer": { "no": "02", "title": "回答", "caption": "Answer", "desc": "翻訳・書き換え・選択のいずれかで答えを提出。" },
-    "judge": { "no": "03", "title": "採点", "caption": "Judge", "desc": "AIが模範解答とあなたの回答を照合し、正誤を判定。" },
-    "feedback": { "no": "04", "title": "フィードバック", "caption": "Feedback", "desc": "解説・アドバイス・例文を提示し、履歴と統計に記録。" }
+    "generate": {
+      "no": "01",
+      "title": "出題",
+      "caption": "Generate",
+      "desc": "AIが問題を生成してプール。同じ条件の問題は再利用優先、練るほど速くなる。"
+    },
+    "answer": {
+      "no": "02",
+      "title": "回答",
+      "caption": "Answer",
+      "desc": "翻訳・書き換え・選択のいずれかで答えを提出。"
+    },
+    "judge": {
+      "no": "03",
+      "title": "採点",
+      "caption": "Judge",
+      "desc": "AIが模範解答とあなたの回答を照合し、正誤を判定。"
+    },
+    "feedback": {
+      "no": "04",
+      "title": "フィードバック",
+      "caption": "Feedback",
+      "desc": "解説・アドバイス・例文を提示し、履歴と統計に記録。"
+    }
   },
   "cta": {
     "title": "最初の1セット、始めませんか？",
@@ -117,5 +144,34 @@
       "done": "チャージ成功 +20",
       "loading": "処理中…"
     }
+  },
+  "practice": {
+    "settings": "練習設定",
+    "languagePair": "言語ペア",
+    "difficulty": "難易度",
+    "diffEasy": "簡単",
+    "diffMedium": "中級",
+    "diffHard": "難しい",
+    "credits": "エネルギー",
+    "cost": "{cost} 消費",
+    "start": "練習開始",
+    "generating": "問題を生成中…",
+    "yourAnswer": "あなたの答え",
+    "answerPlaceholder": "ここに翻訳を入力…",
+    "submit": "送信",
+    "judging": "採点中…",
+    "question": "問題",
+    "referenceAnswer": "模範解答",
+    "feedback": "AI フィードバック",
+    "errors": "誤り",
+    "suggestion": "改善の提案",
+    "verdictCorrect": "正解",
+    "verdictPartial": "部分正解",
+    "verdictIncorrect": "不正解",
+    "nextQuestion": "次の問題",
+    "backToSettings": "設定に戻る",
+    "noCredits": "エネルギー不足です。充電してください。",
+    "generateError": "問題の生成に失敗しました。再試行してください。",
+    "judgeError": "採点に失敗しました。再試行してください。"
   }
 }

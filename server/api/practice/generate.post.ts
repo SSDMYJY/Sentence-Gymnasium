@@ -1,0 +1,82 @@
+// Practice 出题接口
+// 1. 校验登录 + 扣减 credits（每次出题消耗 1 点）
+// 2. 调用 AI 生成翻译练习题
+// 3. 存入 GeneratedQuestion 表，返回题目（不暴露 correctAnswer）
+import { generateQuestion } from '../../utils/ai'
+import type { LanguagePair } from '../../types/ai'
+
+const COST_PER_QUESTION = 1
+
+/** 合法的语言对 */
+const VALID_PAIRS: LanguagePair[] = [
+  'ja-en', 'en-ja', 'ja-zh', 'zh-ja', 'en-zh', 'zh-en',
+]
+
+export default defineEventHandler(async (event) => {
+  const user = await requireAuth(event)
+  const prisma = usePrisma(event)
+
+  const body = await readBody<{ languagePair?: LanguagePair; difficulty?: 1 | 2 | 3 }>(event)
+  const languagePair = body?.languagePair
+  const difficulty = body?.difficulty ?? 2
+
+  // 参数校验
+  if (!languagePair || !VALID_PAIRS.includes(languagePair)) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: `Invalid languagePair. Valid: ${VALID_PAIRS.join(', ')}`,
+    })
+  }
+  if (![1, 2, 3].includes(difficulty)) {
+    throw createError({ statusCode: 400, statusMessage: 'difficulty must be 1, 2, or 3' })
+  }
+
+  // 能量校验
+  if (user.credits < COST_PER_QUESTION) {
+    throw createError({
+      statusCode: 402,
+      statusMessage: 'Insufficient credits',
+    })
+  }
+
+  // 调用 AI 出题
+  const generated = await generateQuestion(event, {
+    category: 'practice',
+    languagePair,
+    difficulty,
+  })
+
+  if (generated.category !== 'practice') {
+    throw createError({ statusCode: 500, statusMessage: 'AI returned wrong category' })
+  }
+
+  const q = generated.data
+
+  // 事务：扣减能量 + 存储题目
+  const [_, question] = await prisma.$transaction([
+    prisma.user.update({
+      where: { id: user.id },
+      data: { credits: { decrement: COST_PER_QUESTION } },
+    }),
+    prisma.generatedQuestion.create({
+      data: {
+        category: 'practice',
+        languagePair: q.languagePair,
+        questionText: q.questionText,
+        correctAnswer: q.correctAnswer,
+        extraData: JSON.stringify({ difficulty: q.difficulty }),
+        generatedById: user.id,
+      },
+    }),
+  ])
+
+  // 更新 store 中的 credits（前端会通过返回值刷新）
+  // 只返回题目信息，不返回 correctAnswer
+  return {
+    questionId: question.id,
+    questionText: q.questionText,
+    languagePair: q.languagePair,
+    difficulty: q.difficulty,
+    credits: user.credits - COST_PER_QUESTION,
+  }
+})

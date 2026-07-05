@@ -1,6 +1,13 @@
 {
-  "brand": { "name": "Sentence Gymnasium", "subtitle": "句子健身房" },
-  "nav": { "training": "訓練方式", "flow": "流程", "history": "訓練記錄" },
+  "brand": {
+    "name": "Sentence Gymnasium",
+    "subtitle": "句子健身房"
+  },
+  "nav": {
+    "training": "訓練方式",
+    "flow": "流程",
+    "history": "訓練記錄"
+  },
   "hero": {
     "eyebrow": "AI 句子訓練 · 多語言訓練場",
     "subtitle": "句子健身房 · 把每一句練到本能",
@@ -37,10 +44,30 @@
     "eyebrow": "訓練流程",
     "title": "一次完整的訓練閉環",
     "body": "從出題到回饋，四步構成一次可覆盤的訓練。題目入庫重用，越練越快。",
-    "generate": { "no": "01", "title": "出題", "caption": "Generate", "desc": "AI 生成題目並入庫，相同維度優先重用，越練越快。" },
-    "answer": { "no": "02", "title": "作答", "caption": "Answer", "desc": "翻譯、改寫或選擇，提交你的答案。" },
-    "judge": { "no": "03", "title": "判題", "caption": "Judge", "desc": "AI 比對標準答案與你的作答，給出對錯。" },
-    "feedback": { "no": "04", "title": "回饋", "caption": "Feedback", "desc": "解釋、建議、示範句，落庫歷史與統計。" }
+    "generate": {
+      "no": "01",
+      "title": "出題",
+      "caption": "Generate",
+      "desc": "AI 生成題目並入庫，相同維度優先重用，越練越快。"
+    },
+    "answer": {
+      "no": "02",
+      "title": "作答",
+      "caption": "Answer",
+      "desc": "翻譯、改寫或選擇，提交你的答案。"
+    },
+    "judge": {
+      "no": "03",
+      "title": "判題",
+      "caption": "Judge",
+      "desc": "AI 比對標準答案與你的作答，給出對錯。"
+    },
+    "feedback": {
+      "no": "04",
+      "title": "回饋",
+      "caption": "Feedback",
+      "desc": "解釋、建議、示範句，落庫歷史與統計。"
+    }
   },
   "cta": {
     "title": "準備好開始第一組訓練了嗎？",
@@ -117,5 +144,34 @@
       "done": "儲值成功 +20",
       "loading": "處理中…"
     }
+  },
+  "practice": {
+    "settings": "練習設定",
+    "languagePair": "語言方向",
+    "difficulty": "難度",
+    "diffEasy": "簡單",
+    "diffMedium": "中等",
+    "diffHard": "困難",
+    "credits": "能量",
+    "cost": "消耗 {cost} 點",
+    "start": "開始練習",
+    "generating": "正在生成題目…",
+    "yourAnswer": "你的答案",
+    "answerPlaceholder": "在此輸入翻譯…",
+    "submit": "提交",
+    "judging": "正在判題…",
+    "question": "題目",
+    "referenceAnswer": "參考答案",
+    "feedback": "AI 回饋",
+    "errors": "錯誤點",
+    "suggestion": "改進建議",
+    "verdictCorrect": "正確",
+    "verdictPartial": "部分正確",
+    "verdictIncorrect": "錯誤",
+    "nextQuestion": "下一題",
+    "backToSettings": "返回設定",
+    "noCredits": "能量不足，請充值後再試。",
+    "generateError": "出題失敗，請稍後重試。",
+    "judgeError": "判題失敗，請稍後重試。"
   }
 }
