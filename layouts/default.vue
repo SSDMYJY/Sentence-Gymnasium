@@ -19,6 +19,30 @@
           <a href="/#boards" class="transition-colors hover:text-white">{{ t('nav.training') }}</a>
           <a href="/#flow" class="transition-colors hover:text-white">{{ t('nav.flow') }}</a>
           <LanguageSwitcher />
+          <template v-if="user">
+            <span class="hidden items-center gap-2 sm:flex">
+              <span class="text-accent-soft">●</span>
+              <span class="text-stone-300">{{ user.credits }}</span>
+              <span class="text-xs text-stone-500">Credits</span>
+            </span>
+            <button
+              type="button"
+              :disabled="loggingOut"
+              class="transition-colors hover:text-white disabled:opacity-60"
+              @click="onLogout"
+            >
+              {{ t('auth.logout') }}
+            </button>
+          </template>
+          <template v-else>
+            <NuxtLink to="/login" class="transition-colors hover:text-white">{{ t('auth.login') }}</NuxtLink>
+            <NuxtLink
+              to="/register"
+              class="rounded-full border border-white/15 px-3 py-1 text-xs transition-colors hover:border-white/40 hover:text-white"
+            >
+              {{ t('auth.register') }}
+            </NuxtLink>
+          </template>
         </nav>
       </div>
     </header>
@@ -45,6 +69,19 @@
 
 <script setup lang="ts">
 const { t } = useI18n()
+const store = useUserStore()
+const user = computed(() => store.user)
+const loggingOut = ref(false)
+
+const onLogout = async () => {
+  loggingOut.value = true
+  try {
+    await store.logout()
+    await navigateTo('/')
+  } finally {
+    loggingOut.value = false
+  }
+}
 
 const scrolled = ref(false)
 

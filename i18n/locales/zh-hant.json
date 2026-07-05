@@ -59,5 +59,32 @@
   },
   "lang": {
     "switch": "語言"
+  },
+  "auth": {
+    "login": "登入",
+    "register": "註冊",
+    "logout": "登出",
+    "email": "電郵",
+    "emailPlaceholder": "you{'@'}example.com",
+    "password": "密碼",
+    "passwordPlaceholder": "至少 8 位",
+    "name": "暱稱（可選）",
+    "namePlaceholder": "如何稱呼你",
+    "loginTitle": "歡迎回來",
+    "loginSubtitle": "登入後繼續你的訓練",
+    "registerTitle": "建立帳戶",
+    "registerSubtitle": "新用戶贈送 20 Credits",
+    "loginSubmit": "登入",
+    "registerSubmit": "註冊並開始",
+    "toRegister": "還沒有帳戶？去註冊",
+    "toLogin": "已有帳戶？去登入",
+    "loading": "處理中…",
+    "welcome": "你好，{name}",
+    "errors": {
+      "invalid_email": "電郵格式不正確",
+      "password_too_short": "密碼至少 8 位",
+      "email_taken": "該電郵已註冊",
+      "invalid_credentials": "電郵或密碼錯誤"
+    }
   }
 }

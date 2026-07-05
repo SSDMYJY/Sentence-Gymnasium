@@ -59,5 +59,32 @@
   },
   "lang": {
     "switch": "言語"
+  },
+  "auth": {
+    "login": "ログイン",
+    "register": "登録",
+    "logout": "ログアウト",
+    "email": "メールアドレス",
+    "emailPlaceholder": "you{'@'}example.com",
+    "password": "パスワード",
+    "passwordPlaceholder": "8文字以上",
+    "name": "表示名（任意）",
+    "namePlaceholder": "どう呼べばいいですか",
+    "loginTitle": "おかえりなさい",
+    "loginSubtitle": "ログインしてトレーニングを続けましょう",
+    "registerTitle": "アカウント作成",
+    "registerSubtitle": "新規ユーザーに20 Creditsプレゼント",
+    "loginSubmit": "ログイン",
+    "registerSubmit": "登録して始める",
+    "toRegister": "まだアカウントをお持ちでない？登録する",
+    "toLogin": "すでにアカウントがある？ログインする",
+    "loading": "処理中…",
+    "welcome": "こんにちは、{name}さん",
+    "errors": {
+      "invalid_email": "メールアドレスの形式が正しくありません",
+      "password_too_short": "パスワードは8文字以上で入力してください",
+      "email_taken": "このメールアドレスはすでに登録されています",
+      "invalid_credentials": "メールアドレスまたはパスワードが正しくありません"
+    }
   }
 }
