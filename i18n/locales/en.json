@@ -25,7 +25,7 @@
       "no": "01",
       "title": "Practice",
       "subtitle": "Translation",
-      "desc": "Bidirectional translation across six language pairs: ja-en / en-ja / ja-zh / zh-ja / en-zh / zh-en. AI generates, AI grades."
+      "desc": "Bidirectional translation across 4 language pairs: ja-en / en-ja / zh-ja / zh-en."
     },
     "paraphrase": {
       "no": "02",
