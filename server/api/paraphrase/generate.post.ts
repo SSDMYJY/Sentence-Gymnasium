@@ -3,7 +3,8 @@
 // 2. 调用 AI 生成同义改写题目
 // 3. 存入 GeneratedQuestion 表，返回题目（不暴露 correctAnswer）
 import { generateQuestion } from '../../utils/ai'
-import type { LangCode } from '../../types/ai'
+import type { LangCode, PracticeDifficulty } from '../../types/ai'
+import { resolveNumericDifficulty } from '~/utils/practice-config'
 
 const COST_PER_QUESTION = 1
 
@@ -14,9 +15,9 @@ export default defineEventHandler(async (event) => {
   const user = await requireAuth(event)
   const prisma = usePrisma(event)
 
-  const body = await readBody<{ sourceLang?: LangCode; difficulty?: 1 | 2 | 3 }>(event)
+  const body = await readBody<{ sourceLang?: LangCode; difficulty?: PracticeDifficulty }>(event)
   const sourceLang = body?.sourceLang
-  const difficulty = body?.difficulty ?? 2
+  const practiceDifficulty: PracticeDifficulty = body?.difficulty ?? 'random'
 
   // 参数校验
   if (!sourceLang || !VALID_LANGS.includes(sourceLang)) {
@@ -25,9 +26,12 @@ export default defineEventHandler(async (event) => {
       statusMessage: `Invalid sourceLang. Valid: ${VALID_LANGS.join(', ')}`,
     })
   }
-  if (![1, 2, 3].includes(difficulty)) {
-    throw createError({ statusCode: 400, statusMessage: 'difficulty must be 1, 2, or 3' })
+  if (!['random', 'daily', 'fluent', 'professional'].includes(practiceDifficulty)) {
+    throw createError({ statusCode: 400, statusMessage: 'difficulty must be random, daily, fluent, or professional' })
   }
+
+  // 解析 numeric 难度
+  const difficulty = resolveNumericDifficulty(practiceDifficulty)
 
   // 能量校验
   if (user.credits < COST_PER_QUESTION) {
@@ -70,7 +74,7 @@ export default defineEventHandler(async (event) => {
           languagePair: sourceLang,
           questionText: q.questionText,
           correctAnswer: q.correctAnswer,
-          extraData: JSON.stringify({ difficulty, hint: q.hint ?? null }),
+          extraData: JSON.stringify({ difficulty, practiceDifficulty, hint: q.hint ?? null }),
           generatedById: user.id,
         },
       }),

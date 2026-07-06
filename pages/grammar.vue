@@ -3,7 +3,7 @@
     <!-- 标题 -->
     <header class="mb-8">
       <div class="flex items-center gap-3">
-        <span class="text-3xl">◎</span>
+        <!-- <span class="text-3xl">◎</span> -->
         <div>
           <h1 class="font-display text-2xl font-bold tracking-tight text-stone-100 sm:text-3xl">
             {{ t('boards.grammar.subtitle') }}
@@ -13,16 +13,40 @@
       </div>
     </header>
 
-    <!-- 设置面板（选择语法点 + 题型 + 难度） -->
+    <!-- 设置面板（语言 + 语法点 + 题型同时展示） -->
     <div v-if="phase === 'idle'" class="rounded-2xl border border-white/10 bg-ink-900/50 p-6">
       <h2 class="text-sm font-semibold text-stone-300">{{ t('grammar.settings') }}</h2>
 
-      <!-- 语法点选择 -->
+      <!-- 语言选择 -->
+      <div class="mt-5">
+        <label class="text-xs uppercase tracking-wide text-stone-500">{{ t('grammar.language') }}</label>
+        <div class="mt-3 flex gap-3">
+          <button
+            v-for="lang in languages"
+            :key="lang.value"
+            type="button"
+            :class="[
+              'flex-1 rounded-lg border px-4 py-3 text-sm font-medium transition-colors',
+              selectedLang === lang.value
+                ? 'border-accent bg-accent/10 text-accent-soft'
+                : 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
+            ]"
+            @click="selectedLang = lang.value; selectedTag = filteredGrammarTags[0]?.value ?? 'te-form'"
+          >
+            {{ lang.label }}
+          </button>
+        </div>
+      </div>
+
+      <!-- 语法点选择（随语言切换） -->
       <div class="mt-5">
         <label class="text-xs uppercase tracking-wide text-stone-500">{{ t('grammar.grammarPoint') }}</label>
-        <div class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+        <div
+          class="mt-3 grid gap-3"
+          :class="filteredGrammarTags.length % 3 === 0 ? 'grid-cols-3' : 'grid-cols-2'"
+        >
           <button
-            v-for="tag in grammarTags"
+            v-for="tag in filteredGrammarTags"
             :key="tag.value"
             type="button"
             :class="[
@@ -38,7 +62,7 @@
         </div>
       </div>
 
-      <!-- 题型选择 -->
+      <!-- 题型选择（仅填空题 + 改错题） -->
       <div class="mt-6">
         <label class="text-xs uppercase tracking-wide text-stone-500">{{ t('grammar.questionType') }}</label>
         <div class="mt-3 flex gap-3">
@@ -59,36 +83,11 @@
         </div>
       </div>
 
-      <!-- 难度选择 -->
-      <div class="mt-6">
-        <label class="text-xs uppercase tracking-wide text-stone-500">{{ t('grammar.difficulty') }}</label>
-        <div class="mt-3 flex gap-3">
-          <button
-            v-for="d in difficulties"
-            :key="d.value"
-            type="button"
-            :class="[
-              'flex-1 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors',
-              selectedDifficulty === d.value
-                ? 'border-accent bg-accent/10 text-accent-soft'
-                : 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
-            ]"
-            @click="selectedDifficulty = d.value"
-          >
-            {{ d.label }}
-          </button>
-        </div>
-      </div>
-
-      <!-- 能量提示 -->
-      <div class="mt-6 flex items-center justify-between border-t border-white/5 pt-4">
-        <span class="text-sm text-stone-500">
-          ⚡ {{ store.credits }} {{ t('grammar.credits') }}
-          <span class="text-stone-600"> · {{ t('grammar.cost', { cost: 1 }) }}</span>
-        </span>
+      <!-- 开始按钮（免费） -->
+      <div class="mt-6 flex items-center justify-end border-t border-white/5 pt-4">
         <button
           type="button"
-          :disabled="generating || store.credits < 1"
+          :disabled="generating"
           class="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-2.5 text-sm font-semibold text-ink-950 transition-colors hover:bg-stone-100 disabled:cursor-not-allowed disabled:opacity-50"
           @click="onGenerate"
         >
@@ -111,7 +110,7 @@
           <span class="rounded-full bg-ink-800 px-3 py-1 text-xs text-stone-400">
             {{ tagLabel(currentQuestion.grammarTag) }}
           </span>
-          <span class="text-xs text-stone-500">{{ typeLabel(currentQuestion.questionType) }} · {{ difficultyLabel(currentQuestion.difficulty) }}</span>
+          <span class="text-xs text-stone-500">{{ typeLabel(currentQuestion.questionType) }}</span>
         </div>
         <p class="mt-6 font-display text-xl font-medium leading-relaxed text-stone-100">
           {{ currentQuestion.questionText }}
@@ -122,43 +121,23 @@
       <div class="rounded-2xl border border-white/10 bg-ink-900/50 p-6">
         <label class="text-xs uppercase tracking-wide text-stone-500">{{ t('grammar.yourAnswer') }}</label>
 
-        <!-- 选择题 -->
-        <div v-if="currentQuestion.questionType === 'choice' && currentQuestion.options" class="mt-3 space-y-2">
-          <button
-            v-for="(opt, i) in currentQuestion.options"
-            :key="i"
-            type="button"
-            :disabled="judging"
-            :class="[
-              'flex w-full items-center gap-3 rounded-lg border px-4 py-3 text-sm transition-colors text-left',
-              selectedOption === i
-                ? 'border-accent bg-accent/10 text-accent-soft'
-                : 'border-white/10 text-stone-300 hover:border-white/30 hover:text-white',
-            ]"
-            @click="selectedOption = i; userAnswer = opt"
-          >
-            <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-white/20 text-xs">
-              {{ String.fromCharCode(65 + i) }}
-            </span>
-            <span>{{ opt }}</span>
-          </button>
-        </div>
-
         <!-- 填空 / 改错 -->
         <textarea
-          v-else
           v-model="userAnswer"
           rows="3"
           :placeholder="t('grammar.answerPlaceholder')"
           :disabled="judging"
-          class="mt-3 w-full resize-none rounded-lg border border-white/10 bg-ink-950 px-4 py-3 text-stone-100 placeholder-stone-600 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent disabled:opacity-60"
+          class="mt-3 w-full resize-none rounded-lg border border-white/10 bg-ink-950 px-4 py-3 text-stone-100 placeholder-stone-600 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent disabled:opacity-60 select-none"
           @keydown.meta.enter="onJudge"
           @keydown.ctrl.enter="onJudge"
+          @paste.prevent
+          @copy.prevent
+          @cut.prevent
+          @contextmenu.prevent
         />
 
         <div class="mt-3 flex items-center justify-between">
-          <span v-if="currentQuestion.questionType !== 'choice'" class="text-xs text-stone-600">⌘/Ctrl + Enter {{ t('grammar.submit') }}</span>
-          <span v-else />
+          <span class="text-xs text-stone-600">⌘/Ctrl + Enter {{ t('grammar.submit') }}</span>
           <button
             type="button"
             :disabled="judging || !userAnswer.trim()"
@@ -286,9 +265,9 @@ const user = computed(() => store.user as SessionUser)
 type Phase = 'idle' | 'generating' | 'answering' | 'judging' | 'result'
 const phase = ref<Phase>('idle')
 
+const selectedLang = ref<'ja' | 'en'>('ja')
 const selectedTag = ref<GrammarTag>('te-form')
-const selectedType = ref<'fill-blank' | 'choice' | 'error-correction'>('fill-blank')
-const selectedDifficulty = ref<1 | 2 | 3>(2)
+const selectedType = ref<'fill-blank' | 'error-correction'>('fill-blank')
 
 const generating = ref(false)
 const judging = ref(false)
@@ -297,14 +276,13 @@ interface QuestionData {
   questionId: string
   questionText: string
   grammarTag: GrammarTag
-  questionType: 'fill-blank' | 'choice' | 'error-correction'
+  questionType: 'fill-blank' | 'error-correction'
   options: string[] | null
   explanation: string | null
   difficulty: number
 }
 const currentQuestion = ref<QuestionData | null>(null)
 const userAnswer = ref('')
-const selectedOption = ref<number | null>(null)
 
 interface JudgeResultData {
   isCorrect: boolean
@@ -320,26 +298,33 @@ const judgeResult = ref<JudgeResultData | null>(null)
 
 // ---------- 选项 ----------
 
-const grammarTags: { value: GrammarTag; label: string }[] = [
-  { value: 'te-form', label: 'て形 (te-form)' },
-  { value: 'present-perfect', label: t('grammar.tagPresentPerfect') },
-  { value: 'passive', label: t('grammar.tagPassive') },
-  { value: 'conditionals', label: t('grammar.tagConditionals') },
-  { value: 'relative-clauses', label: t('grammar.tagRelativeClauses') },
-  { value: 'particles', label: t('grammar.tagParticles') },
-  { value: 'honorifics', label: t('grammar.tagHonorifics') },
+const languages: { value: 'ja' | 'en'; label: string }[] = [
+  { value: 'ja', label: t('grammar.langJa') },
+  { value: 'en', label: t('grammar.langEn') },
 ]
 
-const questionTypes: { value: 'fill-blank' | 'choice' | 'error-correction'; label: string }[] = [
+const grammarTagsByLang: Record<'ja' | 'en', { value: GrammarTag; label: string }[]> = {
+  ja: [
+    { value: 'te-form', label: 'て形 (te-form)' },
+    { value: 'passive', label: t('grammar.tagPassive') },
+    { value: 'conditionals', label: t('grammar.tagConditionals') },
+    { value: 'relative-clauses', label: t('grammar.tagRelativeClauses') },
+    { value: 'particles', label: t('grammar.tagParticles') },
+    { value: 'honorifics', label: t('grammar.tagHonorifics') },
+  ],
+  en: [
+    { value: 'present-perfect', label: t('grammar.tagPresentPerfect') },
+    { value: 'passive', label: t('grammar.tagPassive') },
+    { value: 'conditionals', label: t('grammar.tagConditionals') },
+    { value: 'relative-clauses', label: t('grammar.tagRelativeClauses') },
+  ],
+}
+
+const filteredGrammarTags = computed(() => grammarTagsByLang[selectedLang.value])
+
+const questionTypes: { value: 'fill-blank' | 'error-correction'; label: string }[] = [
   { value: 'fill-blank', label: t('grammar.typeFillBlank') },
-  { value: 'choice', label: t('grammar.typeChoice') },
   { value: 'error-correction', label: t('grammar.typeErrorCorrection') },
-]
-
-const difficulties: { value: 1 | 2 | 3; label: string }[] = [
-  { value: 1, label: t('grammar.diffEasy') },
-  { value: 2, label: t('grammar.diffMedium') },
-  { value: 3, label: t('grammar.diffHard') },
 ]
 
 function tagLabel(tag: GrammarTag): string {
@@ -348,10 +333,6 @@ function tagLabel(tag: GrammarTag): string {
 
 function typeLabel(type: string): string {
   return questionTypes.find((x) => x.value === type)?.label ?? type
-}
-
-function difficultyLabel(d: number): string {
-  return difficulties.find((x) => x.value === d)?.label ?? String(d)
 }
 
 function verdictLabel(v: string): string {
@@ -367,26 +348,22 @@ async function onGenerate() {
   generating.value = true
   phase.value = 'generating'
   userAnswer.value = ''
-  selectedOption.value = null
   judgeResult.value = null
 
   try {
     const data = await $fetch<QuestionData>('/api/grammar/generate', {
       method: 'POST',
       body: {
+        language: selectedLang.value,
         grammarTag: selectedTag.value,
         questionType: selectedType.value,
-        difficulty: selectedDifficulty.value,
       },
     })
     currentQuestion.value = data
-    store.setUser({ ...user.value, credits: data.credits })
     phase.value = 'answering'
   } catch (err: any) {
     phase.value = 'idle'
-    if (err?.statusCode === 402) {
-      alert(t('grammar.noCredits'))
-    } else if (err?.statusMessage) {
+    if (err?.statusMessage) {
       alert(err.statusMessage)
     } else {
       alert(t('grammar.generateError'))
@@ -433,7 +410,6 @@ function onNext() {
   phase.value = 'idle'
   currentQuestion.value = null
   userAnswer.value = ''
-  selectedOption.value = null
   judgeResult.value = null
   onGenerate()
 }
@@ -442,7 +418,6 @@ function onBackToSettings() {
   phase.value = 'idle'
   currentQuestion.value = null
   userAnswer.value = ''
-  selectedOption.value = null
   judgeResult.value = null
 }
 </script>

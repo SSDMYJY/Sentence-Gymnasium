@@ -3,7 +3,8 @@
 // 2. 调用 AI 生成翻译练习题
 // 3. 存入 GeneratedQuestion 表，返回题目（不暴露 correctAnswer）
 import { generateQuestion } from '../../utils/ai'
-import type { LanguagePair } from '../../types/ai'
+import type { LanguagePair, PracticeDifficulty, ScenarioValue } from '../../types/ai'
+import { resolveNumericDifficulty, validateScenario } from '~/utils/practice-config'
 
 const COST_PER_QUESTION = 1
 
@@ -16,9 +17,14 @@ export default defineEventHandler(async (event) => {
   const user = await requireAuth(event)
   const prisma = usePrisma(event)
 
-  const body = await readBody<{ languagePair?: LanguagePair; difficulty?: 1 | 2 | 3 }>(event)
+  const body = await readBody<{
+    languagePair?: LanguagePair
+    difficulty?: PracticeDifficulty
+    scenario?: ScenarioValue
+  }>(event)
   const languagePair = body?.languagePair
-  const difficulty = body?.difficulty ?? 2
+  const practiceDifficulty: PracticeDifficulty = body?.difficulty ?? 'random'
+  const scenario = validateScenario(body?.scenario)
 
   // 参数校验
   if (!languagePair || !VALID_PAIRS.includes(languagePair)) {
@@ -27,9 +33,12 @@ export default defineEventHandler(async (event) => {
       statusMessage: `Invalid languagePair. Valid: ${VALID_PAIRS.join(', ')}`,
     })
   }
-  if (![1, 2, 3].includes(difficulty)) {
-    throw createError({ statusCode: 400, statusMessage: 'difficulty must be 1, 2, or 3' })
+  if (!['random', 'daily', 'fluent', 'professional'].includes(practiceDifficulty)) {
+    throw createError({ statusCode: 400, statusMessage: 'difficulty must be random, daily, fluent, or professional' })
   }
+
+  // 解析最终 numeric 难度与场景
+  const difficulty = resolveNumericDifficulty(practiceDifficulty)
 
   // 能量校验
   if (user.credits < COST_PER_QUESTION) {
@@ -46,6 +55,8 @@ export default defineEventHandler(async (event) => {
       category: 'practice',
       languagePair,
       difficulty,
+      practiceDifficulty,
+      scenario,
     })
   } catch (err: any) {
     if (err.statusCode) throw err
@@ -75,7 +86,11 @@ export default defineEventHandler(async (event) => {
           languagePair: q.languagePair,
           questionText: q.questionText,
           correctAnswer: q.correctAnswer,
-          extraData: JSON.stringify({ difficulty: q.difficulty }),
+          extraData: JSON.stringify({
+            difficulty: q.difficulty,
+            practiceDifficulty: q.practiceDifficulty ?? practiceDifficulty,
+            scenario: q.scenario ?? scenario,
+          }),
           generatedById: user.id,
         },
       }),
@@ -95,6 +110,8 @@ export default defineEventHandler(async (event) => {
     questionText: q.questionText,
     languagePair: q.languagePair,
     difficulty: q.difficulty,
+    practiceDifficulty: q.practiceDifficulty ?? practiceDifficulty,
+    scenario: q.scenario ?? scenario,
     credits: user.credits - COST_PER_QUESTION,
   }
 })

@@ -2,7 +2,8 @@
 // 集中管理三种训练模式（practice / paraphrase / grammar）的出题与判题 prompt。
 // 所有 prompt 都要求模型以 JSON 格式返回，便于程序解析。
 
-import type { Category, GrammarTag, LangCode, LanguagePair, UiLang } from '../types/ai'
+import type { Category, GrammarTag, LangCode, LanguagePair, UiLang, PracticeDifficulty, ScenarioValue } from '../types/ai'
+import { buildScenarioPrompt } from '~/utils/practice-config'
 
 // 语言代码 → 自然名称
 const LANG_NAME: Record<LangCode, string> = {
@@ -71,10 +72,17 @@ Minor spelling/typo errors should not fully fail an otherwise correct answer.`
 
 // ---------- Practice（翻译练习）----------
 
+export interface PracticeGenerateOptions {
+  languagePair: LanguagePair
+  difficulty: 1 | 2 | 3
+  practiceDifficulty?: PracticeDifficulty
+  scenario?: ScenarioValue
+}
+
 export function practiceGeneratePrompt(
-  languagePair: LanguagePair,
-  difficulty: 1 | 2 | 3 = 2,
+  options: PracticeGenerateOptions,
 ): { system: string; user: string } {
+  const { languagePair, difficulty, practiceDifficulty = 'daily', scenario = { categoryId: 'random' } } = options
   const [src, dst] = languagePair.split('-') as [LangCode, LangCode]
   const diffDesc = difficulty === 1 ? 'beginner (N5/easy)' : difficulty === 2 ? 'intermediate (N3/medium)' : 'advanced (N1/hard)'
 
@@ -86,6 +94,7 @@ Requirements:
 - Source language: ${LANG_NAME[src]} (${LANG_NATIVE[src]})
 - Target language: ${LANG_NAME[dst]} (${LANG_NATIVE[dst]})
 - Difficulty: ${diffDesc}
+- ${buildScenarioPrompt(scenario)}
 - The source sentence should be natural and commonly used.
 - Provide the canonical correct translation in the target language.
 
@@ -94,7 +103,9 @@ Return ONLY this JSON shape:
   "questionText": "<source sentence in ${LANG_NATIVE[src]}>",
   "correctAnswer": "<canonical translation in ${LANG_NATIVE[dst]}>",
   "languagePair": "${languagePair}",
-  "difficulty": ${difficulty}
+  "difficulty": ${difficulty},
+  "practiceDifficulty": "${practiceDifficulty}",
+  "scenario": { "categoryId": "${scenario.categoryId}", "subId": "${scenario.subId ?? ''}" }
 }`,
   }
 }
@@ -128,7 +139,7 @@ CRITICAL: Respond in ${feedbackLang}. The feedback, suggestion, and errors field
 Return ONLY this JSON shape:
 {
   "isCorrect": boolean,
-  "score": number (0-10),
+  "score": integer (0-10),
   "verdict": "correct" | "partial" | "incorrect",
   "feedback": "<concise explanation in ${feedbackLang}>",
   "suggestion": "<a better way to express it, or null if already great>",
@@ -194,7 +205,7 @@ CRITICAL: Respond in ${feedbackLang}. The feedback, suggestion, and errors field
 Return ONLY this JSON shape:
 {
   "isCorrect": boolean,
-  "score": number (0-10),
+  "score": integer (0-10),
   "verdict": "correct" | "partial" | "incorrect",
   "feedback": "<concise explanation in ${feedbackLang}>",
   "suggestion": "<an even better paraphrase, or null>",
@@ -207,33 +218,35 @@ Return ONLY this JSON shape:
 
 export function grammarGeneratePrompt(
   grammarTag: GrammarTag,
-  questionType: 'fill-blank' | 'choice' | 'error-correction' = 'fill-blank',
+  questionType: 'fill-blank' | 'error-correction' = 'fill-blank',
   difficulty: 1 | 2 | 3 = 2,
+  language: 'ja' | 'en' = 'ja',
 ): { system: string; user: string } {
   const tagDesc = GRAMMAR_DESC[grammarTag]
   const typeDesc = {
     'fill-blank': 'fill-in-the-blank (replace ___ with the correct form)',
-    'choice': 'multiple choice (provide 4 options, only 1 correct)',
     'error-correction': 'error correction (sentence contains one grammatical error to fix)',
   }[questionType]
 
+  const langName = language === 'ja' ? 'Japanese' : 'English'
+
   return {
     system: SYSTEM_GENERATE,
-    user: `Generate a single grammar exercise.
+    user: `Generate a single grammar exercise in ${langName}.
 
 Requirements:
 - Grammar point: ${tagDesc}
 - Question type: ${typeDesc}
 - Difficulty: ${difficulty === 1 ? 'basic' : difficulty === 2 ? 'intermediate' : 'advanced'}
 - The sentence should clearly test the target grammar point.
+- All content (question text, correct answer) must be in ${langName}.
 
 Return ONLY this JSON shape:
 {
-  "questionText": "<the exercise sentence, with ___ for fill-blank>",
-  "correctAnswer": "<the correct answer>",
+  "questionText": "<the exercise sentence in ${langName}, with ___ for fill-blank>",
+  "correctAnswer": "<the correct answer in ${langName}>",
   "grammarTag": "${grammarTag}",
   "questionType": "${questionType}",
-  ${questionType === 'choice' ? '"options": ["opt1", "opt2", "opt3", "opt4"],' : ''}
   "explanation": "<brief explanation of the grammar rule in Chinese>"
 }`,
   }
@@ -244,7 +257,7 @@ export function grammarJudgePrompt(
   correctAnswer: string,
   userAnswer: string,
   grammarTag: GrammarTag,
-  questionType: 'fill-blank' | 'choice' | 'error-correction',
+  questionType: 'fill-blank' | 'error-correction',
   uiLang?: UiLang,
 ): { system: string; user: string } {
   const lang = GRAMMAR_LANG[grammarTag]
@@ -264,7 +277,6 @@ Language: ${LANG_NATIVE[lang]}
 Evaluation criteria:
 - Is the answer grammatically correct for the target grammar point?
 - For fill-blank: exact match or valid alternative form?
-- For choice: must match the correct option.
 - For error-correction: did the student correctly identify and fix the error?
 
 CRITICAL: Respond in ${feedbackLang}. The feedback, suggestion, and errors fields MUST be in ${feedbackLang}, matching the user's interface language.
@@ -272,7 +284,7 @@ CRITICAL: Respond in ${feedbackLang}. The feedback, suggestion, and errors field
 Return ONLY this JSON shape:
 {
   "isCorrect": boolean,
-  "score": number (0-10),
+  "score": integer (0-10),
   "verdict": "correct" | "partial" | "incorrect",
   "feedback": "<concise explanation in ${feedbackLang}>",
   "suggestion": "<a correct alternative if applicable, or null>",
@@ -292,23 +304,31 @@ export interface GeneratePromptResult {
 export function getGeneratePrompt(
   category: Category,
   params: {
+    language?: 'ja' | 'en'
     languagePair?: LanguagePair
     sourceLang?: LangCode
     grammarTag?: GrammarTag
-    questionType?: 'fill-blank' | 'choice' | 'error-correction'
+    questionType?: 'fill-blank' | 'error-correction'
     difficulty?: 1 | 2 | 3
+    practiceDifficulty?: PracticeDifficulty
+    scenario?: ScenarioValue
   },
 ): GeneratePromptResult {
   switch (category) {
     case 'practice':
       if (!params.languagePair) throw new Error('practice 需要 languagePair 参数')
-      return practiceGeneratePrompt(params.languagePair, params.difficulty ?? 2)
+      return practiceGeneratePrompt({
+        languagePair: params.languagePair,
+        difficulty: params.difficulty ?? 2,
+        practiceDifficulty: params.practiceDifficulty,
+        scenario: params.scenario,
+      })
     case 'paraphrase':
       if (!params.sourceLang) throw new Error('paraphrase 需要 sourceLang 参数')
       return paraphraseGeneratePrompt(params.sourceLang, params.difficulty ?? 2)
     case 'grammar':
       if (!params.grammarTag) throw new Error('grammar 需要 grammarTag 参数')
-      return grammarGeneratePrompt(params.grammarTag, params.questionType ?? 'fill-blank', params.difficulty ?? 2)
+      return grammarGeneratePrompt(params.grammarTag, params.questionType ?? 'fill-blank', params.difficulty ?? 2, params.language ?? 'ja')
   }
 }
 
@@ -321,7 +341,7 @@ export function getJudgePrompt(
     languagePair?: LanguagePair
     sourceLang?: LangCode
     grammarTag?: GrammarTag
-    questionType?: 'fill-blank' | 'choice' | 'error-correction'
+    questionType?: 'fill-blank' | 'error-correction'
     uiLang?: UiLang
   },
   userAnswer: string,
