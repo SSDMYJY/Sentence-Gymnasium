@@ -21,18 +21,12 @@
       <div class="mt-5">
         <label class="text-xs uppercase tracking-wide text-stone-500">{{ t('paraphrase.sourceLang') }}</label>
         <div class="mt-3 grid grid-cols-2 gap-3">
-          <button
-            v-for="lang in sourceLangs"
-            :key="lang.value"
-            type="button"
-            :class="[
-              'rounded-lg border px-4 py-3 text-sm font-medium transition-colors',
-              selectedLang === lang.value
-                ? 'border-accent bg-accent/10 text-accent-soft'
-                : 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
-            ]"
-            @click="selectedLang = lang.value"
-          >
+          <button v-for="lang in sourceLangs" :key="lang.value" type="button" :class="[
+            'rounded-lg border px-4 py-3 text-sm font-medium transition-colors',
+            selectedLang === lang.value
+              ? 'border-accent bg-accent/10 text-accent-soft'
+              : 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
+          ]" @click="selectedLang = lang.value">
             {{ lang.label }}
           </button>
         </div>
@@ -42,18 +36,12 @@
       <div class="mt-6">
         <label class="text-xs uppercase tracking-wide text-stone-500">{{ t('paraphrase.difficulty') }}</label>
         <div class="mt-3 flex gap-3">
-          <button
-            v-for="d in difficulties"
-            :key="d.value"
-            type="button"
-            :class="[
-              'flex-1 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors',
-              selectedDifficulty === d.value
-                ? 'border-accent bg-accent/10 text-accent-soft'
-                : 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
-            ]"
-            @click="selectedDifficulty = d.value"
-          >
+          <button v-for="d in difficulties" :key="d.value" type="button" :class="[
+            'flex-1 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors',
+            selectedDifficulty === d.value
+              ? 'border-accent bg-accent/10 text-accent-soft'
+              : 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
+          ]" @click="selectedDifficulty = d.value">
             {{ d.label }}
           </button>
         </div>
@@ -65,12 +53,9 @@
           ⚡ {{ store.credits }} {{ t('paraphrase.credits') }}
           <span class="text-stone-600"> · {{ t('paraphrase.cost', { cost: 1 }) }}</span>
         </span>
-        <button
-          type="button"
-          :disabled="generating || store.credits < 1"
+        <button type="button" :disabled="generating || store.credits < 1"
           class="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-2.5 text-sm font-semibold text-ink-950 transition-colors hover:bg-stone-100 disabled:cursor-not-allowed disabled:opacity-50"
-          @click="onGenerate"
-        >
+          @click="onGenerate">
           {{ generating ? t('paraphrase.generating') : t('paraphrase.start') }}
         </button>
       </div>
@@ -105,23 +90,14 @@
       <div class="rounded-2xl border border-white/10 bg-ink-900/50 p-6">
         <label class="text-xs uppercase tracking-wide text-stone-500">{{ t('paraphrase.yourAnswer') }}</label>
         <p class="mt-1 text-xs text-stone-500">{{ t('paraphrase.answerHint') }}</p>
-        <textarea
-          v-model="userAnswer"
-          rows="4"
-          :placeholder="t('paraphrase.answerPlaceholder')"
-          :disabled="judging"
+        <textarea v-model="userAnswer" rows="4" :placeholder="t('paraphrase.answerPlaceholder')" :disabled="judging"
           class="mt-3 w-full resize-none rounded-lg border border-white/10 bg-ink-950 px-4 py-3 text-stone-100 placeholder-stone-600 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent disabled:opacity-60"
-          @keydown.meta.enter="onJudge"
-          @keydown.ctrl.enter="onJudge"
-        />
+          @keydown.meta.enter="onJudge" @keydown.ctrl.enter="onJudge" />
         <div class="mt-3 flex items-center justify-between">
           <span class="text-xs text-stone-600">⌘/Ctrl + Enter {{ t('paraphrase.submit') }}</span>
-          <button
-            type="button"
-            :disabled="judging || !userAnswer.trim()"
+          <button type="button" :disabled="judging || !userAnswer.trim()"
             class="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-2.5 text-sm font-semibold text-ink-950 transition-colors hover:bg-stone-100 disabled:cursor-not-allowed disabled:opacity-50"
-            @click="onJudge"
-          >
+            @click="onJudge">
             {{ judging ? t('paraphrase.judging') : t('paraphrase.submit') }}
           </button>
         </div>
@@ -137,16 +113,14 @@
     <!-- 判题结果 -->
     <div v-if="phase === 'result' && judgeResult" class="space-y-6">
       <!-- 结果概览 -->
-      <div
-        :class="[
-          'rounded-2xl border p-6',
-          judgeResult.isCorrect
-            ? 'border-green-500/30 bg-green-500/5'
-            : judgeResult.verdict === 'partial'
-              ? 'border-yellow-500/30 bg-yellow-500/5'
-              : 'border-red-500/30 bg-red-500/5',
-        ]"
-      >
+      <div :class="[
+        'rounded-2xl border p-6',
+        judgeResult.isCorrect
+          ? 'border-green-500/30 bg-green-500/5'
+          : judgeResult.verdict === 'partial'
+            ? 'border-yellow-500/30 bg-yellow-500/5'
+            : 'border-red-500/30 bg-red-500/5',
+      ]">
         <div class="flex items-center gap-4">
           <span class="text-4xl">
             {{ judgeResult.isCorrect ? '✓' : judgeResult.verdict === 'partial' ? '◐' : '✗' }}
@@ -201,18 +175,14 @@
 
       <!-- 操作按钮 -->
       <div class="flex gap-3">
-        <button
-          type="button"
+        <button type="button"
           class="flex-1 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-ink-950 transition-colors hover:bg-stone-100"
-          @click="onNext"
-        >
+          @click="onNext">
           {{ t('paraphrase.nextQuestion') }}
         </button>
-        <button
-          type="button"
+        <button type="button"
           class="flex-1 rounded-lg border border-white/15 px-6 py-3 text-sm font-medium text-stone-300 transition-colors hover:border-white/30 hover:text-white"
-          @click="onBackToSettings"
-        >
+          @click="onBackToSettings">
           {{ t('paraphrase.backToSettings') }}
         </button>
       </div>
