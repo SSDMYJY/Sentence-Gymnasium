@@ -3,7 +3,7 @@
     <!-- 标题 -->
     <header class="mb-8">
       <div class="flex items-center gap-3">
-        <span class="text-3xl">⚡</span>
+        <!-- <span class="text-3xl">⚡</span> -->
         <div>
           <h1 class="font-display text-2xl font-bold tracking-tight text-stone-100 sm:text-3xl">
             {{ t('boards.practice.subtitle') }}
@@ -20,42 +20,32 @@
       <!-- 语言对选择 -->
       <div class="mt-5">
         <label class="text-xs uppercase tracking-wide text-stone-500">{{ t('practice.languagePair') }}</label>
-        <div class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
-          <button
-            v-for="pair in languagePairs"
-            :key="pair.value"
-            type="button"
-            :class="[
-              'rounded-lg border px-4 py-3 text-sm font-medium transition-colors',
-              selectedPair === pair.value
-                ? 'border-accent bg-accent/10 text-accent-soft'
-                : 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
-            ]"
-            @click="selectedPair = pair.value"
-          >
+        <div class="mt-3 grid grid-cols-2 gap-3">
+          <button v-for="pair in languagePairs" :key="pair.value" type="button" :class="[
+            'rounded-lg border px-4 py-3 text-sm font-medium transition-colors',
+            selectedPair === pair.value
+              ? 'border-accent bg-accent/10 text-accent-soft'
+              : 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
+          ]" @click="selectedPair = pair.value">
             {{ pair.label }}
           </button>
         </div>
       </div>
 
-      <!-- 难度选择 -->
+      <DifficultyLevelSwitcher
+        v-model="selectedDifficulty"
+        :lang="targetLang(selectedPair)"
+        @update:model-value="savePreferences"
+      />
+
+      <!-- 场景选择 -->
       <div class="mt-6">
-        <label class="text-xs uppercase tracking-wide text-stone-500">{{ t('practice.difficulty') }}</label>
-        <div class="mt-3 flex gap-3">
-          <button
-            v-for="d in difficulties"
-            :key="d.value"
-            type="button"
-            :class="[
-              'flex-1 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors',
-              selectedDifficulty === d.value
-                ? 'border-accent bg-accent/10 text-accent-soft'
-                : 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
-            ]"
-            @click="selectedDifficulty = d.value"
-          >
-            {{ d.label }}
-          </button>
+        <div class="flex items-center justify-between">
+          <label class="text-xs uppercase tracking-wide text-stone-500">{{ t('practice.scenarioTitle') }}</label>
+          <span class="text-xs text-stone-600">{{ scenarioDisplayLabel(selectedScenario) }}</span>
+        </div>
+        <div class="mt-3">
+          <ScenarioDropdown v-model="selectedScenario" @update:model-value="savePreferences" />
         </div>
       </div>
 
@@ -65,12 +55,9 @@
           ⚡ {{ store.credits }} {{ t('practice.credits') }}
           <span class="text-stone-600"> · {{ t('practice.cost', { cost: 1 }) }}</span>
         </span>
-        <button
-          type="button"
-          :disabled="generating || store.credits < 1"
+        <button type="button" :disabled="generating || store.credits < 1"
           class="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-2.5 text-sm font-semibold text-ink-950 transition-colors hover:bg-stone-100 disabled:cursor-not-allowed disabled:opacity-50"
-          @click="onGenerate"
-        >
+          @click="onGenerate">
           {{ generating ? t('practice.generating') : t('practice.start') }}
         </button>
       </div>
@@ -86,11 +73,18 @@
     <div v-if="phase === 'answering' && currentQuestion" class="space-y-6">
       <!-- 题目卡片 -->
       <div class="rounded-2xl border border-white/10 bg-ink-900/50 p-6">
-        <div class="flex items-center justify-between">
+        <div class="flex flex-wrap items-center justify-between gap-2">
           <span class="rounded-full bg-ink-800 px-3 py-1 text-xs text-stone-400">
             {{ pairLabel(currentQuestion.languagePair) }}
           </span>
-          <span class="text-xs text-stone-500">{{ difficultyLabel(currentQuestion.difficulty) }}</span>
+          <div class="flex items-center gap-2">
+            <span class="rounded-full bg-ink-800 px-3 py-1 text-xs text-stone-500">
+              {{ difficultyLabel(currentQuestion.difficulty) }}
+            </span>
+            <span class="rounded-full bg-ink-800 px-3 py-1 text-xs text-stone-500">
+              {{ scenarioDisplayLabel(currentQuestion.scenario) }}
+            </span>
+          </div>
         </div>
         <p class="mt-6 font-display text-xl font-medium leading-relaxed text-stone-100">
           {{ currentQuestion.questionText }}
@@ -100,23 +94,15 @@
       <!-- 作答区 -->
       <div class="rounded-2xl border border-white/10 bg-ink-900/50 p-6">
         <label class="text-xs uppercase tracking-wide text-stone-500">{{ t('practice.yourAnswer') }}</label>
-        <textarea
-          v-model="userAnswer"
-          rows="4"
-          :placeholder="t('practice.answerPlaceholder')"
-          :disabled="judging"
-          class="mt-3 w-full resize-none rounded-lg border border-white/10 bg-ink-950 px-4 py-3 text-stone-100 placeholder-stone-600 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent disabled:opacity-60"
-          @keydown.meta.enter="onJudge"
-          @keydown.ctrl.enter="onJudge"
-        />
+        <textarea v-model="userAnswer" rows="4" :placeholder="t('practice.answerPlaceholder')" :disabled="judging"
+          class="mt-3 w-full resize-none rounded-lg border border-white/10 bg-ink-950 px-4 py-3 text-stone-100 placeholder-stone-600 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent disabled:opacity-60 select-none"
+          @keydown.meta.enter="onJudge" @keydown.ctrl.enter="onJudge" @paste.prevent @copy.prevent @cut.prevent
+          @contextmenu.prevent />
         <div class="mt-3 flex items-center justify-between">
           <span class="text-xs text-stone-600">⌘/Ctrl + Enter {{ t('practice.submit') }}</span>
-          <button
-            type="button"
-            :disabled="judging || !userAnswer.trim()"
+          <button type="button" :disabled="judging || !userAnswer.trim()"
             class="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-2.5 text-sm font-semibold text-ink-950 transition-colors hover:bg-stone-100 disabled:cursor-not-allowed disabled:opacity-50"
-            @click="onJudge"
-          >
+            @click="onJudge">
             {{ judging ? t('practice.judging') : t('practice.submit') }}
           </button>
         </div>
@@ -132,16 +118,14 @@
     <!-- 判题结果 -->
     <div v-if="phase === 'result' && judgeResult" class="space-y-6">
       <!-- 结果概览 -->
-      <div
-        :class="[
-          'rounded-2xl border p-6',
-          judgeResult.isCorrect
-            ? 'border-green-500/30 bg-green-500/5'
-            : judgeResult.verdict === 'partial'
-              ? 'border-yellow-500/30 bg-yellow-500/5'
-              : 'border-red-500/30 bg-red-500/5',
-        ]"
-      >
+      <div :class="[
+        'rounded-2xl border p-6',
+        judgeResult.isCorrect
+          ? 'border-green-500/30 bg-green-500/5'
+          : judgeResult.verdict === 'partial'
+            ? 'border-yellow-500/30 bg-yellow-500/5'
+            : 'border-red-500/30 bg-red-500/5',
+      ]">
         <div class="flex items-center gap-4">
           <span class="text-4xl">
             {{ judgeResult.isCorrect ? '✓' : judgeResult.verdict === 'partial' ? '◐' : '✗' }}
@@ -196,18 +180,14 @@
 
       <!-- 操作按钮 -->
       <div class="flex gap-3">
-        <button
-          type="button"
+        <button type="button"
           class="flex-1 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-ink-950 transition-colors hover:bg-stone-100"
-          @click="onNext"
-        >
+          @click="onNext">
           {{ t('practice.nextQuestion') }}
         </button>
-        <button
-          type="button"
+        <button type="button"
           class="flex-1 rounded-lg border border-white/15 px-6 py-3 text-sm font-medium text-stone-300 transition-colors hover:border-white/30 hover:text-white"
-          @click="onBackToSettings"
-        >
+          @click="onBackToSettings">
           {{ t('practice.backToSettings') }}
         </button>
       </div>
@@ -217,7 +197,13 @@
 
 <script setup lang="ts">
 import type { SessionUser } from '~/stores/user'
-import type { LanguagePair } from '~/server/types/ai'
+import type { LanguagePair, PracticeDifficulty, ScenarioValue } from '~/server/types/ai'
+import {
+  PRACTICE_DIFFICULTIES,
+  RANDOM_SCENARIO,
+  SCENARIO_CATEGORIES,
+  resolveNumericDifficulty,
+} from '~/utils/practice-config'
 
 definePageMeta({ middleware: 'auth' })
 
@@ -231,7 +217,8 @@ type Phase = 'idle' | 'generating' | 'answering' | 'judging' | 'result'
 const phase = ref<Phase>('idle')
 
 const selectedPair = ref<LanguagePair>('ja-en')
-const selectedDifficulty = ref<1 | 2 | 3>(2)
+const selectedDifficulty = ref<PracticeDifficulty>('random')
+const selectedScenario = ref<ScenarioValue>({ ...RANDOM_SCENARIO })
 
 const generating = ref(false)
 const judging = ref(false)
@@ -241,9 +228,15 @@ interface QuestionData {
   questionText: string
   languagePair: LanguagePair
   difficulty: 1 | 2 | 3
+  practiceDifficulty: PracticeDifficulty
+  scenario: ScenarioValue
+  credits: number
 }
 const currentQuestion = ref<QuestionData | null>(null)
 const userAnswer = ref('')
+
+// 用户偏好持久化 key
+const STORAGE_KEY = 'sg-practice-preferences'
 
 interface JudgeResultData {
   isCorrect: boolean
@@ -253,30 +246,33 @@ interface JudgeResultData {
   suggestion: string | null
   errors: string[]
   correctAnswer: string
+  totalAttempts: number
+  correctAttempts: number
 }
 const judgeResult = ref<JudgeResultData | null>(null)
 
 // ---------- 选项 ----------
 
 const languagePairs: { value: LanguagePair; label: string }[] = [
-  { value: 'ja-en', label: '日 → 英' },
-  { value: 'en-ja', label: '英 → 日' },
-  { value: 'zh-ja', label: '中 → 日' },
-  { value: 'zh-en', label: '中 → 英' },
-]
-
-const difficulties: { value: 1 | 2 | 3; label: string }[] = [
-  { value: 1, label: t('practice.diffEasy') },
-  { value: 2, label: t('practice.diffMedium') },
-  { value: 3, label: t('practice.diffHard') },
+  { value: 'ja-en', label: '日(日本語 Japanese) → 英(英語 English)' },
+  { value: 'en-ja', label: '英(英語 English) → 日(日本語 Japanese)' },
+  { value: 'zh-ja', label: '中(中国語 Chinese) → 日(日本語 Japanese)' },
+  { value: 'zh-en', label: '中(中国語 Chinese) → 英(英語 English)' },
 ]
 
 function pairLabel(pair: LanguagePair): string {
   return languagePairs.find((p) => p.value === pair)?.label ?? pair
 }
 
+/** 目标语言代码 */
+function targetLang(pair: LanguagePair): 'en' | 'ja' {
+  return pair.endsWith('en') ? 'en' : 'ja'
+}
+
 function difficultyLabel(d: number): string {
-  return difficulties.find((x) => x.value === d)?.label ?? String(d)
+  if (d === 1) return t('practice.diffEasy')
+  if (d === 2) return t('practice.diffMedium')
+  return t('practice.diffHard')
 }
 
 function verdictLabel(v: string): string {
@@ -284,6 +280,62 @@ function verdictLabel(v: string): string {
   if (v === 'partial') return t('practice.verdictPartial')
   return t('practice.verdictIncorrect')
 }
+
+// ---------- 场景选择 ----------
+
+function scenarioDisplayLabel(s: ScenarioValue): string {
+  if (s.categoryId === 'random') return t('practice.scenarioRandom')
+  const cat = SCENARIO_CATEGORIES.find((c) => c.id === s.categoryId)
+  if (!cat) return t('practice.scenarioRandom')
+  const catLabel = t(cat.labelKey)
+  if (!s.subId) return catLabel
+  const sub = cat.subScenarios.find((x) => x.id === s.subId)
+  return sub ? `${catLabel} · ${t(sub.labelKey)}` : catLabel
+}
+
+// ---------- 本地偏好持久化 ----------
+
+interface StoredPreferences {
+  pair?: LanguagePair
+  difficulty?: PracticeDifficulty
+  scenario?: ScenarioValue
+}
+
+function loadPreferences() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (!raw) return
+    const parsed: StoredPreferences = JSON.parse(raw)
+    if (parsed.pair && languagePairs.some((p) => p.value === parsed.pair)) {
+      selectedPair.value = parsed.pair
+    }
+    if (parsed.difficulty && PRACTICE_DIFFICULTIES.includes(parsed.difficulty)) {
+      selectedDifficulty.value = parsed.difficulty
+    }
+    if (parsed.scenario) {
+      selectedScenario.value = parsed.scenario
+    }
+  } catch {
+    // 忽略解析失败
+  }
+}
+
+function savePreferences() {
+  try {
+    const payload: StoredPreferences = {
+      pair: selectedPair.value,
+      difficulty: selectedDifficulty.value,
+      scenario: selectedScenario.value,
+    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload))
+  } catch {
+    // 忽略写入失败
+  }
+}
+
+onMounted(() => {
+  loadPreferences()
+})
 
 // ---------- 出题 ----------
 
@@ -293,6 +345,7 @@ async function onGenerate() {
   phase.value = 'generating'
   userAnswer.value = ''
   judgeResult.value = null
+  savePreferences()
 
   try {
     const data = await $fetch<QuestionData>('/api/practice/generate', {
@@ -300,6 +353,7 @@ async function onGenerate() {
       body: {
         languagePair: selectedPair.value,
         difficulty: selectedDifficulty.value,
+        scenario: selectedScenario.value,
       },
     })
     currentQuestion.value = data

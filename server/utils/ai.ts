@@ -16,6 +16,9 @@ import type {
   LanguagePair,
   LangCode,
   GrammarTag,
+  UiLang,
+  PracticeDifficulty,
+  ScenarioValue,
 } from '../types/ai'
 import { getGeneratePrompt, getJudgePrompt } from './prompts'
 
@@ -195,11 +198,14 @@ function parseJSON<T>(text: string): T {
 
 export interface GenerateParams {
   category: Category
+  language?: 'ja' | 'en'
   languagePair?: LanguagePair
   sourceLang?: LangCode
   grammarTag?: GrammarTag
-  questionType?: 'fill-blank' | 'choice' | 'error-correction'
+  questionType?: 'fill-blank' | 'error-correction'
   difficulty?: 1 | 2 | 3
+  practiceDifficulty?: PracticeDifficulty
+  scenario?: ScenarioValue
 }
 
 /**
@@ -243,8 +249,32 @@ export interface JudgeParams {
   languagePair?: LanguagePair
   sourceLang?: LangCode
   grammarTag?: GrammarTag
-  questionType?: 'fill-blank' | 'choice' | 'error-correction'
+  questionType?: 'fill-blank' | 'error-correction'
   uiLang?: UiLang
+}
+
+/**
+ * 将模型返回的分数统一归一为 10 分制整数。
+ * 兼容模型偶发返回的 100 分制、0-1 小数制等情况。
+ */
+function normalizeToTenScale(score: number): number {
+  if (!Number.isFinite(score)) return 0
+
+  let normalized = score
+
+  // 常见异常：百分制（0-100）
+  if (normalized > 10 && normalized <= 100) {
+    normalized = normalized / 10
+  }
+
+  // 常见异常：0-1 小数制
+  if (normalized > 0 && normalized <= 1) {
+    normalized = normalized * 10
+  }
+
+  // 限定在 0-10，并取整为分值
+  normalized = Math.max(0, Math.min(10, normalized))
+  return Math.round(normalized)
 }
 
 /**
@@ -277,8 +307,10 @@ export async function judgeAnswer(
   if (typeof result.isCorrect !== 'boolean') {
     throw createError({ statusCode: 502, statusMessage: 'AI judge result missing isCorrect field' })
   }
-  if (typeof result.score !== 'number' || result.score < 0 || result.score > 10) {
+  if (typeof result.score !== 'number') {
     result.score = result.isCorrect ? 10 : 0
+  } else {
+    result.score = normalizeToTenScale(result.score)
   }
   if (!result.verdict || !['correct', 'partial', 'incorrect'].includes(result.verdict)) {
     result.verdict = result.isCorrect ? 'correct' : 'incorrect'

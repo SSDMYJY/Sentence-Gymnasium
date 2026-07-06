@@ -13,6 +13,21 @@ interface HistoryEntry {
   createdAt: string
 }
 
+function normalizeToTenScale(score: number): number {
+  if (!Number.isFinite(score)) return 0
+
+  let normalized = score
+  if (normalized > 10 && normalized <= 100) {
+    normalized = normalized / 10
+  }
+  if (normalized > 0 && normalized <= 1) {
+    normalized = normalized * 10
+  }
+
+  normalized = Math.max(0, Math.min(10, normalized))
+  return Math.round(normalized)
+}
+
 export default defineEventHandler(async (event) => {
   const user = await requireAuth(event)
   const prisma = usePrisma(event)
@@ -52,7 +67,7 @@ export default defineEventHandler(async (event) => {
     if (a.feedback) {
       try {
         const parsed = JSON.parse(a.feedback)
-        score = typeof parsed.score === 'number' ? parsed.score : null
+        score = typeof parsed.score === 'number' ? normalizeToTenScale(parsed.score) : null
         verdict = parsed.verdict ?? null
         feedback = parsed.feedback ?? null
       } catch {

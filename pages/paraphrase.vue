@@ -3,7 +3,7 @@
     <!-- 标题 -->
     <header class="mb-8">
       <div class="flex items-center gap-3">
-        <span class="text-3xl">🔄</span>
+        <!-- <span class="text-3xl">🔄</span> -->
         <div>
           <h1 class="font-display text-2xl font-bold tracking-tight text-stone-100 sm:text-3xl">
             {{ t('boards.paraphrase.subtitle') }}
@@ -32,20 +32,11 @@
         </div>
       </div>
 
-      <!-- 难度选择 -->
-      <div class="mt-6">
-        <label class="text-xs uppercase tracking-wide text-stone-500">{{ t('paraphrase.difficulty') }}</label>
-        <div class="mt-3 flex gap-3">
-          <button v-for="d in difficulties" :key="d.value" type="button" :class="[
-            'flex-1 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors',
-            selectedDifficulty === d.value
-              ? 'border-accent bg-accent/10 text-accent-soft'
-              : 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
-          ]" @click="selectedDifficulty = d.value">
-            {{ d.label }}
-          </button>
-        </div>
-      </div>
+      <DifficultyLevelSwitcher
+        v-model="selectedDifficulty"
+        :lang="selectedLang === 'ja' ? 'ja' : 'en'"
+        label-key="paraphrase.difficulty"
+      />
 
       <!-- 能量提示 -->
       <div class="mt-6 flex items-center justify-between border-t border-white/5 pt-4">
@@ -192,7 +183,7 @@
 
 <script setup lang="ts">
 import type { SessionUser } from '~/stores/user'
-import type { LangCode } from '~/server/types/ai'
+import type { LangCode, PracticeDifficulty } from '~/server/types/ai'
 
 definePageMeta({ middleware: 'auth' })
 
@@ -206,7 +197,7 @@ type Phase = 'idle' | 'generating' | 'answering' | 'judging' | 'result'
 const phase = ref<Phase>('idle')
 
 const selectedLang = ref<LangCode>('ja')
-const selectedDifficulty = ref<1 | 2 | 3>(2)
+const selectedDifficulty = ref<PracticeDifficulty>('random')
 
 const generating = ref(false)
 const judging = ref(false)
@@ -239,18 +230,14 @@ const sourceLangs: { value: LangCode; label: string }[] = [
   { value: 'en', label: 'English' },
 ]
 
-const difficulties: { value: 1 | 2 | 3; label: string }[] = [
-  { value: 1, label: t('paraphrase.diffEasy') },
-  { value: 2, label: t('paraphrase.diffMedium') },
-  { value: 3, label: t('paraphrase.diffHard') },
-]
-
 function langLabel(lang: LangCode): string {
   return sourceLangs.find((l) => l.value === lang)?.label ?? lang
 }
 
 function difficultyLabel(d: number): string {
-  return difficulties.find((x) => x.value === d)?.label ?? String(d)
+  if (d === 1) return t('practice.diffEasy')
+  if (d === 2) return t('practice.diffMedium')
+  return t('practice.diffHard')
 }
 
 function verdictLabel(v: string): string {

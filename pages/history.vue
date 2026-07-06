@@ -80,7 +80,7 @@
           <!-- 得分 -->
           <span v-if="entry.score !== null" class="shrink-0 text-sm font-semibold text-stone-300">
             {{ entry.score }}
-            <span class="text-xs text-stone-600">/100</span>
+            <span class="text-xs text-stone-600">/10</span>
           </span>
 
           <!-- 展开图标 -->

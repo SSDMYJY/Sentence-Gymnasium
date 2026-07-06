@@ -25,6 +25,17 @@ export type GrammarTag =
   | 'particles'
   | 'honorifics'
 
+// ---------- 练习场景 ----------
+
+/** 用户选择的练习难度档位 */
+export type PracticeDifficulty = 'random' | 'daily' | 'fluent' | 'professional'
+
+/** 用户选择的场景 */
+export interface ScenarioValue {
+  categoryId: string | 'random'
+  subId?: string
+}
+
 // ---------- 出题 ----------
 
 /** Practice（翻译练习）出题结果 */
@@ -37,6 +48,10 @@ export interface PracticeQuestion {
   languagePair: LanguagePair
   /** 难度等级 1-3 */
   difficulty: 1 | 2 | 3
+  /** 用户原本选择的难度档位 */
+  practiceDifficulty: PracticeDifficulty
+  /** 场景选择 */
+  scenario: ScenarioValue
   /** 备选干扰项（可选，用于选择题型） */
   options?: string[]
 }
