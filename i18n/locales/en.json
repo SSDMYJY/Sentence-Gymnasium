@@ -1,7 +1,7 @@
 {
   "brand": {
-    "name": "Sentence Gymnasium",
-    "subtitle": "The Sentence Gym"
+    "terms": "Terms and Conditions",
+    "privacy": "Privacy Policy"
   },
   "nav": {
     "training": "Training Modes",
@@ -71,7 +71,7 @@
   },
   "cta": {
     "title": "Ready for your first set?",
-    "body": "20 free Credits for new users · 1 Credit per generated question",
+    "body": "Free 20 Credits to start · No credit card required",
     "button": "Enter the Gym"
   },
   "health": {
@@ -82,13 +82,13 @@
     "stack": "Nuxt 3 SSR · Cloudflare Workers · D1 · Prisma"
   },
   "footer": {
-    "stack": "Nuxt 3 SSR · Cloudflare Workers · D1 · Prisma"
+    "copyright": "Sentence Gymnasium © 2026 · All rights reserved"
   },
   "lang": {
     "switch": "Language"
   },
   "auth": {
-    "login": "Sign in",
+    "login": "Start Training",
     "register": "Sign up",
     "logout": "Sign out",
     "email": "Email",

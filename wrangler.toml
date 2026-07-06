@@ -19,6 +19,7 @@ database_name = "sentence_gym"
 # `npx wrangler d1 create sentence_gym` before deploying to prod.
 database_id = "cd74f697-5c41-4980-a97d-8abaa1de5a08"
 migrations_dir = "migrations"
+remote = true
 
 [observability]
 enabled = false

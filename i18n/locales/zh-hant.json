@@ -1,7 +1,7 @@
 {
   "brand": {
-    "name": "Sentence Gymnasium",
-    "subtitle": "句子健身房"
+    "terms": "服務條款",
+    "privacy": "隱私政策"
   },
   "nav": {
     "training": "訓練方式",
@@ -71,7 +71,7 @@
   },
   "cta": {
     "title": "準備好開始第一組訓練了嗎？",
-    "body": "註冊即贈20能量 · 每題消耗1能量",
+    "body": "免費 20 Credits 開始 · 無需信用卡",
     "button": "進入訓練場"
   },
   "health": {
@@ -82,13 +82,13 @@
     "stack": "Nuxt 3 SSR · Cloudflare Workers · D1 · Prisma"
   },
   "footer": {
-    "stack": "Nuxt 3 SSR · Cloudflare Workers · D1 · Prisma"
+    "copyright": "Sentence Gymnasium © 2026 · 版權所有"
   },
   "lang": {
     "switch": "語言"
   },
   "auth": {
-    "login": "登入",
+    "login": "開始訓練",
     "register": "註冊",
     "logout": "登出",
     "email": "電郵",

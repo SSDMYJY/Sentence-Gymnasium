@@ -1,7 +1,7 @@
 {
   "brand": {
-    "name": "Sentence Gymnasium",
-    "subtitle": "センテンス・ジム"
+    "terms": "利用規約",
+    "privacy": "プライバシーポリシー"
   },
   "nav": {
     "training": "トレーニング",
@@ -71,7 +71,7 @@
   },
   "cta": {
     "title": "最初の1セット、始めませんか？",
-    "body": "新規ユーザーに20 Creditsプレゼント · 1問生成ごとに1 Credit消費",
+    "body": "無料20Creditsでスタート · クレジットカード不要",
     "button": "ジムに入る"
   },
   "health": {
@@ -82,13 +82,13 @@
     "stack": "Nuxt 3 SSR · Cloudflare Workers · D1 · Prisma"
   },
   "footer": {
-    "stack": "Nuxt 3 SSR · Cloudflare Workers · D1 · Prisma"
+    "copyright": "Sentence Gymnasium © 2026 · All rights reserved"
   },
   "lang": {
     "switch": "言語"
   },
   "auth": {
-    "login": "ログイン",
+    "login": "開始訓練",
     "register": "登録",
     "logout": "ログアウト",
     "email": "メールアドレス",

@@ -8,13 +8,10 @@
     ]">
       <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         <NuxtLink :to="localePath('/')" class="flex items-baseline gap-2">
-          <span class="font-display text-base font-bold tracking-tight sm:text-lg">
-            {{ t('brand.name') }}
-          </span>
-          <span class="hidden text-xs text-stone-500 sm:inline">{{ t('brand.subtitle') }}</span>
+          <img src="/logo.svg" alt="Sentence Gymnasium" class="h-12 w-auto" />
         </NuxtLink>
 
-        <nav class="hidden items-center gap-1 text-sm font-medium sm:flex">
+        <nav v-if="user" class="hidden items-center gap-1 text-sm font-medium sm:flex">
           <NuxtLink v-for="item in navItems" :key="item.key" :to="localePath(item.path)" :class="[
             'rounded-lg px-4 py-2 transition-colors',
             route.path.includes(item.path) && route.path !== '/'
@@ -40,10 +37,10 @@
           <template v-else>
             <NuxtLink :to="localePath('/login')" class="transition-colors hover:text-white">{{ t('auth.login') }}
             </NuxtLink>
-            <NuxtLink :to="localePath('/register')"
+            <!-- <NuxtLink :to="localePath('/register')"
               class="rounded-full border border-white/15 px-3 py-1 text-xs transition-colors hover:border-white/40 hover:text-white">
               {{ t('auth.register') }}
-            </NuxtLink>
+            </NuxtLink> -->
           </template>
         </div>
       </div>
@@ -57,11 +54,11 @@
       <div
         class="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-10 text-sm text-stone-500 sm:flex-row sm:items-center sm:justify-between">
         <div class="flex items-baseline gap-3">
-          <span class="font-display text-stone-300">{{ t('brand.name') }}</span>
-          <span>· {{ t('brand.subtitle') }}</span>
+          <NuxtLink to="/terms" class="font-display text-stone-300">{{ t('brand.terms') }}</NuxtLink>
+          <NuxtLink to="/privacy" class="font-display text-stone-300">{{ t('brand.privacy') }}</NuxtLink>
         </div>
         <div class="text-xs tracking-wide">
-          {{ t('footer.stack') }}
+          {{ t('footer.copyright') }}
         </div>
       </div>
     </footer>
