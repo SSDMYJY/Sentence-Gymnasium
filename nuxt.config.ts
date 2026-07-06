@@ -1,6 +1,5 @@
 // Nuxt 3 config — Cloudflare Workers (cloudflare-module) + D1 + Prisma
-// Note: @sidebase/nuxt-auth module is registered in Step 2 (with auth config) to keep
-// the Step 1 dev server focused on the D1/Prisma chain.
+// 认证采用手写 JWT（jose + bcryptjs），不依赖 @sidebase/nuxt-auth。
 // `nitro-cloudflare-dev` is a Nuxt module (its default export hooks nitro:config);
 // it auto-discovers wrangler.jsonc and wires the D1 binding into nuxt dev.
 export default defineNuxtConfig({
@@ -53,7 +52,7 @@ export default defineNuxtConfig({
       wasm: true,
     },
     cloudflare: {
-      configPath: './wrangler.jsonc',
+      configPath: './wrangler.toml',
     },
   },
   runtimeConfig: {
@@ -70,6 +69,16 @@ export default defineNuxtConfig({
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: 'AI 驱动的多语言句子翻译 / 改写 / 语法特训练习平台' },
+        { name: 'theme-color', content: '#0a0a0b' },
+      ],
+      link: [
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap',
+        },
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
       ],
     },
   },
