@@ -23,6 +23,7 @@ export interface SessionUser {
   correctAttempts: number
   streak: number
   lastPracticeAt: string | null
+  level: number
 }
 
 const COOKIE_NAME = 'sg_session'
@@ -98,6 +99,7 @@ export async function getSessionUser(event: H3Event): Promise<SessionUser | null
           correctAttempts: true,
           streak: true,
           lastPracticeAt: true,
+          level: true,
         },
       })
       if (user) {
@@ -163,4 +165,34 @@ export function computeNewStreak(currentStreak: number, lastPracticeAt: Date | n
     return { streak: currentStreak + 1, isNewDay: true }
   }
   return { streak: 1, isNewDay: true }
+}
+
+// ---------- Level / XP ----------
+
+/** 每次练习获得的经验值 */
+export const XP_PER_ATTEMPT = 10
+/** 每升一级所需经验值 */
+export const XP_PER_LEVEL = 500
+/** 升级奖励能量 */
+export const LEVEL_UP_BONUS_CREDITS = 5
+
+/** 根据总尝试次数计算等级 */
+export function computeLevel(totalAttempts: number): number {
+  const xp = totalAttempts * XP_PER_ATTEMPT
+  return Math.floor(xp / XP_PER_LEVEL) + 1
+}
+
+/**
+ * 检查是否升级，若升级则返回 { levelUp: true, newLevel, credits }。
+ * 否则返回 { levelUp: false }。
+ */
+export function checkLevelUp(
+  oldLevel: number,
+  newTotalAttempts: number,
+): { levelUp: boolean; newLevel: number; bonusCredits: number } {
+  const newLevel = computeLevel(newTotalAttempts)
+  if (newLevel > oldLevel) {
+    return { levelUp: true, newLevel, bonusCredits: LEVEL_UP_BONUS_CREDITS }
+  }
+  return { levelUp: false, newLevel, bonusCredits: 0 }
 }

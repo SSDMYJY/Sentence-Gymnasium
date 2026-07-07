@@ -260,6 +260,9 @@ interface JudgeResultData {
 	correctAttempts: number
 	streak: number
 	streakIncreased: boolean
+	level: number
+	credits: number
+	levelUp: boolean
 }
 const judgeResult = ref<JudgeResultData | null>(null)
 
@@ -362,9 +365,14 @@ async function onJudge() {
 			totalAttempts: data.totalAttempts,
 			correctAttempts: data.correctAttempts,
 			streak: data.streak,
+			level: data.level,
+			credits: data.credits,
 		})
 		if (data.streakIncreased && data.streak > 1) {
 			toast.success(`🔥 ${t('dashboard.stats.streak')} ${data.streak} ${t('streak.days')}`)
+		}
+		if (data.levelUp) {
+			toast.success(`🎉 ${t('dashboard.level.upTitle')}`)
 		}
 		phase.value = 'result'
 	} catch (err: any) {

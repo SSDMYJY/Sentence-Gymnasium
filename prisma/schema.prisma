@@ -23,6 +23,8 @@ model User {
   totalAttempts   Int      @default(0)
   correctAttempts Int      @default(0)
   streak          Int      @default(0)
+  level           Int      @default(1)
+  experience      Int      @default(0)
   lastPracticeAt  DateTime?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt

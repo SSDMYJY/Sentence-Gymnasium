@@ -18,10 +18,10 @@
     <div class="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
       <div class="rounded-2xl border border-white/10 bg-ink-900/50 p-6 lg:col-span-2">
         <div class="flex items-center gap-3">
-          <span class="text-xl">🌱</span>
+          <span class="text-xl">{{ levelInfo.icon }}</span>
           <div>
-            <p class="font-display text-lg font-semibold text-stone-100">{{ t('dashboard.level.title') }}</p>
-            <p class="text-sm text-stone-400">{{ experience }} / 500 {{ t('dashboard.level.label') }}</p>
+            <p class="font-display text-lg font-semibold text-stone-100">Lv.{{ userLevel }} {{ t(levelInfo.nameKey) }}</p>
+            <p class="text-sm text-stone-400">{{ experienceInLevel }} / {{ XP_PER_LEVEL }} {{ t('dashboard.level.label') }}</p>
           </div>
         </div>
         <div class="mt-4 h-2 overflow-hidden rounded-full bg-ink-800">
@@ -162,14 +162,29 @@ const accRate = computed(() => {
   return `${Math.round((correct / total) * 100)}%`
 })
 
-const experience = computed(() => {
-  const total = user.value?.totalAttempts ?? 0
-  return Math.min(total * 10, 499)
-})
+// ---------- 等级 ----------
 
-const experiencePercent = computed(() => {
-  return Math.round((experience.value / 500) * 100)
-})
+const XP_PER_ATTEMPT = 10
+const XP_PER_LEVEL = 500
+
+const LEVEL_NAMES: Record<number, { nameKey: string; icon: string }> = {
+  1: { nameKey: 'dashboard.level.name1', icon: '🌱' },
+  2: { nameKey: 'dashboard.level.name2', icon: '📚' },
+  3: { nameKey: 'dashboard.level.name3', icon: '⚡' },
+  4: { nameKey: 'dashboard.level.name4', icon: '🔥' },
+  5: { nameKey: 'dashboard.level.name5', icon: '💎' },
+  6: { nameKey: 'dashboard.level.name6', icon: '👑' },
+}
+
+function getLevelInfo(level: number) {
+  return LEVEL_NAMES[level] ?? { nameKey: 'dashboard.level.nameMax', icon: '🏆' }
+}
+
+const userLevel = computed(() => user.value?.level ?? 1)
+const experience = computed(() => (user.value?.totalAttempts ?? 0) * XP_PER_ATTEMPT)
+const experienceInLevel = computed(() => experience.value % XP_PER_LEVEL)
+const experiencePercent = computed(() => Math.round((experienceInLevel.value / XP_PER_LEVEL) * 100))
+const levelInfo = computed(() => getLevelInfo(userLevel.value))
 
 const stats = computed(() => [
   { icon: '⚡', label: t('dashboard.stats.energy'), value: user.value?.credits ?? 0 },

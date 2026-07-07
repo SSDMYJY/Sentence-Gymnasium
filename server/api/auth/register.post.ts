@@ -35,6 +35,7 @@ export default defineEventHandler(async (event) => {
       correctAttempts: true,
       streak: true,
       lastPracticeAt: true,
+      level: true,
     },
   })
 

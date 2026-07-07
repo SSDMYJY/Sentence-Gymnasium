@@ -125,6 +125,14 @@
 		},
 		"level": {
 			"title": "Newbie",
+			"name1": "Newbie",
+			"name2": "Learner",
+			"name3": "Adept",
+			"name4": "Expert",
+			"name5": "Master",
+			"name6": "Sage",
+			"nameMax": "Legend",
+			"upTitle": "🎉 Level Up! +5 bonus energy earned",
 			"label": "XP to next level",
 			"hint": "Keep training to level up! Earn +5 bonus energy when you level up."
 		},

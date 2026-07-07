@@ -9,7 +9,37 @@ export default defineEventHandler(async (event) => {
   }
 
   const prisma = usePrisma(event)
-  const user = await prisma.user.findUnique({ where: { email } })
+
+  function isPrismaValidationError(e: any) {
+    return e && (e.name === 'PrismaClientValidationError' || (typeof e.message === 'string' && e.message.includes('Unknown field')))
+  }
+
+  const baseSelect: any = {
+    id: true,
+    email: true,
+    name: true,
+    credits: true,
+    totalAttempts: true,
+    correctAttempts: true,
+    streak: true,
+    lastPracticeAt: true,
+    passwordHash: true,
+  }
+
+  let user: any = null
+  try {
+    user = await prisma.user.findUnique({
+      where: { email },
+      select: { ...baseSelect, level: true, experience: true },
+    })
+  } catch (err: any) {
+    if (isPrismaValidationError(err)) {
+      user = await prisma.user.findUnique({ where: { email }, select: baseSelect })
+    } else {
+      throw err
+    }
+  }
+
   if (!user) {
     throw createError({ statusCode: 401, statusMessage: 'invalid_credentials' })
   }
@@ -18,7 +48,6 @@ export default defineEventHandler(async (event) => {
   if (!ok) {
     throw createError({ statusCode: 401, statusMessage: 'invalid_credentials' })
   }
-
   await setSessionCookie(event, {
     id: user.id,
     email: user.email,
@@ -28,6 +57,8 @@ export default defineEventHandler(async (event) => {
     correctAttempts: user.correctAttempts,
     streak: user.streak,
     lastPracticeAt: user.lastPracticeAt ? user.lastPracticeAt.toISOString() : null,
+    level: typeof user.level === 'number' ? user.level : 1,
+    experience: typeof user.experience === 'number' ? user.experience : 0,
   })
 
   return {
@@ -39,5 +70,7 @@ export default defineEventHandler(async (event) => {
     correctAttempts: user.correctAttempts,
     streak: user.streak,
     lastPracticeAt: user.lastPracticeAt ? user.lastPracticeAt.toISOString() : null,
+    level: typeof user.level === 'number' ? user.level : 1,
+    experience: typeof user.experience === 'number' ? user.experience : 0,
   }
 })

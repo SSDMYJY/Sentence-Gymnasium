@@ -9,6 +9,7 @@ export interface SessionUser {
   correctAttempts: number
   streak: number
   lastPracticeAt: string | null
+  level: number
 }
 
 export const useUserStore = defineStore('user', {
