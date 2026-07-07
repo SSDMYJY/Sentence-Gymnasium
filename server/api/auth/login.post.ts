@@ -26,6 +26,8 @@ export default defineEventHandler(async (event) => {
     credits: user.credits,
     totalAttempts: user.totalAttempts,
     correctAttempts: user.correctAttempts,
+    streak: user.streak,
+    lastPracticeAt: user.lastPracticeAt ? user.lastPracticeAt.toISOString() : null,
   })
 
   return {
@@ -35,5 +37,7 @@ export default defineEventHandler(async (event) => {
     credits: user.credits,
     totalAttempts: user.totalAttempts,
     correctAttempts: user.correctAttempts,
+    streak: user.streak,
+    lastPracticeAt: user.lastPracticeAt ? user.lastPracticeAt.toISOString() : null,
   }
 })

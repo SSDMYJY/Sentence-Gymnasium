@@ -358,7 +358,9 @@
 		"startPractice": "開始練習",
 		"catAll": "全部",
 		"yourAnswer": "你的答案",
-		"aiFeedback": "AI 回饋",
+		"correctAnswer": "參考答案",
+		"explanation": "語法點說明",
+		"aiFeedback": "AI 反饋",
 		"verdict": "判定",
 		"verdictCorrect": "正確",
 		"verdictPartial": "部分正確",
@@ -370,6 +372,9 @@
 		"minutesAgo": "{n} 分鐘前",
 		"hoursAgo": "{n} 小時前",
 		"daysAgo": "{n} 天前"
+	},
+	"streak": {
+		"days": "天"
 	},
 	"ranking": {
 		"title": "排行榜",

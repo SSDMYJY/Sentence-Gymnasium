@@ -210,6 +210,7 @@ definePageMeta({ middleware: 'auth' })
 
 const { t, locale } = useI18n()
 const store = useUserStore()
+const toast = useToast()
 const user = computed(() => store.user as SessionUser)
 
 // ---------- 状态 ----------
@@ -249,6 +250,8 @@ interface JudgeResultData {
 	correctAnswer: string
 	totalAttempts: number
 	correctAttempts: number
+	streak: number
+	streakIncreased: boolean
 }
 const judgeResult = ref<JudgeResultData | null>(null)
 
@@ -364,11 +367,11 @@ async function onGenerate() {
 	} catch (err: any) {
 		phase.value = 'idle'
 		if (err?.statusCode === 402) {
-			alert(t('practice.noCredits'))
+			toast.error(t('practice.noCredits'))
 		} else if (err?.statusMessage) {
-			alert(err.statusMessage)
+			toast.error(err.statusMessage)
 		} else {
-			alert(t('practice.generateError'))
+			toast.error(t('practice.generateError'))
 		}
 	} finally {
 		generating.value = false
@@ -392,16 +395,19 @@ async function onJudge() {
 			},
 		})
 		judgeResult.value = data
-		// 同步用户统计
 		store.setUser({
 			...user.value,
 			totalAttempts: data.totalAttempts,
 			correctAttempts: data.correctAttempts,
+			streak: data.streak,
 		})
+		if (data.streakIncreased && data.streak > 1) {
+			toast.success(`🔥 ${t('dashboard.stats.streak')} ${data.streak} ${t('streak.days')}`)
+		}
 		phase.value = 'result'
 	} catch (err: any) {
 		phase.value = 'answering'
-		alert(err?.statusMessage || t('practice.judgeError'))
+		toast.error(err?.statusMessage || t('practice.judgeError'))
 	} finally {
 		judging.value = false
 	}

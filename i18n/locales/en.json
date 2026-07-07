@@ -358,6 +358,8 @@
 		"startPractice": "Start Practice",
 		"catAll": "All",
 		"yourAnswer": "Your Answer",
+		"correctAnswer": "Reference Answer",
+		"explanation": "Grammar Explanation",
 		"aiFeedback": "AI Feedback",
 		"verdict": "Verdict",
 		"verdictCorrect": "Correct",
@@ -370,6 +372,9 @@
 		"minutesAgo": "{n}m ago",
 		"hoursAgo": "{n}h ago",
 		"daysAgo": "{n}d ago"
+	},
+	"streak": {
+		"days": "days"
 	},
 	"ranking": {
 		"title": "Leaderboard",

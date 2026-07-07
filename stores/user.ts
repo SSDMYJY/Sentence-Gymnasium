@@ -7,9 +7,10 @@ export interface SessionUser {
   credits: number
   totalAttempts: number
   correctAttempts: number
+  streak: number
+  lastPracticeAt: string | null
 }
 
-// 客户端会话镜像：服务端 cookie/JWT 为唯一真源，本 store 仅缓存当前用户。
 export const useUserStore = defineStore('user', {
   state: () => ({
     user: null as SessionUser | null,
@@ -25,12 +26,8 @@ export const useUserStore = defineStore('user', {
       this.fetched = true
     },
     async fetch(force = false) {
-      // SSR 阶段已由 auth.server.ts 插件填充 store，无需重复请求。
-      // force=true 时跳过缓存（客户端 fallback 场景使用）。
       if (this.fetched && !force) return this.user
       try {
-        // SSR 阶段 $fetch 不会自动转发浏览器请求的 Cookie，需手动带上，
-        // 否则服务端拿不到会话 cookie，会误判为未登录。
         const headers = import.meta.server
           ? useRequestHeaders(['cookie'])
           : undefined

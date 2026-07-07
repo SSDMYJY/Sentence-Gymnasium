@@ -33,10 +33,18 @@ export default defineEventHandler(async (event) => {
       credits: true,
       totalAttempts: true,
       correctAttempts: true,
+      streak: true,
+      lastPracticeAt: true,
     },
   })
 
-  await setSessionCookie(event, created)
+  await setSessionCookie(event, {
+    ...created,
+    lastPracticeAt: created.lastPracticeAt ? created.lastPracticeAt.toISOString() : null,
+  })
 
-  return created
+  return {
+    ...created,
+    lastPracticeAt: created.lastPracticeAt ? created.lastPracticeAt.toISOString() : null,
+  }
 })

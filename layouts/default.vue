@@ -29,28 +29,78 @@
               <span class="text-accent-soft">●</span>
               <span class="text-stone-300">{{ user.credits }}</span>
             </div>
-            <button type="button" :disabled="loggingOut" class="transition-colors hover:text-white disabled:opacity-60"
+            <button type="button" :disabled="loggingOut" class="hidden transition-colors hover:text-white disabled:opacity-60 sm:inline-flex"
               @click="onLogout">
               {{ t('auth.logout') }}
+            </button>
+            <button type="button" class="sm:hidden text-stone-400 transition-colors hover:text-white"
+              @click="mobileMenuOpen = !mobileMenuOpen" aria-label="menu">
+              <span class="block h-5 w-5 relative">
+                <span :class="[
+                  'absolute left-0 h-0.5 w-5 bg-current transition-all duration-200',
+                  mobileMenuOpen ? 'top-2 rotate-45' : 'top-1',
+                ]" />
+                <span :class="[
+                  'absolute left-0 top-2 h-0.5 w-5 bg-current transition-all duration-200',
+                  mobileMenuOpen ? 'opacity-0' : 'opacity-100',
+                ]" />
+                <span :class="[
+                  'absolute left-0 h-0.5 w-5 bg-current transition-all duration-200',
+                  mobileMenuOpen ? 'top-2 -rotate-45' : 'top-3',
+                ]" />
+              </span>
             </button>
           </template>
           <template v-else>
             <NuxtLink :to="localePath('/login')" class="transition-colors hover:text-white">{{ t('auth.login') }}
             </NuxtLink>
-            <!-- <NuxtLink :to="localePath('/register')"
-              class="rounded-full border border-white/15 px-3 py-1 text-xs transition-colors hover:border-white/40 hover:text-white">
-              {{ t('auth.register') }}
-            </NuxtLink> -->
           </template>
         </div>
       </div>
+
+      <Transition name="menu">
+        <div v-if="mobileMenuOpen && user" class="border-t border-white/5 bg-ink-950/95 backdrop-blur-xl sm:hidden">
+          <nav class="mx-auto max-w-7xl px-6 py-3">
+            <NuxtLink v-for="item in navItems" :key="item.key" :to="localePath(item.path)"
+              class="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-colors"
+              :class="isActive(item.path) ? 'bg-accent/10 text-accent-soft' : 'text-stone-300 hover:text-white'"
+              @click="mobileMenuOpen = false">
+              <span class="text-base">{{ item.icon }}</span>
+              {{ item.label }}
+            </NuxtLink>
+            <div class="mt-2 border-t border-white/5 pt-3">
+              <div class="flex items-center justify-between px-3 py-2 text-sm">
+                <span class="text-stone-400">⚡ {{ t('dashboard.stats.energy') }}</span>
+                <span class="font-semibold text-accent-soft">{{ user.credits }}</span>
+              </div>
+              <button type="button" :disabled="loggingOut"
+                class="mt-1 flex w-full items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-stone-300 transition-colors hover:text-white disabled:opacity-60"
+                @click="onLogout">
+                <span class="text-base">↪</span>
+                {{ t('auth.logout') }}
+              </button>
+            </div>
+          </nav>
+        </div>
+      </Transition>
     </header>
 
-    <main class="flex-1">
+    <main class="flex-1 pb-20 sm:pb-0">
       <slot />
     </main>
 
-    <footer class="border-t border-white/5">
+    <nav v-if="user" class="fixed inset-x-0 bottom-0 z-40 border-t border-white/5 bg-ink-950/90 backdrop-blur-xl sm:hidden">
+      <div class="mx-auto flex max-w-lg items-center justify-around px-2 py-1.5">
+        <NuxtLink v-for="tab in mobileTabs" :key="tab.key" :to="localePath(tab.path)"
+          class="flex flex-1 flex-col items-center gap-0.5 rounded-lg py-2 transition-colors"
+          :class="isActive(tab.path) ? 'text-accent-soft' : 'text-stone-500'">
+          <span class="text-lg leading-none">{{ tab.icon }}</span>
+          <span class="text-[10px] font-medium leading-tight">{{ tab.shortLabel }}</span>
+        </NuxtLink>
+      </div>
+    </nav>
+
+    <footer class="hidden border-t border-white/5 sm:block">
       <div
         class="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-10 text-sm text-stone-500 sm:flex-row sm:items-center sm:justify-between">
         <div class="flex items-baseline gap-3">
@@ -72,18 +122,34 @@ const route = useRoute()
 const store = useUserStore()
 const user = computed(() => store.user)
 const loggingOut = ref(false)
+const mobileMenuOpen = ref(false)
 
 const navItems = computed(() => [
-  { key: 'dashboard', label: t('auth.dashboard'), path: '/dashboard' },
-  { key: 'practice', label: t('boards.practice.subtitle'), path: '/practice' },
-  { key: 'paraphrase', label: t('boards.paraphrase.subtitle'), path: '/paraphrase' },
-  { key: 'grammar', label: t('boards.grammar.subtitle'), path: '/grammar' },
-  { key: 'history', label: t('nav.history'), path: '/history' },
-  { key: 'ranking', label: t('ranking.nav'), path: '/ranking' },
+  { key: 'dashboard', label: t('auth.dashboard'), path: '/dashboard', icon: '🏠' },
+  { key: 'practice', label: t('boards.practice.subtitle'), path: '/practice', icon: '⚡' },
+  { key: 'paraphrase', label: t('boards.paraphrase.subtitle'), path: '/paraphrase', icon: '🔄' },
+  { key: 'grammar', label: t('boards.grammar.subtitle'), path: '/grammar', icon: '◎' },
+  { key: 'history', label: t('nav.history'), path: '/history', icon: '📝' },
+  { key: 'ranking', label: t('ranking.nav'), path: '/ranking', icon: '🏆' },
 ])
+
+const mobileTabs = computed(() => [
+  { key: 'dashboard', shortLabel: t('auth.dashboard'), path: '/dashboard', icon: '🏠' },
+  { key: 'practice', shortLabel: t('boards.practice.subtitle'), path: '/practice', icon: '⚡' },
+  { key: 'grammar', shortLabel: t('boards.grammar.subtitle'), path: '/grammar', icon: '◎' },
+  { key: 'history', shortLabel: t('nav.history'), path: '/history', icon: '📝' },
+])
+
+function isActive(path: string): boolean {
+  if (path === '/dashboard') {
+    return route.path === '/dashboard' || route.path.endsWith('/dashboard')
+  }
+  return route.path.includes(path)
+}
 
 const onLogout = async () => {
   loggingOut.value = true
+  mobileMenuOpen.value = false
   try {
     await store.logout()
     await navigateTo(localePath('/'))
@@ -106,4 +172,22 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', onScroll, { passive: true })
 })
+
+watch(() => route.path, () => {
+  mobileMenuOpen.value = false
+})
 </script>
+
+<style scoped>
+.menu-enter-active {
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.menu-leave-active {
+  transition: all 0.15s cubic-bezier(0.4, 0, 1, 1);
+}
+.menu-enter-from,
+.menu-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+</style>

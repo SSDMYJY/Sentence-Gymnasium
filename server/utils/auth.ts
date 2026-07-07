@@ -21,14 +21,14 @@ export interface SessionUser {
   credits: number
   totalAttempts: number
   correctAttempts: number
+  streak: number
+  lastPracticeAt: string | null
 }
 
 const COOKIE_NAME = 'sg_session'
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7 // 7 days
 
 function getSecret(): Uint8Array {
-  // 本地 dev：runtimeConfig.authSecret 来自 NUXT_AUTH_SECRET 环境变量（见 .dev.vars）。
-  // 兜底用固定字符串，仅 dev 生效；prod 必须设置真实 secret。
   const raw = useRuntimeConfig().authSecret || 'dev-only-secret-please-change'
   return new TextEncoder().encode(raw)
 }
@@ -76,7 +76,7 @@ export async function readSession(event: H3Event): Promise<{ userId: string; ema
 }
 
 /**
- * 取当前登录用户（含 credits 等字段）。未登录返回 null。
+ * 取当前登录用户（含 credits、streak 等字段）。未登录返回 null。
  * 单次请求内缓存到 event.context._sessionUser 避免重复查库。
  */
 export async function getSessionUser(event: H3Event): Promise<SessionUser | null> {
@@ -96,9 +96,18 @@ export async function getSessionUser(event: H3Event): Promise<SessionUser | null
           credits: true,
           totalAttempts: true,
           correctAttempts: true,
+          streak: true,
+          lastPracticeAt: true,
         },
       })
-      ctx._sessionUser = user as SessionUser | null
+      if (user) {
+        ctx._sessionUser = {
+          ...user,
+          lastPracticeAt: user.lastPracticeAt ? user.lastPracticeAt.toISOString() : null,
+        }
+      } else {
+        ctx._sessionUser = null
+      }
     }
   }
   return ctx._sessionUser as SessionUser | null
@@ -123,4 +132,35 @@ export async function hashPassword(plain: string): Promise<string> {
 
 export async function verifyPassword(plain: string, hash: string): Promise<boolean> {
   return bcrypt.compare(plain, hash)
+}
+
+// ---------- Streak 计算 ----------
+
+/**
+ * 根据上次练习时间计算新的连续打卡天数。
+ * - 从未练习过：streak = 1
+ * - 今天已练习：streak 不变
+ * - 昨天练习过：streak + 1
+ * - 更早：streak 重置为 1
+ */
+export function computeNewStreak(currentStreak: number, lastPracticeAt: Date | null, now: Date = new Date()): {
+  streak: number
+  isNewDay: boolean
+} {
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+
+  if (!lastPracticeAt) {
+    return { streak: 1, isNewDay: true }
+  }
+
+  const last = new Date(lastPracticeAt.getFullYear(), lastPracticeAt.getMonth(), lastPracticeAt.getDate())
+  const diffDays = Math.round((today.getTime() - last.getTime()) / (1000 * 60 * 60 * 24))
+
+  if (diffDays === 0) {
+    return { streak: currentStreak, isNewDay: false }
+  }
+  if (diffDays === 1) {
+    return { streak: currentStreak + 1, isNewDay: true }
+  }
+  return { streak: 1, isNewDay: true }
 }
