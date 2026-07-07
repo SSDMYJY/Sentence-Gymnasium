@@ -211,7 +211,6 @@ definePageMeta({ middleware: 'auth' })
 const { t, locale } = useI18n()
 const store = useUserStore()
 const user = computed(() => store.user as SessionUser)
-const toast = useToast()
 
 // ---------- 状态 ----------
 
@@ -365,11 +364,11 @@ async function onGenerate() {
 	} catch (err: any) {
 		phase.value = 'idle'
 		if (err?.statusCode === 402) {
-			toast.error(t('practice.noCredits'))
+			alert(t('practice.noCredits'))
 		} else if (err?.statusMessage) {
-			toast.error(err.statusMessage)
+			alert(err.statusMessage)
 		} else {
-			toast.error(t('practice.generateError'))
+			alert(t('practice.generateError'))
 		}
 	} finally {
 		generating.value = false
@@ -402,7 +401,7 @@ async function onJudge() {
 		phase.value = 'result'
 	} catch (err: any) {
 		phase.value = 'answering'
-		toast.error(err?.statusMessage || t('practice.judgeError'))
+		alert(err?.statusMessage || t('practice.judgeError'))
 	} finally {
 		judging.value = false
 	}
