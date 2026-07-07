@@ -39,7 +39,7 @@
             </UButton>
             <UButton
               variant="ghost"
-              class="sm:hidden text-stone-400 transition-colors hover:text-white !p-2"
+              class="sm:hidden text-stone-400 transition-colors hover:text-white p-2!"
               @click="mobileMenuOpen = !mobileMenuOpen"
               aria-label="menu"
             >

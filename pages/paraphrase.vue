@@ -21,18 +21,12 @@
 			<div class="mt-5">
 				<label class="text-xs uppercase tracking-wide text-stone-500">{{ t('paraphrase.sourceLang') }}</label>
 				<div class="mt-3 grid grid-cols-2 gap-3">
-					<UButton
-						v-for="lang in sourceLangs"
-						:key="lang.value"
-						variant="ghost"
-						:class="[
-							'w-full rounded-lg border px-4 py-3 text-sm font-medium transition-colors',
-							selectedLang === lang.value
-								? 'border-accent bg-accent/10 text-accent-soft'
-								: 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
-						]"
-						@click="selectedLang = lang.value"
-					>
+					<UButton v-for="lang in sourceLangs" :key="lang.value" variant="ghost" :class="[
+						'w-full rounded-lg border px-4 py-3 text-sm font-medium transition-colors',
+						selectedLang === lang.value
+							? 'border-accent bg-accent/10 text-accent-soft'
+							: 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
+					]" @click="selectedLang = lang.value">
 						{{ lang.label }}
 					</UButton>
 				</div>
@@ -47,12 +41,8 @@
 					⚡ {{ store.credits }} {{ t('paraphrase.credits') }}
 					<span class="text-stone-600"> · {{ t('paraphrase.cost', { cost: 1 }) }}</span>
 				</span>
-				<UButton
-					:loading="generating"
-					:disabled="store.credits < 1"
-					class="bg-white text-ink-950 hover:bg-stone-100"
-					@click="onGenerate"
-				>
+				<UButton :loading="generating" :disabled="store.credits < 1"
+					class="bg-white text-ink-950 hover:bg-stone-100" @click="onGenerate">
 					{{ t('paraphrase.start') }}
 				</UButton>
 			</div>
@@ -64,143 +54,33 @@
 			<p class="mt-4 text-sm text-stone-400">{{ t('paraphrase.generating') }}</p>
 		</div>
 
-		<!-- 答题阶段 -->
-		<div v-if="phase === 'answering' && currentQuestion" class="space-y-6">
-			<!-- 题目卡片 -->
-			<div class="rounded-2xl border border-white/10 bg-ink-900/50 p-6">
+		<!-- 答题 / 判题 / 结果 -->
+		<AnswerCard v-if="phase !== 'idle' && phase !== 'generating'" v-model="userAnswer"
+			:question-text="currentQuestion?.questionText ?? ''" :judging="judging" :judge-result="judgeResult"
+			:rows="4" :placeholder="t('paraphrase.answerPlaceholder')"
+			:result-labels="{ question: 'paraphrase.originalText', yourAnswer: 'paraphrase.yourAnswer', reference: 'paraphrase.referenceParaphrase' }"
+			submit-label="paraphrase.submit" judging-label="paraphrase.judging" submit-hint="paraphrase.submit"
+			your-answer-label="paraphrase.yourAnswer" feedback-label="paraphrase.feedback" errors-label="paraphrase.errors"
+			suggestion-label="paraphrase.suggestion" next-button-label="paraphrase.nextQuestion"
+			back-button-label="paraphrase.backToSettings" @submit="onJudge" @next="onNext" @back="onBackToSettings">
+			<template #question-meta>
 				<div class="flex items-center justify-between">
 					<span class="rounded-full bg-ink-800 px-3 py-1 text-xs text-stone-400">
-						{{ langLabel(currentQuestion.sourceLang) }}
+						{{ langLabel(currentQuestion!.sourceLang) }}
 					</span>
-					<span class="text-xs text-stone-500">{{ difficultyLabel(currentQuestion.difficulty) }}</span>
+					<span class="text-xs text-stone-500">{{ difficultyLabel(currentQuestion!.difficulty) }}</span>
 				</div>
-				<p class="mt-6 font-display text-xl font-medium leading-relaxed text-stone-100">
-					{{ currentQuestion.questionText }}
-				</p>
-				<div v-if="currentQuestion.hint" class="mt-4 rounded-lg border border-accent/20 bg-accent/5 p-3">
+			</template>
+			<template #question-extra>
+				<div v-if="currentQuestion?.hint" class="mt-4 rounded-lg border border-accent/20 bg-accent/5 p-3">
 					<p class="text-xs text-accent-soft">{{ t('paraphrase.hint') }}</p>
 					<p class="mt-1 text-sm text-stone-300">{{ currentQuestion.hint }}</p>
 				</div>
-			</div>
-
-			<!-- 作答区 -->
-			<div class="rounded-2xl border border-white/10 bg-ink-900/50 p-6">
-				<label class="text-xs uppercase tracking-wide text-stone-500">{{ t('paraphrase.yourAnswer') }}</label>
+			</template>
+			<template #answer-hint>
 				<p class="mt-1 text-xs text-stone-500">{{ t('paraphrase.answerHint') }}</p>
-				<UTextarea
-					v-model="userAnswer"
-					:rows="4"
-					:placeholder="t('paraphrase.answerPlaceholder')"
-					:disabled="judging"
-					:ui="{
-						wrapper: 'mt-3',
-						textarea: 'resize-none border-white/10 bg-ink-950 text-stone-100 placeholder-stone-600 focus:border-accent focus:ring-accent/30 select-none',
-					}"
-					@keydown.meta.enter="onJudge"
-					@keydown.ctrl.enter="onJudge"
-				/>
-				<div class="mt-3 flex items-center justify-between">
-					<span class="text-xs text-stone-600">⌘/Ctrl + Enter {{ t('paraphrase.submit') }}</span>
-					<UButton
-						:loading="judging"
-						:disabled="!userAnswer.trim()"
-						class="bg-white text-ink-950 hover:bg-stone-100"
-						@click="onJudge"
-					>
-						{{ t('paraphrase.submit') }}
-					</UButton>
-				</div>
-			</div>
-		</div>
-
-		<!-- 判题加载 -->
-		<div v-if="phase === 'judging'" class="rounded-2xl border border-white/10 bg-ink-900/50 p-12 text-center">
-			<div class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-accent" />
-			<p class="mt-4 text-sm text-stone-400">{{ t('paraphrase.judging') }}</p>
-		</div>
-
-		<!-- 判题结果 -->
-		<div v-if="phase === 'result' && judgeResult" class="space-y-6">
-			<!-- 结果概览 -->
-			<div :class="[
-				'rounded-2xl border p-6',
-				judgeResult.isCorrect
-					? 'border-green-500/30 bg-green-500/5'
-					: judgeResult.verdict === 'partial'
-						? 'border-yellow-500/30 bg-yellow-500/5'
-						: 'border-red-500/30 bg-red-500/5',
-			]">
-				<div class="flex items-center gap-4">
-					<span class="text-4xl">
-						{{ judgeResult.isCorrect ? '✓' : judgeResult.verdict === 'partial' ? '◐' : '✗' }}
-					</span>
-					<div>
-						<p class="font-display text-xl font-bold text-stone-100">
-							{{ verdictLabel(judgeResult.verdict) }}
-						</p>
-						<p class="text-sm text-stone-400">{{ judgeResult.score }} / 10</p>
-					</div>
-				</div>
-			</div>
-
-			<!-- 题目 + 答案回顾 -->
-			<div class="rounded-2xl border border-white/10 bg-ink-900/50 p-6">
-				<div class="space-y-4">
-					<div>
-						<p class="text-xs uppercase tracking-wide text-stone-500">{{ t('paraphrase.originalText') }}</p>
-						<p class="mt-1 text-stone-200">{{ currentQuestion?.questionText }}</p>
-					</div>
-					<div>
-						<p class="text-xs uppercase tracking-wide text-stone-500">{{ t('paraphrase.yourAnswer') }}</p>
-						<p class="mt-1 text-stone-200">{{ userAnswer }}</p>
-					</div>
-					<div>
-						<p class="text-xs uppercase tracking-wide text-stone-500">{{ t('paraphrase.referenceParaphrase')
-						}}</p>
-						<p class="mt-1 text-accent-soft">{{ judgeResult.correctAnswer }}</p>
-					</div>
-				</div>
-			</div>
-
-			<!-- AI 反馈 -->
-			<div class="rounded-2xl border border-white/10 bg-ink-900/50 p-6">
-				<h3 class="text-sm font-semibold text-stone-300">{{ t('paraphrase.feedback') }}</h3>
-				<p class="mt-3 text-sm leading-relaxed text-stone-300">{{ judgeResult.feedback }}</p>
-
-				<div v-if="judgeResult.errors?.length" class="mt-4">
-					<p class="text-xs uppercase tracking-wide text-stone-500">{{ t('paraphrase.errors') }}</p>
-					<ul class="mt-2 space-y-1">
-						<li v-for="(err, i) in judgeResult.errors" :key="i"
-							class="flex items-start gap-2 text-sm text-stone-400">
-							<span class="mt-0.5 text-red-400">·</span>
-							<span>{{ err }}</span>
-						</li>
-					</ul>
-				</div>
-
-				<div v-if="judgeResult.suggestion" class="mt-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
-					<p class="text-xs uppercase tracking-wide text-accent-soft">{{ t('paraphrase.suggestion') }}</p>
-					<p class="mt-1 text-sm text-stone-200">{{ judgeResult.suggestion }}</p>
-				</div>
-			</div>
-
-			<!-- 操作按钮 -->
-			<div class="flex gap-3">
-				<UButton
-					class="flex-1 bg-white text-ink-950 hover:bg-stone-100"
-					@click="onNext"
-				>
-					{{ t('paraphrase.nextQuestion') }}
-				</UButton>
-				<UButton
-					variant="outline"
-					class="flex-1 border-white/15 text-stone-300 hover:border-white/30 hover:text-white"
-					@click="onBackToSettings"
-				>
-					{{ t('paraphrase.backToSettings') }}
-				</UButton>
-			</div>
-		</div>
+			</template>
+		</AnswerCard>
 	</div>
 </template>
 
@@ -269,12 +149,6 @@ function difficultyLabel(d: number): string {
 	if (d === 1) return t('practice.diffEasy')
 	if (d === 2) return t('practice.diffMedium')
 	return t('practice.diffHard')
-}
-
-function verdictLabel(v: string): string {
-	if (v === 'correct') return t('paraphrase.verdictCorrect')
-	if (v === 'partial') return t('paraphrase.verdictPartial')
-	return t('paraphrase.verdictIncorrect')
 }
 
 // ---------- 出题 ----------

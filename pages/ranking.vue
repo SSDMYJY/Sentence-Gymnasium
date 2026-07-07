@@ -40,9 +40,9 @@
           :key="item.id"
           :class="[
             'flex items-center justify-between px-5 py-4 transition-colors hover:bg-white/5',
-            index === 0 && 'border-b border-amber-500/30 bg-gradient-to-r from-amber-500/10 to-transparent',
-            index === 1 && 'border-b border-slate-400/30 bg-gradient-to-r from-slate-400/5 to-transparent',
-            index === 2 && 'border-b border-amber-700/30 bg-gradient-to-r from-amber-700/5 to-transparent',
+            index === 0 && 'border-b border-amber-500/30 bg-linear-to-r from-amber-500/10 to-transparent',
+            index === 1 && 'border-b border-slate-400/30 bg-linear-to-r from-slate-400/5 to-transparent',
+            index === 2 && 'border-b border-amber-700/30 bg-linear-to-r from-amber-700/5 to-transparent',
           ]"
         >
           <div class="flex items-center gap-4">

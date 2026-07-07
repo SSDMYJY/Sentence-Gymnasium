@@ -99,153 +99,34 @@
 			<p class="mt-4 text-sm text-stone-400">{{ t('grammar.generating') }}</p>
 		</div>
 
-		<!-- 答题阶段 -->
-		<div v-if="phase === 'answering' && currentQuestion" class="space-y-6">
-			<!-- 题目卡片 -->
-			<div class="rounded-2xl border border-white/10 bg-ink-900/50 p-6">
+		<!-- 答题 / 判题 / 结果 -->
+		<AnswerCard v-if="phase !== 'idle' && phase !== 'generating'" v-model="userAnswer"
+			:question-text="currentQuestion?.questionText ?? ''" :judging="judging" :judge-result="judgeResult"
+			:rows="3" :placeholder="t('grammar.answerPlaceholder')"
+			:result-labels="{ question: 'grammar.question', yourAnswer: 'grammar.yourAnswer', reference: 'grammar.correctAnswer' }"
+			submit-label="grammar.submit" judging-label="grammar.judging" submit-hint="grammar.submit"
+			your-answer-label="grammar.yourAnswer" feedback-label="grammar.feedback" errors-label="grammar.errors"
+			suggestion-label="grammar.suggestion" next-button-label="grammar.nextQuestion"
+			back-button-label="grammar.backToSettings" :next-first="true" @submit="onJudge" @next="onNext"
+			@back="onBackToSettings">
+			<template #question-meta>
 				<div class="flex items-center justify-between">
 					<span class="rounded-full bg-ink-800 px-3 py-1 text-xs text-stone-400">
-						{{ tagLabel(currentQuestion.grammarTag) }}
+						{{ tagLabel(currentQuestion!.grammarTag) }}
 					</span>
-					<span class="text-xs text-stone-500">{{ typeLabel(currentQuestion.questionType) }}</span>
+					<span class="text-xs text-stone-500">{{ typeLabel(currentQuestion!.questionType) }}</span>
 				</div>
-				<p class="mt-6 font-display text-xl font-medium leading-relaxed text-stone-100">
-					{{ currentQuestion.questionText }}
-				</p>
-			</div>
-
-			<!-- 作答区 -->
-			<div class="rounded-2xl border border-white/10 bg-ink-900/50 p-6">
-				<label class="text-xs uppercase tracking-wide text-stone-500">{{ t('grammar.yourAnswer') }}</label>
-
-				<!-- 填空 / 改错 -->
-				<UTextarea
-					v-model="userAnswer"
-					:rows="3"
-					:placeholder="t('grammar.answerPlaceholder')"
-					:disabled="judging"
-					:ui="{
-						wrapper: 'mt-3',
-						textarea: 'resize-none border-white/10 bg-ink-950 text-stone-100 placeholder-stone-600 focus:border-accent focus:ring-accent/30 select-none',
-					}"
-					@keydown.meta.enter="onJudge"
-					@keydown.ctrl.enter="onJudge"
-					@paste.prevent
-					@copy.prevent
-					@cut.prevent
-					@contextmenu.prevent
-				/>
-
-				<div class="mt-3 flex items-center justify-between">
-					<span class="text-xs text-stone-600">⌘/Ctrl + Enter {{ t('grammar.submit') }}</span>
-					<UButton
-						:loading="judging"
-						:disabled="!userAnswer.trim()"
-						class="bg-white text-ink-950 hover:bg-stone-100"
-						@click="onJudge"
-					>
-						{{ t('grammar.submit') }}
-					</UButton>
+			</template>
+			<template #result-extra>
+				<div v-if="currentQuestion?.explanation || judgeResult?.explanation"
+					class="rounded-2xl border border-accent/20 bg-accent/5 p-6">
+					<h3 class="text-sm font-semibold text-accent-soft">{{ t('grammar.explanation') }}</h3>
+					<p class="mt-2 text-sm leading-relaxed text-stone-300">
+						{{ judgeResult?.explanation || currentQuestion?.explanation }}
+					</p>
 				</div>
-			</div>
-		</div>
-
-		<!-- 判题加载 -->
-		<div v-if="phase === 'judging'" class="rounded-2xl border border-white/10 bg-ink-900/50 p-12 text-center">
-			<div class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-accent" />
-			<p class="mt-4 text-sm text-stone-400">{{ t('grammar.judging') }}</p>
-		</div>
-
-		<!-- 判题结果 -->
-		<div v-if="phase === 'result' && judgeResult" class="space-y-6">
-			<!-- 结果概览 -->
-			<div :class="[
-				'rounded-2xl border p-6',
-				judgeResult.isCorrect
-					? 'border-green-500/30 bg-green-500/5'
-					: judgeResult.verdict === 'partial'
-						? 'border-yellow-500/30 bg-yellow-500/5'
-						: 'border-red-500/30 bg-red-500/5',
-			]">
-				<div class="flex items-center gap-4">
-					<span class="text-4xl">
-						{{ judgeResult.isCorrect ? '✓' : judgeResult.verdict === 'partial' ? '◐' : '✗' }}
-					</span>
-					<div>
-						<p class="font-display text-xl font-bold text-stone-100">
-							{{ verdictLabel(judgeResult.verdict) }}
-						</p>
-						<p class="text-sm text-stone-400">{{ judgeResult.score }} / 10</p>
-					</div>
-				</div>
-			</div>
-
-			<!-- 题目 + 答案回顾 -->
-			<div class="rounded-2xl border border-white/10 bg-ink-900/50 p-6">
-				<div class="space-y-4">
-					<div>
-						<p class="text-xs uppercase tracking-wide text-stone-500">{{ t('grammar.question') }}</p>
-						<p class="mt-1 text-stone-200">{{ currentQuestion?.questionText }}</p>
-					</div>
-					<div>
-						<p class="text-xs uppercase tracking-wide text-stone-500">{{ t('grammar.yourAnswer') }}</p>
-						<p class="mt-1 text-stone-200">{{ userAnswer }}</p>
-					</div>
-					<div>
-						<p class="text-xs uppercase tracking-wide text-stone-500">{{ t('grammar.correctAnswer') }}</p>
-						<p class="mt-1 text-accent-soft">{{ judgeResult.correctAnswer }}</p>
-					</div>
-				</div>
-			</div>
-
-			<!-- 语法点说明 -->
-			<div v-if="currentQuestion?.explanation || judgeResult.explanation"
-				class="rounded-2xl border border-accent/20 bg-accent/5 p-6">
-				<h3 class="text-sm font-semibold text-accent-soft">{{ t('grammar.explanation') }}</h3>
-				<p class="mt-2 text-sm leading-relaxed text-stone-300">
-					{{ judgeResult.explanation || currentQuestion?.explanation }}
-				</p>
-			</div>
-
-			<!-- AI 反馈 -->
-			<div class="rounded-2xl border border-white/10 bg-ink-900/50 p-6">
-				<h3 class="text-sm font-semibold text-stone-300">{{ t('grammar.feedback') }}</h3>
-				<p class="mt-3 text-sm leading-relaxed text-stone-300">{{ judgeResult.feedback }}</p>
-
-				<div v-if="judgeResult.errors?.length" class="mt-4">
-					<p class="text-xs uppercase tracking-wide text-stone-500">{{ t('grammar.errors') }}</p>
-					<ul class="mt-2 space-y-1">
-						<li v-for="(err, i) in judgeResult.errors" :key="i"
-							class="flex items-start gap-2 text-sm text-stone-400">
-							<span class="mt-0.5 text-red-400">·</span>
-							<span>{{ err }}</span>
-						</li>
-					</ul>
-				</div>
-
-				<div v-if="judgeResult.suggestion" class="mt-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
-					<p class="text-xs uppercase tracking-wide text-accent-soft">{{ t('grammar.suggestion') }}</p>
-					<p class="mt-1 text-sm text-stone-200">{{ judgeResult.suggestion }}</p>
-				</div>
-			</div>
-
-			<!-- 操作按钮 -->
-			<div class="flex gap-3">
-				<UButton
-					class="flex-1 bg-white text-ink-950 hover:bg-stone-100"
-					@click="onNext"
-				>
-					{{ t('grammar.nextQuestion') }}
-				</UButton>
-				<UButton
-					variant="outline"
-					class="flex-1 border-white/15 text-stone-300 hover:border-white/30 hover:text-white"
-					@click="onBackToSettings"
-				>
-					{{ t('grammar.backToSettings') }}
-				</UButton>
-			</div>
-		</div>
+			</template>
+		</AnswerCard>
 	</div>
 </template>
 
@@ -341,12 +222,6 @@ function tagLabel(tag: GrammarTag): string {
 
 function typeLabel(type: string): string {
 	return questionTypes.find((x) => x.value === type)?.label ?? type
-}
-
-function verdictLabel(v: string): string {
-	if (v === 'correct') return t('grammar.verdictCorrect')
-	if (v === 'partial') return t('grammar.verdictPartial')
-	return t('grammar.verdictIncorrect')
 }
 
 // ---------- 出题 ----------

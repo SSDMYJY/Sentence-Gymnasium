@@ -49,7 +49,7 @@
         class="rounded-xl border border-white/10 bg-ink-900/50 overflow-hidden">
         <UButton
           variant="ghost"
-          class="flex w-full items-center gap-4 px-5 py-4 text-left transition-colors hover:bg-white/5 !justify-start !rounded-none !p-0"
+          class="flex w-full items-center gap-4 px-5 py-4 text-left transition-colors hover:bg-white/5 justify-start! rounded-none! p-0!"
           @click="toggleExpand(entry.id)"
         >
           <span class="w-8 shrink-0 text-center text-xs text-stone-600">

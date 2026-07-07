@@ -10,59 +10,40 @@
           <label class="block text-xs uppercase tracking-wide text-stone-500" for="email">{{
             t('auth.email')
           }}</label>
-          <UInput
-            id="email"
-            v-model="email"
-            type="email"
-            :placeholder="t('auth.emailPlaceholder')"
-            :ui="{
-              wrapper: 'mt-2',
-              input: 'border-white/10 bg-ink-800/60 text-stone-100 placeholder-stone-500 focus:border-accent focus:ring-accent/30',
-            }"
-          />
+          <UInput id="email" v-model="email" type="email" :placeholder="t('auth.emailPlaceholder')" :ui="{
+            root: 'w-full',
+            wrapper: 'mt-2',
+            input: 'border-white/10 bg-ink-800/60 text-stone-100 placeholder-stone-500 focus:border-accent focus:ring-accent/30',
+          }" />
         </div>
 
         <div>
           <label class="block text-xs uppercase tracking-wide text-stone-500" for="name">{{
             t('auth.name')
           }}</label>
-          <UInput
-            id="name"
-            v-model="name"
-            type="text"
-            :placeholder="t('auth.namePlaceholder')"
-            :ui="{
-              wrapper: 'mt-2',
-              input: 'border-white/10 bg-ink-800/60 text-stone-100 placeholder-stone-500 focus:border-accent focus:ring-accent/30',
-            }"
-          />
+          <UInput id="name" v-model="name" type="text" :placeholder="t('auth.namePlaceholder')" :ui="{
+            root: 'w-full',
+            wrapper: 'mt-2',
+            input: 'border-white/10 bg-ink-800/60 text-stone-100 placeholder-stone-500 focus:border-accent focus:ring-accent/30',
+          }" />
         </div>
 
         <div>
           <label class="block text-xs uppercase tracking-wide text-stone-500" for="password">{{
             t('auth.password')
           }}</label>
-          <UInput
-            id="password"
-            v-model="password"
-            type="password"
-            :placeholder="t('auth.passwordPlaceholder')"
-            :ui="{
-              wrapper: 'mt-2',
-              input: 'border-white/10 bg-ink-800/60 text-stone-100 placeholder-stone-500 focus:border-accent focus:ring-accent/30',
-            }"
-          />
+          <UInput id="password" v-model="password" type="password" :placeholder="t('auth.passwordPlaceholder')" :ui="{
+            root: 'w-full',
+            wrapper: 'mt-2',
+            input: 'border-white/10 bg-ink-800/60 text-stone-100 placeholder-stone-500 focus:border-accent focus:ring-accent/30',
+          }" />
         </div>
 
         <p v-if="error" class="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
           {{ error }}
         </p>
 
-        <UButton
-          type="submit"
-          :loading="loading"
-          class="w-full bg-accent text-ink-950 hover:bg-accent-soft"
-        >
+        <UButton type="submit" :loading="loading" class="w-full bg-accent text-ink-950 hover:bg-accent-soft">
           {{ loading ? t('auth.loading') : t('auth.registerSubmit') }}
         </UButton>
       </form>
