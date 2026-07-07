@@ -221,6 +221,7 @@ definePageMeta({ middleware: 'auth' })
 const { t, locale } = useI18n()
 const store = useUserStore()
 const user = computed(() => store.user as SessionUser)
+const toast = useToast()
 
 // ---------- 状态 ----------
 
@@ -326,9 +327,9 @@ async function onGenerate() {
 	} catch (err: any) {
 		phase.value = 'idle'
 		if (err?.statusMessage) {
-			alert(err.statusMessage)
+			toast.error(err.statusMessage)
 		} else {
-			alert(t('grammar.generateError'))
+			toast.error(t('grammar.generateError'))
 		}
 	} finally {
 		generating.value = false
