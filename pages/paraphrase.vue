@@ -189,6 +189,7 @@ definePageMeta({ middleware: 'auth' })
 
 const { t, locale } = useI18n()
 const store = useUserStore()
+const toast = useToast()
 const user = computed(() => store.user as SessionUser)
 
 // ---------- 状态 ----------
@@ -220,6 +221,10 @@ interface JudgeResultData {
 	suggestion: string | null
 	errors: string[]
 	correctAnswer: string
+	totalAttempts: number
+	correctAttempts: number
+	streak: number
+	streakIncreased: boolean
 }
 const judgeResult = ref<JudgeResultData | null>(null)
 
@@ -269,11 +274,11 @@ async function onGenerate() {
 	} catch (err: any) {
 		phase.value = 'idle'
 		if (err?.statusCode === 402) {
-			alert(t('paraphrase.noCredits'))
+			toast.error(t('paraphrase.noCredits'))
 		} else if (err?.statusMessage) {
-			alert(err.statusMessage)
+			toast.error(err.statusMessage)
 		} else {
-			alert(t('paraphrase.generateError'))
+			toast.error(t('paraphrase.generateError'))
 		}
 	} finally {
 		generating.value = false
@@ -301,11 +306,15 @@ async function onJudge() {
 			...user.value,
 			totalAttempts: data.totalAttempts,
 			correctAttempts: data.correctAttempts,
+			streak: data.streak,
 		})
+		if (data.streakIncreased && data.streak > 1) {
+			toast.success(`🔥 ${t('dashboard.stats.streak')} ${data.streak} ${t('streak.days')}`)
+		}
 		phase.value = 'result'
 	} catch (err: any) {
 		phase.value = 'answering'
-		alert(err?.statusMessage || t('paraphrase.judgeError'))
+		toast.error(err?.statusMessage || t('paraphrase.judgeError'))
 	} finally {
 		judging.value = false
 	}

@@ -22,6 +22,8 @@ model User {
   credits         Int      @default(20)
   totalAttempts   Int      @default(0)
   correctAttempts Int      @default(0)
+  streak          Int      @default(0)
+  lastPracticeAt  DateTime?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   attempts        Attempt[]

@@ -358,6 +358,8 @@
 		"startPractice": "开始练习",
 		"catAll": "全部",
 		"yourAnswer": "你的答案",
+		"correctAnswer": "参考答案",
+		"explanation": "语法点说明",
 		"aiFeedback": "AI 反馈",
 		"verdict": "判定",
 		"verdictCorrect": "正确",
@@ -370,6 +372,9 @@
 		"minutesAgo": "{n} 分钟前",
 		"hoursAgo": "{n} 小时前",
 		"daysAgo": "{n} 天前"
+	},
+	"streak": {
+		"days": "天"
 	},
 	"ranking": {
 		"title": "排行榜",

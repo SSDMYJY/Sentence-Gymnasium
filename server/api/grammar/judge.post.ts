@@ -2,8 +2,9 @@
 // 1. 校验登录
 // 2. 从数据库取出题目（含正确答案）
 // 3. 调用 AI 判题
-// 4. 存入 Attempt 表，更新用户统计
+// 4. 存入 Attempt 表，更新用户统计 + streak
 import { judgeAnswer } from '../../utils/ai'
+import { computeNewStreak } from '../../utils/auth'
 import type { GrammarTag, UiLang } from '../../types/ai'
 
 type QuestionType = 'fill-blank' | 'choice' | 'error-correction'
@@ -19,7 +20,6 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'questionId and userAnswer are required' })
   }
 
-  // 取出题目
   const question = await prisma.generatedQuestion.findUnique({
     where: { id: questionId },
   })
@@ -32,11 +32,9 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'Question is not a grammar question' })
   }
 
-  // 从 extraData 解析题型
   const extraData = question.extraData ? JSON.parse(question.extraData) : {}
   const questionType = (extraData.questionType ?? 'fill-blank') as QuestionType
 
-  // 调用 AI 判题
   const result = await judgeAnswer(event, {
     category: 'grammar',
     questionText: question.questionText,
@@ -47,8 +45,10 @@ export default defineEventHandler(async (event) => {
     uiLang: (uiLang ?? 'zh-hans') as UiLang,
   })
 
-  // 存入 Attempt + 更新用户统计（事务）
-  const [attempt] = await prisma.$transaction([
+  const now = new Date()
+  const streakResult = computeNewStreak(user.streak, user.lastPracticeAt ? new Date(user.lastPracticeAt) : null, now)
+
+  const [attempt, updatedUser] = await prisma.$transaction([
     prisma.attempt.create({
       data: {
         userId: user.id,
@@ -71,11 +71,12 @@ export default defineEventHandler(async (event) => {
       data: {
         totalAttempts: { increment: 1 },
         correctAttempts: result.isCorrect ? { increment: 1 } : undefined,
+        streak: streakResult.streak,
+        lastPracticeAt: now,
       },
     }),
   ])
 
-  // 增加题目使用次数
   await prisma.generatedQuestion.update({
     where: { id: question.id },
     data: { usedCount: { increment: 1 } },
@@ -91,7 +92,9 @@ export default defineEventHandler(async (event) => {
     errors: result.errors ?? [],
     correctAnswer: question.correctAnswer,
     explanation: extraData.explanation ?? null,
-    totalAttempts: user.totalAttempts + 1,
-    correctAttempts: user.correctAttempts + (result.isCorrect ? 1 : 0),
+    totalAttempts: updatedUser.totalAttempts,
+    correctAttempts: updatedUser.correctAttempts,
+    streak: updatedUser.streak,
+    streakIncreased: streakResult.isNewDay,
   }
 })

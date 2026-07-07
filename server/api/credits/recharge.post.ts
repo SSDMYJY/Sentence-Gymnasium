@@ -16,8 +16,13 @@ export default defineEventHandler(async (event) => {
       credits: true,
       totalAttempts: true,
       correctAttempts: true,
+      streak: true,
+      lastPracticeAt: true,
     },
   })
 
-  return updated
+  return {
+    ...updated,
+    lastPracticeAt: updated.lastPracticeAt ? updated.lastPracticeAt.toISOString() : null,
+  }
 })

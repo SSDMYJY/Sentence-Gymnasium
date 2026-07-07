@@ -358,6 +358,8 @@
 		"startPractice": "練習開始",
 		"catAll": "すべて",
 		"yourAnswer": "あなたの答え",
+		"correctAnswer": "模範解答",
+		"explanation": "文法解説",
 		"aiFeedback": "AI フィードバック",
 		"verdict": "判定",
 		"verdictCorrect": "正解",
@@ -370,6 +372,9 @@
 		"minutesAgo": "{n}分前",
 		"hoursAgo": "{n}時間前",
 		"daysAgo": "{n}日前"
+	},
+	"streak": {
+		"days": "日"
 	},
 	"ranking": {
 		"title": "リーダーボード",

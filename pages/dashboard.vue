@@ -173,7 +173,7 @@ const experiencePercent = computed(() => {
 
 const stats = computed(() => [
   { icon: '⚡', label: t('dashboard.stats.energy'), value: user.value?.credits ?? 0 },
-  { icon: '🔥', label: t('dashboard.stats.streak'), value: 1 },
+  { icon: '🔥', label: t('dashboard.stats.streak'), value: user.value?.streak ?? 0 },
   { icon: '◎', label: t('dashboard.stats.accuracy'), value: accRate.value },
   { icon: '🏆', label: t('dashboard.stats.total'), value: user.value?.totalAttempts ?? 0 },
 ])
