@@ -114,7 +114,7 @@ function verdictLabel(v: string): string {
 	<!-- 判题加载 -->
 	<div v-if="showJudging" class="rounded-2xl border border-white/10 bg-ink-900/50 p-12 text-center">
 		<div class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-accent" />
-		<p class="mt-4 text-sm text-stone-400">{{ judgingLabel }}</p>
+		<p class="mt-4 text-sm text-stone-400">{{ t(judgingLabel) }}</p>
 	</div>
 
 	<!-- 判题结果 -->
