@@ -10,14 +10,15 @@
           <label class="block text-xs uppercase tracking-wide text-stone-500" for="email">{{
             t('auth.email')
           }}</label>
-          <input
+          <UInput
             id="email"
             v-model="email"
             type="email"
-            autocomplete="email"
-            required
             :placeholder="t('auth.emailPlaceholder')"
-            class="mt-2 w-full rounded-lg border border-white/10 bg-ink-800/60 px-4 py-3 text-sm text-stone-100 placeholder-stone-500 transition-colors focus:border-accent focus:outline-none"
+            :ui="{
+              wrapper: 'mt-2',
+              input: 'border-white/10 bg-ink-800/60 text-stone-100 placeholder-stone-500 focus:border-accent focus:ring-accent/30',
+            }"
           />
         </div>
 
@@ -25,14 +26,15 @@
           <label class="block text-xs uppercase tracking-wide text-stone-500" for="password">{{
             t('auth.password')
           }}</label>
-          <input
+          <UInput
             id="password"
             v-model="password"
             type="password"
-            autocomplete="current-password"
-            required
             :placeholder="t('auth.passwordPlaceholder')"
-            class="mt-2 w-full rounded-lg border border-white/10 bg-ink-800/60 px-4 py-3 text-sm text-stone-100 placeholder-stone-500 transition-colors focus:border-accent focus:outline-none"
+            :ui="{
+              wrapper: 'mt-2',
+              input: 'border-white/10 bg-ink-800/60 text-stone-100 placeholder-stone-500 focus:border-accent focus:ring-accent/30',
+            }"
           />
         </div>
 
@@ -40,14 +42,13 @@
           {{ error }}
         </p>
 
-        <button
+        <UButton
           type="submit"
-          :disabled="loading"
-          class="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-ink-950 transition hover:bg-accent-soft disabled:cursor-not-allowed disabled:opacity-60"
+          :loading="loading"
+          class="w-full bg-accent text-ink-950 hover:bg-accent-soft"
         >
           {{ loading ? t('auth.loading') : t('auth.loginSubmit') }}
-          <span v-if="!loading" class="transition-transform group-hover:translate-x-0.5">→</span>
-        </button>
+        </UButton>
       </form>
 
       <NuxtLink
@@ -66,11 +67,9 @@ const localePath = useLocalePath()
 const store = useUserStore()
 const route = useRoute()
 
-// SSR 阶段 store 尚未填充，需主动拉一次 session 判断登录态
 if (!store.fetched) {
   await store.fetch()
 }
-// 已登录则直接回 dashboard / 目标页
 if (store.isAuthenticated) {
   await navigateTo((route.query.redirect as string) || localePath('/dashboard'))
 }

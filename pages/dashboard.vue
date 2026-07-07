@@ -36,27 +36,32 @@
       <div class="rounded-2xl border border-white/10 bg-ink-900/50 p-6">
         <h3 class="text-sm font-semibold text-stone-300">{{ t('dashboard.quickActions.title') }}</h3>
         <div class="mt-4 space-y-3">
-          <NuxtLink
+          <UButton
             :to="localePath('/practice')"
-            class="flex w-full items-center justify-center gap-2 rounded-lg bg-white px-4 py-3 text-sm font-semibold text-ink-950 transition-colors hover:bg-stone-100"
+            class="w-full bg-white text-ink-950 hover:bg-stone-100"
+            size="lg"
           >
             <span>⚡</span>
             {{ t('dashboard.quickActions.startPractice') }}
-          </NuxtLink>
-          <NuxtLink
+          </UButton>
+          <UButton
             :to="localePath('/grammar')"
-            class="flex w-full items-center justify-center gap-2 rounded-lg border border-white/15 px-4 py-3 text-sm text-stone-300 transition-colors hover:border-accent hover:text-white"
+            variant="outline"
+            class="w-full border-white/15 text-stone-300 hover:border-accent hover:text-white"
+            size="lg"
           >
             <span>◎</span>
             {{ t('dashboard.quickActions.grammarFocus') }}
-          </NuxtLink>
-          <NuxtLink
+          </UButton>
+          <UButton
             :to="localePath('/history')"
-            class="flex w-full items-center justify-center gap-2 rounded-lg border border-white/15 px-4 py-3 text-sm text-stone-300 transition-colors hover:border-accent hover:text-white"
+            variant="outline"
+            class="w-full border-white/15 text-stone-300 hover:border-accent hover:text-white"
+            size="lg"
           >
             <span>📝</span>
             {{ t('dashboard.quickActions.reviewMistakes') }}
-          </NuxtLink>
+          </UButton>
         </div>
       </div>
     </div>
@@ -97,15 +102,17 @@
     </section>
 
     <div class="mt-8 text-center">
-      <button
-        type="button"
-        :disabled="recharging"
-        class="inline-flex items-center gap-2 rounded-full border border-white/15 px-6 py-2.5 text-sm font-medium text-stone-300 transition-colors hover:border-accent hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
+      <UButton
+        variant="outline"
+        :loading="recharging"
+        class="border-white/15 text-stone-300 hover:border-accent hover:text-white"
         @click="onRecharge"
       >
-        <span class="text-accent-soft">⚡</span>
+        <template #leading>
+          <span class="text-accent-soft">⚡</span>
+        </template>
         {{ recharging ? t('dashboard.recharge.loading') : t('dashboard.recharge.button') }}
-      </button>
+      </UButton>
     </div>
   </div>
 </template>

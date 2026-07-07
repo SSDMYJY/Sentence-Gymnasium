@@ -1,19 +1,38 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+:root {
+  --ui-radius: 0rem;
+}
+
+@theme static {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Space Grotesk', 'Inter', ui-sans-serif, sans-serif;
+
+  --color-ink-950: #0a0a0b;
+  --color-ink-900: #0e0e0f;
+  --color-ink-800: #161618;
+  --color-ink-700: #1f1f22;
+
+  --color-accent: #f59e0b;
+  --color-accent-soft: #fbbf24;
+
+  --tracking-tightest: -0.04em;
+}
 
 html,
 body {
-  @apply bg-ink-950 text-stone-100 antialiased;
-  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  background-color: var(--color-ink-950);
+  color: var(--color-stone-100);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: var(--font-sans);
 }
 
 ::selection {
   background: rgba(245, 158, 11, 0.28);
   color: #fff;
 }
-
-/* ---------- Motion ---------- */
 
 @keyframes fadeUp {
   from {
@@ -44,7 +63,6 @@ body {
   transform: none;
 }
 
-/* Staggered children inside reveal grids */
 .boards-grid > .reveal:nth-child(1) { transition-delay: 0ms; }
 .boards-grid > .reveal:nth-child(2) { transition-delay: 120ms; }
 .boards-grid > .reveal:nth-child(3) { transition-delay: 240ms; }

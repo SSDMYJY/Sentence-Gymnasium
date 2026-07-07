@@ -25,16 +25,24 @@
         <div class="flex items-center gap-4">
           <LanguageSwitcher />
           <template v-if="user">
-            <div class="hidden items-center gap-1 rounded-full bg-ink-800 px-3 py-1 text-xs sm:flex">
+            <div class="hidden items-center gap-1 bg-ink-800 px-3 py-1 text-xs sm:flex">
               <span class="text-accent-soft">●</span>
               <span class="text-stone-300">{{ user.credits }}</span>
             </div>
-            <button type="button" :disabled="loggingOut" class="hidden transition-colors hover:text-white disabled:opacity-60 sm:inline-flex"
-              @click="onLogout">
+            <UButton
+              variant="ghost"
+              :loading="loggingOut"
+              class="hidden sm:inline-flex text-stone-400 hover:text-white cursor-pointer"
+              @click="onLogout"
+            >
               {{ t('auth.logout') }}
-            </button>
-            <button type="button" class="sm:hidden text-stone-400 transition-colors hover:text-white"
-              @click="mobileMenuOpen = !mobileMenuOpen" aria-label="menu">
+            </UButton>
+            <UButton
+              variant="ghost"
+              class="sm:hidden text-stone-400 transition-colors hover:text-white !p-2"
+              @click="mobileMenuOpen = !mobileMenuOpen"
+              aria-label="menu"
+            >
               <span class="block h-5 w-5 relative">
                 <span :class="[
                   'absolute left-0 h-0.5 w-5 bg-current transition-all duration-200',
@@ -49,7 +57,7 @@
                   mobileMenuOpen ? 'top-2 -rotate-45' : 'top-3',
                 ]" />
               </span>
-            </button>
+            </UButton>
           </template>
           <template v-else>
             <NuxtLink :to="localePath('/login')" class="transition-colors hover:text-white">{{ t('auth.login') }}
@@ -73,12 +81,17 @@
                 <span class="text-stone-400">⚡ {{ t('dashboard.stats.energy') }}</span>
                 <span class="font-semibold text-accent-soft">{{ user.credits }}</span>
               </div>
-              <button type="button" :disabled="loggingOut"
-                class="mt-1 flex w-full items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-stone-300 transition-colors hover:text-white disabled:opacity-60"
-                @click="onLogout">
-                <span class="text-base">↪</span>
+              <UButton
+                variant="ghost"
+                :loading="loggingOut"
+                class="mt-1 w-full justify-start text-stone-300 hover:text-white"
+                @click="onLogout"
+              >
+                <template #leading>
+                  <span class="text-base">↪</span>
+                </template>
                 {{ t('auth.logout') }}
-              </button>
+              </UButton>
             </div>
           </nav>
         </div>

@@ -48,7 +48,7 @@
           <div class="flex items-center gap-4">
             <span
               :class="[
-                'flex h-8 w-8 items-center justify-center rounded-lg text-sm font-bold',
+                'flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold',
                 index === 0 ? 'bg-amber-500 text-amber-950' : '',
                 index === 1 ? 'bg-slate-400 text-slate-950' : '',
                 index === 2 ? 'bg-amber-700 text-amber-100' : '',

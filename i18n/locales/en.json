@@ -23,19 +23,19 @@
 		"enter": "Enter",
 		"practice": {
 			"no": "01",
-			"title": "Practice",
+			"title": "Workout",
 			"subtitle": "Workout",
 			"desc": "Bidirectional translation across 4 language pairs: ja-en / en-ja / zh-ja / zh-en."
 		},
 		"paraphrase": {
 			"no": "02",
-			"title": "Paraphrase",
+			"title": "Rewrite",
 			"subtitle": "Rewrite",
 			"desc": "Source in Japanese or English — rephrase it while keeping the meaning. AI scores fidelity and naturalness."
 		},
 		"grammar": {
 			"no": "03",
-			"title": "Grammar Focus",
+			"title": "Drills",
 			"subtitle": "Drills",
 			"desc": "Fill-in-the-blank, multiple choice, and error correction keyed to grammar points. Focus on te-form, present-perfect, and more."
 		}
@@ -290,7 +290,7 @@
 		"scenarioTitle": "Scene / Context"
 	},
 	"paraphrase": {
-		"settings": "Paraphrase Settings",
+		"settings": "Rewrite Settings",
 		"sourceLang": "Source Language",
 		"difficulty": "Difficulty",
 		"diffEasy": "Easy",
@@ -298,19 +298,19 @@
 		"diffHard": "Hard",
 		"credits": "credits",
 		"cost": "Costs {cost}",
-		"start": "Start Paraphrase",
+		"start": "Start Rewrite",
 		"generating": "Generating question…",
 		"hint": "Hint",
-		"yourAnswer": "Your Paraphrase",
+		"yourAnswer": "Your Rewrite",
 		"answerHint": "Express the same meaning using different words",
-		"answerPlaceholder": "Type your paraphrase here…",
+		"answerPlaceholder": "Type your rewrite here…",
 		"submit": "Submit",
 		"judging": "Evaluating…",
 		"originalText": "Original Text",
-		"referenceParaphrase": "Reference Paraphrase",
+		"referenceRewrite": "Reference Rewrite",
 		"feedback": "AI Feedback",
 		"errors": "Issues",
-		"suggestion": "Better Paraphrase",
+		"suggestion": "Better Rewrite",
 		"verdictCorrect": "Excellent",
 		"verdictPartial": "Acceptable",
 		"verdictIncorrect": "Needs Work",
@@ -363,7 +363,7 @@
 		"subtitle": "View all your training records",
 		"loading": "Loading…",
 		"noData": "No records yet",
-		"startPractice": "Start Practice",
+		"startPractice": "Start Workout",
 		"catAll": "All",
 		"yourAnswer": "Your Answer",
 		"correctAnswer": "Reference Answer",

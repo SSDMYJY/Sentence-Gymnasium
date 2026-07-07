@@ -12,10 +12,10 @@
       />
       <!-- Tonal overlays: keep the left half calm for text -->
       <div
-        class="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/85 to-ink-950/20"
+        class="absolute inset-0 bg-linear-to-r from-ink-950 via-ink-950/85 to-ink-950/20"
       />
       <div
-        class="absolute inset-0 bg-gradient-to-t from-ink-950 via-transparent to-ink-950/50"
+        class="absolute inset-0 bg-linear-to-t from-ink-950 via-transparent to-ink-950/50"
       />
 
       <div
@@ -56,14 +56,14 @@
           >
             <a
               href="#boards"
-              class="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 text-sm font-semibold text-ink-950 transition hover:bg-accent-soft"
+              class="group inline-flex items-center gap-2l bg-accent px-7 py-3.5 text-sm font-semibold text-ink-950 transition hover:bg-accent-soft"
             >
               {{ t('hero.ctaPrimary') }}
               <span class="transition-transform group-hover:translate-x-0.5">→</span>
             </a>
             <a
               href="#flow"
-              class="inline-flex items-center gap-2 rounded-full border border-white/15 px-7 py-3.5 text-sm font-medium text-stone-200 transition hover:border-white/40 hover:text-white"
+              class="inline-flex items-center gap-2 border border-white/15 px-7 py-3.5 text-sm font-medium text-stone-200 transition hover:border-white/40 hover:text-white"
             >
               {{ t('hero.ctaSecondary') }}
             </a>
@@ -167,13 +167,16 @@
           v-reveal
           class="mt-10 flex flex-wrap items-center justify-center gap-4"
         >
-          <NuxtLink
+          <UButton
             :to="localePath('/practice')"
-            class="group inline-flex items-center gap-2 rounded-full bg-accent px-8 py-4 text-sm font-semibold text-ink-950 transition hover:bg-accent-soft"
+            size="xl"
+            class="bg-accent text-ink-950 hover:bg-accent-soft"
           >
             {{ t('cta.button') }}
-            <span class="transition-transform group-hover:translate-x-0.5">→</span>
-          </NuxtLink>
+            <template #trailing>
+              <span class="transition-transform group-hover:translate-x-0.5">→</span>
+            </template>
+          </UButton>
         </div>
       </div>
     </section>

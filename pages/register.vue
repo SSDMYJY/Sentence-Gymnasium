@@ -10,37 +10,61 @@
           <label class="block text-xs uppercase tracking-wide text-stone-500" for="email">{{
             t('auth.email')
           }}</label>
-          <input id="email" v-model="email" type="email" autocomplete="email" required
+          <UInput
+            id="email"
+            v-model="email"
+            type="email"
             :placeholder="t('auth.emailPlaceholder')"
-            class="mt-2 w-full rounded-lg border border-white/10 bg-ink-800/60 px-4 py-3 text-sm text-stone-100 placeholder-stone-500 transition-colors focus:border-accent focus:outline-none" />
+            :ui="{
+              wrapper: 'mt-2',
+              input: 'border-white/10 bg-ink-800/60 text-stone-100 placeholder-stone-500 focus:border-accent focus:ring-accent/30',
+            }"
+          />
         </div>
 
         <div>
           <label class="block text-xs uppercase tracking-wide text-stone-500" for="name">{{
             t('auth.name')
           }}</label>
-          <input id="name" v-model="name" type="text" autocomplete="nickname" :placeholder="t('auth.namePlaceholder')"
-            class="mt-2 w-full rounded-lg border border-white/10 bg-ink-800/60 px-4 py-3 text-sm text-stone-100 placeholder-stone-500 transition-colors focus:border-accent focus:outline-none" />
+          <UInput
+            id="name"
+            v-model="name"
+            type="text"
+            :placeholder="t('auth.namePlaceholder')"
+            :ui="{
+              wrapper: 'mt-2',
+              input: 'border-white/10 bg-ink-800/60 text-stone-100 placeholder-stone-500 focus:border-accent focus:ring-accent/30',
+            }"
+          />
         </div>
 
         <div>
           <label class="block text-xs uppercase tracking-wide text-stone-500" for="password">{{
             t('auth.password')
           }}</label>
-          <input id="password" v-model="password" type="password" autocomplete="new-password" required
+          <UInput
+            id="password"
+            v-model="password"
+            type="password"
             :placeholder="t('auth.passwordPlaceholder')"
-            class="mt-2 w-full rounded-lg border border-white/10 bg-ink-800/60 px-4 py-3 text-sm text-stone-100 placeholder-stone-500 transition-colors focus:border-accent focus:outline-none" />
+            :ui="{
+              wrapper: 'mt-2',
+              input: 'border-white/10 bg-ink-800/60 text-stone-100 placeholder-stone-500 focus:border-accent focus:ring-accent/30',
+            }"
+          />
         </div>
 
         <p v-if="error" class="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
           {{ error }}
         </p>
 
-        <button type="submit" :disabled="loading"
-          class="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-ink-950 transition hover:bg-accent-soft disabled:cursor-not-allowed disabled:opacity-60">
+        <UButton
+          type="submit"
+          :loading="loading"
+          class="w-full bg-accent text-ink-950 hover:bg-accent-soft"
+        >
           {{ loading ? t('auth.loading') : t('auth.registerSubmit') }}
-          <span v-if="!loading" class="transition-transform group-hover:translate-x-0.5">→</span>
-        </button>
+        </UButton>
       </form>
 
       <NuxtLink :to="localePath('/login')"
@@ -56,7 +80,6 @@ const { t, te } = useI18n()
 const localePath = useLocalePath()
 const store = useUserStore()
 
-// SSR 阶段 store 尚未填充，需主动拉一次 session 判断登录态
 if (!store.fetched) {
   await store.fetch()
 }

@@ -12,14 +12,20 @@
     </header>
 
     <div class="mb-6 flex flex-wrap items-center gap-3">
-      <button v-for="cat in categories" :key="cat.value" type="button" :class="[
-        'rounded-full border px-4 py-1.5 text-sm font-medium transition-colors',
-        selectedCategory === cat.value
-          ? 'border-accent bg-accent/10 text-accent-soft'
-          : 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
-      ]" @click="onCategoryChange(cat.value)">
+      <UButton
+        v-for="cat in categories"
+        :key="cat.value"
+        variant="outline"
+        size="sm"
+        :class="[
+          selectedCategory === cat.value
+            ? 'border-accent bg-accent/10 text-accent-soft'
+            : 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
+        ]"
+        @click="onCategoryChange(cat.value)"
+      >
         {{ cat.label }}
-      </button>
+      </UButton>
     </div>
 
     <div v-if="loading" class="rounded-2xl border border-white/10 bg-ink-900/50 p-12 text-center">
@@ -30,18 +36,22 @@
     <div v-else-if="entries.length === 0" class="rounded-2xl border border-white/10 bg-ink-900/50 p-12 text-center">
       <div class="text-5xl">📭</div>
       <p class="mt-4 text-sm text-stone-500">{{ t('history.noData') }}</p>
-      <NuxtLink :to="localePath('/practice')"
-        class="mt-6 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-2 text-sm font-semibold text-ink-950 transition-colors hover:bg-stone-100">
+      <UButton
+        :to="localePath('/practice')"
+        class="mt-6 bg-white text-ink-950 hover:bg-stone-100"
+      >
         {{ t('history.startPractice') }}
-      </NuxtLink>
+      </UButton>
     </div>
 
     <div v-else class="space-y-3">
       <div v-for="(entry, idx) in entries" :key="entry.id"
         class="rounded-xl border border-white/10 bg-ink-900/50 overflow-hidden">
-        <button type="button"
-          class="flex w-full items-center gap-4 px-5 py-4 text-left transition-colors hover:bg-white/5"
-          @click="toggleExpand(entry.id)">
+        <UButton
+          variant="ghost"
+          class="flex w-full items-center gap-4 px-5 py-4 text-left transition-colors hover:bg-white/5 !justify-start !rounded-none !p-0"
+          @click="toggleExpand(entry.id)"
+        >
           <span class="w-8 shrink-0 text-center text-xs text-stone-600">
             {{ (page - 1) * pageSize + idx + 1 }}
           </span>
@@ -77,7 +87,7 @@
             :class="{ 'rotate-180': expandedIds.has(entry.id) }">
             ▾
           </span>
-        </button>
+        </UButton>
 
         <Transition name="expand">
           <div v-if="expandedIds.has(entry.id)" class="border-t border-white/5">
@@ -118,16 +128,22 @@
           {{ t('history.pageInfo', { page, total: totalPages, count: total }) }}
         </span>
         <div class="flex gap-2">
-          <button type="button" :disabled="page <= 1"
-            class="rounded-lg border border-white/10 px-4 py-2 text-sm text-stone-300 transition-colors hover:border-white/30 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
-            @click="onPageChange(page - 1)">
+          <UButton
+            variant="outline"
+            :disabled="page <= 1"
+            class="border-white/10 text-stone-300 hover:border-white/30 hover:text-white disabled:opacity-40"
+            @click="onPageChange(page - 1)"
+          >
             {{ t('history.prev') }}
-          </button>
-          <button type="button" :disabled="page >= totalPages"
-            class="rounded-lg border border-white/10 px-4 py-2 text-sm text-stone-300 transition-colors hover:border-white/30 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
-            @click="onPageChange(page + 1)">
+          </UButton>
+          <UButton
+            variant="outline"
+            :disabled="page >= totalPages"
+            class="border-white/10 text-stone-300 hover:border-white/30 hover:text-white disabled:opacity-40"
+            @click="onPageChange(page + 1)"
+          >
             {{ t('history.next') }}
-          </button>
+          </UButton>
         </div>
       </div>
     </div>

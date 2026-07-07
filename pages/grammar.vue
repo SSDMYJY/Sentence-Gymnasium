@@ -21,14 +21,20 @@
 			<div class="mt-5">
 				<label class="text-xs uppercase tracking-wide text-stone-500">{{ t('grammar.language') }}</label>
 				<div class="mt-3 flex gap-3">
-					<button v-for="lang in languages" :key="lang.value" type="button" :class="[
-						'flex-1 rounded-lg border px-4 py-3 text-sm font-medium transition-colors',
-						selectedLang === lang.value
-							? 'border-accent bg-accent/10 text-accent-soft'
-							: 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
-					]" @click="selectedLang = lang.value; selectedTag = filteredGrammarTags[0]?.value ?? 'te-form'">
+					<UButton
+						v-for="lang in languages"
+						:key="lang.value"
+						variant="ghost"
+						:class="[
+							'flex-1 rounded-lg border px-4 py-3 text-sm font-medium transition-colors',
+							selectedLang === lang.value
+								? 'border-accent bg-accent/10 text-accent-soft'
+								: 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
+						]"
+						@click="selectedLang = lang.value; selectedTag = filteredGrammarTags[0]?.value ?? 'te-form'"
+					>
 						{{ lang.label }}
-					</button>
+					</UButton>
 				</div>
 			</div>
 
@@ -37,14 +43,20 @@
 				<label class="text-xs uppercase tracking-wide text-stone-500">{{ t('grammar.grammarPoint') }}</label>
 				<div class="mt-3 grid gap-3"
 					:class="filteredGrammarTags.length % 3 === 0 ? 'grid-cols-3' : 'grid-cols-2'">
-					<button v-for="tag in filteredGrammarTags" :key="tag.value" type="button" :class="[
-						'rounded-lg border px-4 py-3 text-sm font-medium transition-colors',
-						selectedTag === tag.value
-							? 'border-accent bg-accent/10 text-accent-soft'
-							: 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
-					]" @click="selectedTag = tag.value">
+					<UButton
+						v-for="tag in filteredGrammarTags"
+						:key="tag.value"
+						variant="ghost"
+						:class="[
+							'rounded-lg border px-4 py-3 text-sm font-medium transition-colors',
+							selectedTag === tag.value
+								? 'border-accent bg-accent/10 text-accent-soft'
+								: 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
+						]"
+						@click="selectedTag = tag.value"
+					>
 						{{ tag.label }}
-					</button>
+					</UButton>
 				</div>
 			</div>
 
@@ -52,24 +64,32 @@
 			<div class="mt-6">
 				<label class="text-xs uppercase tracking-wide text-stone-500">{{ t('grammar.questionType') }}</label>
 				<div class="mt-3 flex gap-3">
-					<button v-for="qt in questionTypes" :key="qt.value" type="button" :class="[
-						'flex-1 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors',
-						selectedType === qt.value
-							? 'border-accent bg-accent/10 text-accent-soft'
-							: 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
-					]" @click="selectedType = qt.value">
+					<UButton
+						v-for="qt in questionTypes"
+						:key="qt.value"
+						variant="ghost"
+						:class="[
+							'flex-1 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors',
+							selectedType === qt.value
+								? 'border-accent bg-accent/10 text-accent-soft'
+								: 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
+						]"
+						@click="selectedType = qt.value"
+					>
 						{{ qt.label }}
-					</button>
+					</UButton>
 				</div>
 			</div>
 
 			<!-- 开始按钮（免费） -->
 			<div class="mt-6 flex items-center justify-end border-t border-white/5 pt-4">
-				<button type="button" :disabled="generating"
-					class="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-2.5 text-sm font-semibold text-ink-950 transition-colors hover:bg-stone-100 disabled:cursor-not-allowed disabled:opacity-50"
-					@click="onGenerate">
-					{{ generating ? t('grammar.generating') : t('grammar.start') }}
-				</button>
+				<UButton
+					:loading="generating"
+					class="bg-white text-ink-950 hover:bg-stone-100"
+					@click="onGenerate"
+				>
+					{{ t('grammar.start') }}
+				</UButton>
 			</div>
 		</div>
 
@@ -99,19 +119,33 @@
 				<label class="text-xs uppercase tracking-wide text-stone-500">{{ t('grammar.yourAnswer') }}</label>
 
 				<!-- 填空 / 改错 -->
-				<textarea v-model="userAnswer" rows="3" :placeholder="t('grammar.answerPlaceholder')"
+				<UTextarea
+					v-model="userAnswer"
+					:rows="3"
+					:placeholder="t('grammar.answerPlaceholder')"
 					:disabled="judging"
-					class="mt-3 w-full resize-none rounded-lg border border-white/10 bg-ink-950 px-4 py-3 text-stone-100 placeholder-stone-600 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent disabled:opacity-60 select-none"
-					@keydown.meta.enter="onJudge" @keydown.ctrl.enter="onJudge" @paste.prevent @copy.prevent
-					@cut.prevent @contextmenu.prevent />
+					:ui="{
+						wrapper: 'mt-3',
+						textarea: 'resize-none border-white/10 bg-ink-950 text-stone-100 placeholder-stone-600 focus:border-accent focus:ring-accent/30 select-none',
+					}"
+					@keydown.meta.enter="onJudge"
+					@keydown.ctrl.enter="onJudge"
+					@paste.prevent
+					@copy.prevent
+					@cut.prevent
+					@contextmenu.prevent
+				/>
 
 				<div class="mt-3 flex items-center justify-between">
 					<span class="text-xs text-stone-600">⌘/Ctrl + Enter {{ t('grammar.submit') }}</span>
-					<button type="button" :disabled="judging || !userAnswer.trim()"
-						class="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-2.5 text-sm font-semibold text-ink-950 transition-colors hover:bg-stone-100 disabled:cursor-not-allowed disabled:opacity-50"
-						@click="onJudge">
-						{{ judging ? t('grammar.judging') : t('grammar.submit') }}
-					</button>
+					<UButton
+						:loading="judging"
+						:disabled="!userAnswer.trim()"
+						class="bg-white text-ink-950 hover:bg-stone-100"
+						@click="onJudge"
+					>
+						{{ t('grammar.submit') }}
+					</UButton>
 				</div>
 			</div>
 		</div>
@@ -197,16 +231,19 @@
 
 			<!-- 操作按钮 -->
 			<div class="flex gap-3">
-				<button type="button"
-					class="flex-1 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-ink-950 transition-colors hover:bg-stone-100"
-					@click="onNext">
+				<UButton
+					class="flex-1 bg-white text-ink-950 hover:bg-stone-100"
+					@click="onNext"
+				>
 					{{ t('grammar.nextQuestion') }}
-				</button>
-				<button type="button"
-					class="flex-1 rounded-lg border border-white/15 px-6 py-3 text-sm font-medium text-stone-300 transition-colors hover:border-white/30 hover:text-white"
-					@click="onBackToSettings">
+				</UButton>
+				<UButton
+					variant="outline"
+					class="flex-1 border-white/15 text-stone-300 hover:border-white/30 hover:text-white"
+					@click="onBackToSettings"
+				>
 					{{ t('grammar.backToSettings') }}
-				</button>
+				</UButton>
 			</div>
 		</div>
 	</div>
@@ -298,7 +335,8 @@ const questionTypes: { value: 'fill-blank' | 'error-correction'; label: string }
 ]
 
 function tagLabel(tag: GrammarTag): string {
-	return grammarTags.find((x) => x.value === tag)?.label ?? tag
+	const allTags = [...grammarTagsByLang.ja, ...grammarTagsByLang.en]
+	return allTags.find((x) => x.value === tag)?.label ?? tag
 }
 
 function typeLabel(type: string): string {

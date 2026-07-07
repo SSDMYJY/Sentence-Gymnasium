@@ -21,14 +21,20 @@
 			<div class="mt-5">
 				<label class="text-xs uppercase tracking-wide text-stone-500">{{ t('paraphrase.sourceLang') }}</label>
 				<div class="mt-3 grid grid-cols-2 gap-3">
-					<button v-for="lang in sourceLangs" :key="lang.value" type="button" :class="[
-						'rounded-lg border px-4 py-3 text-sm font-medium transition-colors',
-						selectedLang === lang.value
-							? 'border-accent bg-accent/10 text-accent-soft'
-							: 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
-					]" @click="selectedLang = lang.value">
+					<UButton
+						v-for="lang in sourceLangs"
+						:key="lang.value"
+						variant="ghost"
+						:class="[
+							'w-full rounded-lg border px-4 py-3 text-sm font-medium transition-colors',
+							selectedLang === lang.value
+								? 'border-accent bg-accent/10 text-accent-soft'
+								: 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
+						]"
+						@click="selectedLang = lang.value"
+					>
 						{{ lang.label }}
-					</button>
+					</UButton>
 				</div>
 			</div>
 
@@ -41,11 +47,14 @@
 					⚡ {{ store.credits }} {{ t('paraphrase.credits') }}
 					<span class="text-stone-600"> · {{ t('paraphrase.cost', { cost: 1 }) }}</span>
 				</span>
-				<button type="button" :disabled="generating || store.credits < 1"
-					class="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-2.5 text-sm font-semibold text-ink-950 transition-colors hover:bg-stone-100 disabled:cursor-not-allowed disabled:opacity-50"
-					@click="onGenerate">
-					{{ generating ? t('paraphrase.generating') : t('paraphrase.start') }}
-				</button>
+				<UButton
+					:loading="generating"
+					:disabled="store.credits < 1"
+					class="bg-white text-ink-950 hover:bg-stone-100"
+					@click="onGenerate"
+				>
+					{{ t('paraphrase.start') }}
+				</UButton>
 			</div>
 		</div>
 
@@ -78,17 +87,28 @@
 			<div class="rounded-2xl border border-white/10 bg-ink-900/50 p-6">
 				<label class="text-xs uppercase tracking-wide text-stone-500">{{ t('paraphrase.yourAnswer') }}</label>
 				<p class="mt-1 text-xs text-stone-500">{{ t('paraphrase.answerHint') }}</p>
-				<textarea v-model="userAnswer" rows="4" :placeholder="t('paraphrase.answerPlaceholder')"
+				<UTextarea
+					v-model="userAnswer"
+					:rows="4"
+					:placeholder="t('paraphrase.answerPlaceholder')"
 					:disabled="judging"
-					class="mt-3 w-full resize-none rounded-lg border border-white/10 bg-ink-950 px-4 py-3 text-stone-100 placeholder-stone-600 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent disabled:opacity-60"
-					@keydown.meta.enter="onJudge" @keydown.ctrl.enter="onJudge" />
+					:ui="{
+						wrapper: 'mt-3',
+						textarea: 'resize-none border-white/10 bg-ink-950 text-stone-100 placeholder-stone-600 focus:border-accent focus:ring-accent/30 select-none',
+					}"
+					@keydown.meta.enter="onJudge"
+					@keydown.ctrl.enter="onJudge"
+				/>
 				<div class="mt-3 flex items-center justify-between">
 					<span class="text-xs text-stone-600">⌘/Ctrl + Enter {{ t('paraphrase.submit') }}</span>
-					<button type="button" :disabled="judging || !userAnswer.trim()"
-						class="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-2.5 text-sm font-semibold text-ink-950 transition-colors hover:bg-stone-100 disabled:cursor-not-allowed disabled:opacity-50"
-						@click="onJudge">
-						{{ judging ? t('paraphrase.judging') : t('paraphrase.submit') }}
-					</button>
+					<UButton
+						:loading="judging"
+						:disabled="!userAnswer.trim()"
+						class="bg-white text-ink-950 hover:bg-stone-100"
+						@click="onJudge"
+					>
+						{{ t('paraphrase.submit') }}
+					</UButton>
 				</div>
 			</div>
 		</div>
@@ -166,16 +186,19 @@
 
 			<!-- 操作按钮 -->
 			<div class="flex gap-3">
-				<button type="button"
-					class="flex-1 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-ink-950 transition-colors hover:bg-stone-100"
-					@click="onNext">
+				<UButton
+					class="flex-1 bg-white text-ink-950 hover:bg-stone-100"
+					@click="onNext"
+				>
 					{{ t('paraphrase.nextQuestion') }}
-				</button>
-				<button type="button"
-					class="flex-1 rounded-lg border border-white/15 px-6 py-3 text-sm font-medium text-stone-300 transition-colors hover:border-white/30 hover:text-white"
-					@click="onBackToSettings">
+				</UButton>
+				<UButton
+					variant="outline"
+					class="flex-1 border-white/15 text-stone-300 hover:border-white/30 hover:text-white"
+					@click="onBackToSettings"
+				>
 					{{ t('paraphrase.backToSettings') }}
-				</button>
+				</UButton>
 			</div>
 		</div>
 	</div>

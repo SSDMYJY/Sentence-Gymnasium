@@ -2,15 +2,23 @@
 	<div class="mt-6">
 		<label class="text-xs uppercase tracking-wide text-stone-500">{{ t(labelKey) }}</label>
 		<div class="mt-3 grid grid-cols-4 gap-3">
-			<button v-for="d in PRACTICE_DIFFICULTIES" :key="d" type="button" :class="[
-				'rounded-lg border px-4 py-3 text-left text-sm font-medium transition-colors',
-				modelValue === d
-					? 'border-accent bg-accent/10 text-accent-soft'
-					: 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
-			]" @click="emit('update:modelValue', d)">
-				<span class="block">{{ difficultyOptionLabel(d) }}</span>
-				<span class="mt-0.5 block text-xs font-normal text-stone-500">{{ difficultyOptionDesc(d) }}</span>
-			</button>
+			<UButton
+				v-for="d in PRACTICE_DIFFICULTIES"
+				:key="d"
+				variant="ghost"
+				:class="[
+					'rounded-lg border px-4 py-3 text-left text-sm font-medium transition-colors justify-start! items-start!',
+					modelValue === d
+						? 'border-accent bg-accent/10 text-accent-soft'
+						: 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white',
+				]"
+				@click="emit('update:modelValue', d)"
+			>
+				<span class="block w-full text-left">
+					<span class="block">{{ difficultyOptionLabel(d) }}</span>
+					<span class="mt-0.5 block text-xs font-normal text-stone-500">{{ difficultyOptionDesc(d) }}</span>
+				</span>
+			</UButton>
 		</div>
 	</div>
 </template>

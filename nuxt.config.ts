@@ -5,7 +5,7 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-01',
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', 'nitro-cloudflare-dev', '@nuxtjs/i18n'],
+  modules: ['@nuxt/ui', '@pinia/nuxt', 'nitro-cloudflare-dev', '@nuxtjs/i18n'],
   i18n: {
     // 每种语言都有独立 URL 前缀：/zh-hans/... /zh-hant/... /en/... /ja/...
     // 默认语言 zh-hans 也带前缀，避免默认语言无前缀导致的根路径歧义。
