@@ -170,7 +170,7 @@
           <UButton
             :to="localePath('/practice')"
             size="xl"
-            class="bg-accent text-ink-950 hover:bg-accent-soft"
+            class="bg-accent text-ink-950 hover:bg-accent-soft justify-start!"
           >
             {{ t('cta.button') }}
             <template #trailing>

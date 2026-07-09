@@ -1,90 +1,101 @@
 <template>
-  <div class="flex min-h-screen flex-col bg-ink-950 text-stone-100">
-    <header :class="[
-      'fixed inset-x-0 top-0 z-50 transition-colors duration-300',
-      scrolled
-        ? 'border-b border-white/5 bg-ink-950/80 backdrop-blur-md'
-        : 'border-b border-transparent bg-transparent',
-    ]">
+  <div class="app-root">
+    <header
+      class="fixed inset-x-0 top-0 z-50 transition-all duration-300"
+      :class="scrolled ? 'header-scrolled' : 'header-transparent'"
+    >
       <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         <NuxtLink :to="localePath('/')" class="flex items-baseline gap-2">
-          <img src="/logo.svg" alt="Sentence Gymnasium" class="h-12 w-auto" />
+          <img src="/favicon.svg" alt="Sentence Gymnasium" class="h-12 w-auto" />
         </NuxtLink>
 
         <nav v-if="user" class="hidden items-center gap-1 text-sm font-medium sm:flex">
-          <NuxtLink v-for="item in navItems" :key="item.key" :to="localePath(item.path)" :class="[
-            'rounded-lg px-4 py-2 transition-colors',
-            route.path.includes(item.path) && route.path !== '/'
-              ? 'bg-accent/10 text-accent-soft'
-              : 'text-stone-400 hover:text-white',
-          ]">
+          <NuxtLink
+            v-for="item in navItems"
+            :key="item.key"
+            :to="localePath(item.path)"
+            class="nav-link rounded-lg px-4 py-2 transition-colors"
+            :class="{ 'nav-link-active': isActive(item.path) }"
+          >
             {{ item.label }}
           </NuxtLink>
         </nav>
 
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-3">
           <LanguageSwitcher />
+          <ThemeToggle />
           <template v-if="user">
-            <div class="hidden items-center gap-1 bg-ink-800 px-3 py-1 text-xs sm:flex">
-              <span class="text-accent-soft">●</span>
-              <span class="text-stone-300">{{ user.credits }}</span>
+            <div class="credits-badge hidden items-center gap-1 px-3 py-1 text-xs sm:flex">
+              <span class="credits-dot">●</span>
+              <span class="credits-text">{{ user.credits }}</span>
             </div>
             <UButton
               variant="ghost"
               :loading="loggingOut"
-              class="hidden sm:inline-flex text-stone-400 hover:text-white cursor-pointer"
+              class="hidden sm:inline-flex cursor-pointer btn-ghost"
               @click="onLogout"
             >
               {{ t('auth.logout') }}
             </UButton>
             <UButton
               variant="ghost"
-              class="sm:hidden text-stone-400 transition-colors hover:text-white p-2!"
+              class="sm:hidden btn-ghost-icon p-2!"
               @click="mobileMenuOpen = !mobileMenuOpen"
               aria-label="menu"
             >
               <span class="block h-5 w-5 relative">
-                <span :class="[
-                  'absolute left-0 h-0.5 w-5 bg-current transition-all duration-200',
-                  mobileMenuOpen ? 'top-2 rotate-45' : 'top-1',
-                ]" />
-                <span :class="[
-                  'absolute left-0 top-2 h-0.5 w-5 bg-current transition-all duration-200',
-                  mobileMenuOpen ? 'opacity-0' : 'opacity-100',
-                ]" />
-                <span :class="[
-                  'absolute left-0 h-0.5 w-5 bg-current transition-all duration-200',
-                  mobileMenuOpen ? 'top-2 -rotate-45' : 'top-3',
-                ]" />
+                <span
+                  :class="[
+                    'absolute left-0 h-0.5 w-5 bg-current transition-all duration-200',
+                    mobileMenuOpen ? 'top-2 rotate-45' : 'top-1',
+                  ]"
+                />
+                <span
+                  :class="[
+                    'absolute left-0 top-2 h-0.5 w-5 bg-current transition-all duration-200',
+                    mobileMenuOpen ? 'opacity-0' : 'opacity-100',
+                  ]"
+                />
+                <span
+                  :class="[
+                    'absolute left-0 h-0.5 w-5 bg-current transition-all duration-200',
+                    mobileMenuOpen ? 'top-2 -rotate-45' : 'top-3',
+                  ]"
+                />
               </span>
             </UButton>
           </template>
           <template v-else>
-            <NuxtLink :to="localePath('/login')" class="transition-colors hover:text-white">{{ t('auth.login') }}
+            <NuxtLink :to="localePath('/login')" class="login-link transition-colors">
+              {{ t('auth.login') }}
             </NuxtLink>
           </template>
         </div>
       </div>
 
       <Transition name="menu">
-        <div v-if="mobileMenuOpen && user" class="border-t border-white/5 bg-ink-950/95 backdrop-blur-xl sm:hidden">
+        <div v-if="mobileMenuOpen && user" class="mobile-menu sm:hidden">
           <nav class="mx-auto max-w-7xl px-6 py-3">
-            <NuxtLink v-for="item in navItems" :key="item.key" :to="localePath(item.path)"
-              class="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-colors"
-              :class="isActive(item.path) ? 'bg-accent/10 text-accent-soft' : 'text-stone-300 hover:text-white'"
-              @click="mobileMenuOpen = false">
+            <NuxtLink
+              v-for="item in navItems"
+              :key="item.key"
+              :to="localePath(item.path)"
+              class="mobile-nav-link flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-colors"
+              :class="{ 'mobile-nav-link-active': isActive(item.path) }"
+              @click="mobileMenuOpen = false"
+            >
               <span class="text-base">{{ item.icon }}</span>
               {{ item.label }}
             </NuxtLink>
-            <div class="mt-2 border-t border-white/5 pt-3">
+            <div class="mobile-menu-divider mt-2 pt-3">
               <div class="flex items-center justify-between px-3 py-2 text-sm">
-                <span class="text-stone-400">⚡ {{ t('dashboard.stats.energy') }}</span>
-                <span class="font-semibold text-accent-soft">{{ user.credits }}</span>
+                <span class="mobile-menu-label">⚡ {{ t('dashboard.stats.energy') }}</span>
+                <span class="mobile-menu-value">{{ user.credits }}</span>
               </div>
               <UButton
                 variant="ghost"
                 :loading="loggingOut"
-                class="mt-1 w-full justify-start text-stone-300 hover:text-white"
+                class="mt-1 w-full justify-start mobile-logout-btn"
                 @click="onLogout"
               >
                 <template #leading>
@@ -102,23 +113,28 @@
       <slot />
     </main>
 
-    <nav v-if="user" class="fixed inset-x-0 bottom-0 z-40 border-t border-white/5 bg-ink-950/90 backdrop-blur-xl sm:hidden">
+    <nav v-if="user" class="bottom-nav fixed inset-x-0 bottom-0 z-40 sm:hidden">
       <div class="mx-auto flex max-w-lg items-center justify-around px-2 py-1.5">
-        <NuxtLink v-for="tab in mobileTabs" :key="tab.key" :to="localePath(tab.path)"
-          class="flex flex-1 flex-col items-center gap-0.5 rounded-lg py-2 transition-colors"
-          :class="isActive(tab.path) ? 'text-accent-soft' : 'text-stone-500'">
+        <NuxtLink
+          v-for="tab in mobileTabs"
+          :key="tab.key"
+          :to="localePath(tab.path)"
+          class="bottom-nav-item flex flex-1 flex-col items-center gap-0.5 rounded-lg py-2 transition-colors"
+          :class="{ 'bottom-nav-item-active': isActive(tab.path) }"
+        >
           <span class="text-lg leading-none">{{ tab.icon }}</span>
           <span class="text-[10px] font-medium leading-tight">{{ tab.shortLabel }}</span>
         </NuxtLink>
       </div>
     </nav>
 
-    <footer class="hidden border-t border-white/5 sm:block">
+    <footer class="site-footer hidden sm:block">
       <div
-        class="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-10 text-sm text-stone-500 sm:flex-row sm:items-center sm:justify-between">
+        class="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-10 text-sm footer-text sm:flex-row sm:items-center sm:justify-between"
+      >
         <div class="flex items-baseline gap-3">
-          <NuxtLink to="/terms" class="font-display text-stone-300">{{ t('brand.terms') }}</NuxtLink>
-          <NuxtLink to="/privacy" class="font-display text-stone-300">{{ t('brand.privacy') }}</NuxtLink>
+          <NuxtLink to="/terms" class="footer-link">{{ t('brand.terms') }}</NuxtLink>
+          <NuxtLink to="/privacy" class="footer-link">{{ t('brand.privacy') }}</NuxtLink>
         </div>
         <div class="text-xs tracking-wide">
           {{ t('footer.copyright') }}
@@ -192,6 +208,138 @@ watch(() => route.path, () => {
 </script>
 
 <style scoped>
+.app-root {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.header-scrolled {
+  border-bottom: 1px solid var(--header-border);
+  background-color: var(--header-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.header-transparent {
+  border-bottom: 1px solid transparent;
+  background-color: transparent;
+}
+
+.nav-link {
+  color: var(--text-tertiary);
+}
+.nav-link:hover {
+  color: var(--text-primary);
+}
+.nav-link-active {
+  background-color: color-mix(in srgb, var(--accent-color) 10%, transparent);
+  color: var(--accent-soft) !important;
+}
+
+.credits-badge {
+  background-color: var(--bg-tertiary);
+}
+.credits-dot {
+  color: var(--accent-soft);
+}
+.credits-text {
+  color: var(--text-secondary);
+}
+
+.btn-ghost {
+  color: var(--text-tertiary);
+}
+.btn-ghost:hover {
+  color: var(--text-primary);
+}
+
+.btn-ghost-icon {
+  color: var(--text-tertiary);
+  transition: color 0.2s ease;
+}
+.btn-ghost-icon:hover {
+  color: var(--text-primary);
+}
+
+.login-link {
+  color: var(--text-tertiary);
+}
+.login-link:hover {
+  color: var(--text-primary);
+}
+
+.mobile-menu {
+  border-top: 1px solid var(--border-subtle);
+  background-color: var(--mobile-nav-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.mobile-nav-link {
+  color: var(--text-secondary);
+}
+.mobile-nav-link:hover {
+  color: var(--text-primary);
+}
+.mobile-nav-link-active {
+  background-color: color-mix(in srgb, var(--accent-color) 10%, transparent);
+  color: var(--accent-soft) !important;
+}
+
+.mobile-menu-divider {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.mobile-menu-label {
+  color: var(--text-tertiary);
+}
+
+.mobile-menu-value {
+  font-weight: 600;
+  color: var(--accent-soft);
+}
+
+.mobile-logout-btn {
+  color: var(--text-secondary);
+}
+.mobile-logout-btn:hover {
+  color: var(--text-primary);
+}
+
+.bottom-nav {
+  border-top: 1px solid var(--border-subtle);
+  background-color: var(--mobile-nav-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.bottom-nav-item {
+  color: var(--text-muted);
+}
+.bottom-nav-item-active {
+  color: var(--accent-soft);
+}
+
+.site-footer {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.footer-text {
+  color: var(--text-muted);
+}
+
+.footer-link {
+  font-family: var(--font-display);
+  color: var(--text-tertiary);
+}
+.footer-link:hover {
+  color: var(--text-primary);
+}
+
 .menu-enter-active {
   transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
 }

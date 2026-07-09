@@ -3,7 +3,7 @@
     <UButton
       variant="ghost"
       size="sm"
-      class="border border-white/10 p-2 text-stone-300 hover:border-white/30 hover:text-white"
+      class="lang-switch-btn p-2"
       :aria-label="currentName"
     >
       <template #leading>
@@ -44,3 +44,15 @@ const onChange = async (code: string) => {
   await navigateTo(target || route.fullPath)
 }
 </script>
+
+<style scoped>
+.lang-switch-btn {
+  border: 1px solid var(--border-default) !important;
+  color: var(--text-secondary) !important;
+  transition: all 0.2s ease;
+}
+.lang-switch-btn:hover {
+  border-color: var(--border-strong) !important;
+  color: var(--text-primary) !important;
+}
+</style>
