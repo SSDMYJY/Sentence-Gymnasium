@@ -112,7 +112,10 @@
 			"invalid_email": "メールアドレスの形式が正しくありません",
 			"password_too_short": "パスワードは8文字以上で入力してください",
 			"email_taken": "このメールアドレスはすでに登録されています",
-			"invalid_credentials": "メールアドレスまたはパスワードが正しくありません"
+			"invalid_credentials": "メールアドレスまたはパスワードが正しくありません",
+			"turnstile_required": "先に人間確認を完了してください",
+			"turnstile_failed": "人間確認に失敗しました。もう一度お試しください",
+			"turnstile_expired": "人間確認の有効期限が切れました。再度確認してください"
 		}
 	},
 	"dashboard": {

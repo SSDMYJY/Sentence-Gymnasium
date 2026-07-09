@@ -39,3 +39,4 @@ head_sampling_rate = 1
 [vars]
 AI_BASE_URL = "https://token.sensenova.cn/v1"
 AI_MODEL= "deepseek-v4-flash"
+NUXT_PUBLIC_TURNSTILE_SITE_KEY = "0x4AAAAAABkS4AjGy6vPeTBH"

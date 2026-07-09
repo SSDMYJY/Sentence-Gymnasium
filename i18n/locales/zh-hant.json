@@ -112,7 +112,10 @@
 			"invalid_email": "電郵格式不正確",
 			"password_too_short": "密碼至少 8 位",
 			"email_taken": "該電郵已註冊",
-			"invalid_credentials": "電郵或密碼錯誤"
+			"invalid_credentials": "電郵或密碼錯誤",
+			"turnstile_required": "請先完成人機驗證",
+			"turnstile_failed": "人機驗證失敗，請重試",
+			"turnstile_expired": "人機驗證已過期，請重新驗證"
 		}
 	},
 	"dashboard": {

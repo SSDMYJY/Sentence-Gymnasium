@@ -41,15 +41,15 @@ export const useUserStore = defineStore('user', {
       }
       return this.user
     },
-    async login(email: string, password: string) {
+    async login(email: string, password: string, turnstileToken: string) {
       const data = await $fetch<SessionUser>('/api/auth/login', {
         method: 'POST',
-        body: { email, password },
+        body: { email, password, turnstileToken },
       })
       this.setUser(data)
       return data
     },
-    async register(payload: { email: string; password: string; name?: string }) {
+    async register(payload: { email: string; password: string; name?: string; turnstileToken: string }) {
       const data = await $fetch<SessionUser>('/api/auth/register', {
         method: 'POST',
         body: payload,

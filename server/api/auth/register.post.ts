@@ -1,7 +1,17 @@
 // 注册：邮箱+密码 → 哈希 → 入库（赠 20 Credits）→ 自动签发会话 cookie。
 // 成功返回当前用户（不含 passwordHash）。
 export default defineEventHandler(async (event) => {
-  const body = await readBody<{ email?: string; password?: string; name?: string }>(event)
+  const body = await readBody<{ email?: string; password?: string; name?: string; turnstileToken?: string }>(event)
+
+  const turnstileToken = (body?.turnstileToken ?? '').trim()
+  if (!turnstileToken) {
+    throw createError({ statusCode: 400, statusMessage: 'turnstile_required' })
+  }
+
+  const turnstileValidation = await verifyTurnstileToken(turnstileToken, event)
+  if (!turnstileValidation?.success) {
+    throw createError({ statusCode: 400, statusMessage: 'turnstile_failed' })
+  }
 
   const email = (body?.email ?? '').trim().toLowerCase()
   const password = body?.password ?? ''

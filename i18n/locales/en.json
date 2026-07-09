@@ -112,7 +112,10 @@
 			"invalid_email": "Please enter a valid email",
 			"password_too_short": "Password must be at least 8 characters",
 			"email_taken": "That email is already registered",
-			"invalid_credentials": "Wrong email or password"
+			"invalid_credentials": "Wrong email or password",
+			"turnstile_required": "Please complete the human verification first",
+			"turnstile_failed": "Human verification failed. Please try again",
+			"turnstile_expired": "Human verification expired. Please verify again"
 		}
 	},
 	"dashboard": {

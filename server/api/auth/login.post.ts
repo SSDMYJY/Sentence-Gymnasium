@@ -1,6 +1,16 @@
 // 登录：校验邮箱+密码 → 签发会话 cookie。失败抛 401。
 export default defineEventHandler(async (event) => {
-  const body = await readBody<{ email?: string; password?: string }>(event)
+  const body = await readBody<{ email?: string; password?: string; turnstileToken?: string }>(event)
+
+  const turnstileToken = (body?.turnstileToken ?? '').trim()
+  if (!turnstileToken) {
+    throw createError({ statusCode: 400, statusMessage: 'turnstile_required' })
+  }
+
+  const turnstileValidation = await verifyTurnstileToken(turnstileToken, event)
+  if (!turnstileValidation?.success) {
+    throw createError({ statusCode: 400, statusMessage: 'turnstile_failed' })
+  }
 
   const email = (body?.email ?? '').trim().toLowerCase()
   const password = body?.password ?? ''

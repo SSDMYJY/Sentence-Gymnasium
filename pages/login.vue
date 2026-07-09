@@ -9,7 +9,7 @@
         <div>
           <label class="block text-xs uppercase tracking-wide text-stone-500" for="email">{{
             t('auth.email')
-            }}</label>
+          }}</label>
           <UInput id="email" v-model="email" type="email" :placeholder="t('auth.emailPlaceholder')" :ui="{
             root: 'w-full',
             wrapper: 'mt-2 w-full',
@@ -20,7 +20,7 @@
         <div>
           <label class="block text-xs uppercase tracking-wide text-stone-500" for="password">{{
             t('auth.password')
-            }}</label>
+          }}</label>
           <UInput id="password" v-model="password" type="password" :placeholder="t('auth.passwordPlaceholder')" :ui="{
             root: 'w-full',
             wrapper: 'mt-2 w-full',
@@ -28,11 +28,14 @@
           }" />
         </div>
 
+        <NuxtTurnstile ref="turnstileRef" v-model="token" :options="turnstileOptions" />
+
         <p v-if="error" class="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
           {{ error }}
         </p>
 
-        <UButton type="submit" :loading="loading" class="w-full bg-accent text-ink-950 hover:bg-accent-soft">
+        <UButton type="submit" :loading="loading" :disabled="loading || !token"
+          class="w-full bg-accent text-ink-950 hover:bg-accent-soft disabled:cursor-not-allowed disabled:opacity-60">
           {{ loading ? t('auth.loading') : t('auth.loginSubmit') }}
         </UButton>
       </form>
@@ -60,17 +63,45 @@ if (store.isAuthenticated) {
 
 const email = ref('')
 const password = ref('')
+const token = ref('')
 const loading = ref(false)
 const error = ref('')
 
+type TurnstileRef = { reset: () => void }
+const turnstileRef = ref<TurnstileRef | null>(null)
+
+const turnstileOptions = {
+  'error-callback': () => {
+    token.value = ''
+    error.value = t('auth.errors.turnstile_failed')
+  },
+  'expired-callback': () => {
+    token.value = ''
+    error.value = t('auth.errors.turnstile_expired')
+  },
+}
+
+watch(token, (v) => {
+  if (v) {
+    error.value = ''
+  }
+})
+
 const onSubmit = async () => {
+  if (!token.value) {
+    error.value = t('auth.errors.turnstile_required')
+    return
+  }
+
   error.value = ''
   loading.value = true
   try {
-    await store.login(email.value, password.value)
+    await store.login(email.value, password.value, token.value)
     await navigateTo((route.query.redirect as string) || localePath('/dashboard'))
   } catch (e: any) {
     error.value = mapError(e)
+    token.value = ''
+    turnstileRef.value?.reset()
   } finally {
     loading.value = false
   }
