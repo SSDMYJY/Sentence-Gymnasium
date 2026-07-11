@@ -1,17 +1,24 @@
 <template>
   <ClientOnly>
-    <UColorModeButton
+    <UButton
       color="neutral"
       variant="ghost"
       size="sm"
       square
       class="theme-toggle-btn"
+      :icon="isDark ? 'i-lucide-moon' : 'i-lucide-sun'"
+      :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+      @click="toggleTheme"
     />
     <template #fallback>
       <div class="theme-toggle-fallback" aria-hidden="true" />
     </template>
   </ClientOnly>
 </template>
+
+<script setup lang="ts">
+const { isDark, toggleTheme } = useTheme()
+</script>
 
 <style scoped>
 .theme-toggle-btn {

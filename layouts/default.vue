@@ -212,9 +212,9 @@ watch(() => route.path, () => {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
-  background-color: var(--bg-primary);
+  background: transparent;
   color: var(--text-primary);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: color 0.45s ease;
 }
 
 .header-scrolled {

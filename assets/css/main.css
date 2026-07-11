@@ -138,14 +138,105 @@ html.light {
   --color-black: #ffffff;
 }
 
-html,
-body {
+/* Animatable page gradient stops (morph when dark/light class changes) */
+@property --page-bg-from {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #0a0a0b;
+}
+
+@property --page-bg-mid {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #0e0e0f;
+}
+
+@property --page-bg-to {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #161412;
+}
+
+:root,
+html.dark {
+  --page-bg-from: #070708;
+  --page-bg-mid: #0e0e0f;
+  --page-bg-to: #1a1612;
+}
+
+html.light {
+  --page-bg-from: #fdfcfa;
+  --page-bg-mid: #f5f2ed;
+  --page-bg-to: #e8e0d4;
+}
+
+html {
+  min-height: 100%;
   background-color: var(--bg-primary);
+  background-image: linear-gradient(
+    165deg,
+    var(--page-bg-from) 0%,
+    var(--page-bg-mid) 48%,
+    var(--page-bg-to) 100%
+  );
+  background-attachment: fixed;
+  color: var(--text-primary);
+  transition:
+    --page-bg-from 0.85s cubic-bezier(0.4, 0, 0.2, 1),
+    --page-bg-mid 0.85s cubic-bezier(0.4, 0, 0.2, 1),
+    --page-bg-to 0.85s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.85s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.45s ease;
+}
+
+body {
+  min-height: 100%;
+  background: transparent;
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: var(--font-sans);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: color 0.45s ease;
+}
+
+/* Full-viewport gradient wipe during theme toggle */
+.theme-gradient-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  pointer-events: none;
+  background-image: linear-gradient(
+    var(--theme-angle, 118deg),
+    var(--theme-to) 0%,
+    var(--theme-to) 32%,
+    color-mix(in srgb, var(--theme-to) 55%, var(--theme-from)) 48%,
+    var(--theme-from) 62%,
+    var(--theme-from) 100%
+  );
+  background-size: 320% 100%;
+  background-position: 100% 0;
+  background-repeat: no-repeat;
+  opacity: 1;
+  will-change: background-position, opacity;
+}
+
+.theme-gradient-transition.is-active {
+  animation: theme-gradient-sweep 0.78s cubic-bezier(0.45, 0, 0.15, 1) forwards;
+}
+
+@keyframes theme-gradient-sweep {
+  0% {
+    background-position: 100% 0;
+    opacity: 1;
+  }
+  72% {
+    background-position: 0% 0;
+    opacity: 1;
+  }
+  100% {
+    background-position: 0% 0;
+    opacity: 0;
+  }
 }
 
 ::selection {
@@ -192,6 +283,16 @@ body {
 .flow-grid > .reveal:nth-child(4) { transition-delay: 300ms; }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    transition: none;
+  }
+
+  .theme-gradient-transition,
+  .theme-gradient-transition.is-active {
+    animation: none !important;
+    display: none !important;
+  }
+
   .hero-rise,
   .reveal {
     animation: none !important;
