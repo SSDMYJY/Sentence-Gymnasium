@@ -1,86 +1,68 @@
 <template>
   <div>
-    <!-- ============== HERO ============== -->
+    <!-- ============== HERO 首屏 ============== / HERO section -->
     <section class="relative min-h-svh w-full overflow-hidden">
-      <img
-        :src="heroImg"
-        alt=""
-        aria-hidden="true"
-        class="absolute inset-0 h-full w-full object-cover"
-        loading="eager"
-        fetchpriority="high"
-      />
-      <!-- Tonal overlays: keep the left half calm for text -->
-      <div
-        class="absolute inset-0 bg-linear-to-r from-ink-950 via-ink-950/85 to-ink-950/20"
-      />
-      <div
-        class="absolute inset-0 bg-linear-to-t from-ink-950 via-transparent to-ink-950/50"
-      />
+      <!-- 背景大图 / Background hero image -->
+      <img :src="heroImg" alt="" aria-hidden="true" class="absolute inset-0 h-full w-full object-cover" loading="eager"
+        fetchpriority="high" />
+      <!-- 色调叠加层：左侧压暗以突出文字 / Tonal overlay: darken the left half for text legibility -->
+      <div class="absolute inset-0 bg-linear-to-r from-ink-950 via-ink-950/85 to-ink-950/20" />
+      <!-- 上下渐变叠加 / Top/bottom gradient overlay -->
+      <div class="absolute inset-0 bg-linear-to-t from-ink-950 via-transparent to-ink-950/50" />
 
-      <div
-        class="relative z-10 mx-auto flex min-h-svh max-w-7xl flex-col justify-center px-6 pb-20 pt-28"
-      >
+      <!-- 主文案容器 / Main copy container -->
+      <div class="relative z-10 mx-auto flex min-h-svh max-w-7xl flex-col justify-center px-6 pb-20 pt-28">
         <div class="max-w-2xl">
-          <p
-            class="hero-rise text-xs uppercase tracking-[0.32em] text-accent-soft sm:text-sm"
-            style="animation-delay: 0.05s"
-          >
+          <!-- 眉标 / Eyebrow label -->
+          <p class="hero-rise text-xs uppercase tracking-[0.32em] text-accent-soft sm:text-sm"
+            style="animation-delay: 0.05s">
             {{ t('hero.eyebrow') }}
           </p>
 
+          <!-- 主标题 / Main title -->
           <h1
             class="hero-rise mt-6 font-display text-5xl font-bold leading-[0.95] tracking-tightest sm:text-7xl lg:text-8xl"
-            style="animation-delay: 0.15s"
-          >
+            style="animation-delay: 0.15s">
             Sentence<br />Gymnasium
           </h1>
 
-          <p
-            class="hero-rise mt-5 font-display text-xl text-stone-200 sm:text-2xl"
-            style="animation-delay: 0.3s"
-          >
+          <!-- 副标题 / Subtitle -->
+          <p class="hero-rise mt-5 font-display text-xl text-stone-200 sm:text-2xl" style="animation-delay: 0.3s">
             {{ t('hero.subtitle') }}
           </p>
 
-          <p
-            class="hero-rise mt-5 max-w-xl leading-relaxed text-stone-400"
-            style="animation-delay: 0.42s"
-          >
+          <!-- 正文 / Body text -->
+          <p class="hero-rise mt-5 max-w-xl leading-relaxed text-stone-400" style="animation-delay: 0.42s">
             {{ t('hero.body') }}
           </p>
 
-          <div
-            class="hero-rise mt-9 flex flex-wrap items-center gap-4"
-            style="animation-delay: 0.55s"
-          >
-            <a
-              href="#boards"
-              class="group inline-flex items-center gap-2l bg-accent px-7 py-3.5 text-sm font-semibold text-ink-950 transition hover:bg-accent-soft"
-            >
+          <!-- 行动按钮组 / CTA button group -->
+          <div class="hero-rise mt-9 flex flex-wrap items-center gap-4" style="animation-delay: 0.55s">
+            <!-- 主按钮：跳转练习区 / Primary CTA: jump to boards -->
+            <a href="#boards"
+              class="group inline-flex items-center gap-2l bg-accent px-7 py-3.5 text-sm font-semibold text-ink-950 transition hover:bg-accent-soft">
               {{ t('hero.ctaPrimary') }}
               <span class="transition-transform group-hover:translate-x-0.5">→</span>
             </a>
-            <a
-              href="#flow"
-              class="inline-flex items-center gap-2 border border-white/15 px-7 py-3.5 text-sm font-medium text-stone-200 transition hover:border-white/40 hover:text-white"
-            >
+            <!-- 次按钮：跳转流程区 / Secondary CTA: jump to flow -->
+            <a href="#flow"
+              class="inline-flex items-center gap-2 border border-white/15 px-7 py-3.5 text-sm font-medium text-stone-200 transition hover:border-white/40 hover:text-white">
               {{ t('hero.ctaSecondary') }}
             </a>
           </div>
         </div>
       </div>
 
-      <div
-        class="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.3em] text-stone-500"
-      >
+      <!-- 滚动提示 / Scroll hint -->
+      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.3em] text-stone-500">
         {{ t('hero.scroll') }}
       </div>
     </section>
 
-    <!-- ============== BOARDS ============== -->
+    <!-- ============== BOARDS 板块卡片 ============== / BOARDS section -->
     <section id="boards" class="relative border-t border-white/5">
       <div class="mx-auto max-w-7xl px-6 py-24 sm:py-32">
+        <!-- 区块标题 / Section heading -->
         <div v-reveal class="max-w-2xl">
           <p class="text-xs uppercase tracking-[0.28em] text-accent-soft">{{ t('boards.eyebrow') }}</p>
           <h2 class="mt-4 font-display text-3xl font-semibold tracking-tight sm:text-5xl">
@@ -91,26 +73,20 @@
           </p>
         </div>
 
-        <div
-          class="boards-grid mt-16 grid grid-cols-1 border-t border-white/10 md:grid-cols-3"
-        >
-          <NuxtLink
-            v-for="b in boards"
-            :key="b.no"
-            v-reveal
-            :to="b.to"
-            class="group relative border-b border-white/10 px-6 py-10 transition-colors hover:bg-ink-800/30 sm:px-8 md:border-b-0 md:border-r md:last:border-r-0"
-          >
-            <span
-              class="absolute left-0 top-0 h-px w-0 bg-accent transition-all duration-500 group-hover:w-full"
-            />
+        <!-- 三栏板块卡片网格 / Three-column board cards -->
+        <div class="boards-grid mt-16 grid grid-cols-1 border-t border-white/10 md:grid-cols-3">
+          <!-- 遍历各板块 / Iterate over boards -->
+          <NuxtLink v-for="b in boards" :key="b.no" v-reveal :to="b.to"
+            class="group relative border-b border-white/10 px-6 py-10 transition-colors hover:bg-ink-800/30 sm:px-8 md:border-b-0 md:border-r md:last:border-r-0">
+            <!-- 悬停高亮顶线 / Hover highlight top line -->
+            <span class="absolute left-0 top-0 h-px w-0 bg-accent transition-all duration-500 group-hover:w-full" />
             <span class="block font-display text-sm text-stone-500">{{ b.no }}</span>
             <span class="mt-6 block font-display text-2xl font-semibold">{{ b.title }}</span>
             <span class="mt-1 block text-sm text-accent-soft">{{ b.subtitle }}</span>
             <p class="mt-4 text-sm leading-relaxed text-stone-400">{{ b.desc }}</p>
+            <!-- 进入箭头 / Enter arrow -->
             <span
-              class="mt-8 inline-flex items-center gap-2 text-sm text-stone-300 transition-colors group-hover:text-white"
-            >
+              class="mt-8 inline-flex items-center gap-2 text-sm text-stone-300 transition-colors group-hover:text-white">
               {{ t('boards.enter') }}
               <span class="transition-transform group-hover:translate-x-1">→</span>
             </span>
@@ -119,9 +95,10 @@
       </div>
     </section>
 
-    <!-- ============== FLOW ============== -->
+    <!-- ============== FLOW 流程 ============== / FLOW section -->
     <section id="flow" class="relative border-t border-white/5 bg-ink-900/40">
       <div class="mx-auto max-w-7xl px-6 py-24 sm:py-32">
+        <!-- 区块标题 / Section heading -->
         <div v-reveal class="max-w-2xl">
           <p class="text-xs uppercase tracking-[0.28em] text-accent-soft">{{ t('flow.eyebrow') }}</p>
           <h2 class="mt-4 font-display text-3xl font-semibold tracking-tight sm:text-5xl">
@@ -132,15 +109,10 @@
           </p>
         </div>
 
-        <ol
-          class="flow-grid mt-16 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-10 lg:grid-cols-4"
-        >
-          <li
-            v-for="s in steps"
-            :key="s.no"
-            v-reveal
-            class="relative border-t border-white/10 pt-8"
-          >
+        <!-- 四步流程网格 / Four-step flow grid -->
+        <ol class="flow-grid mt-16 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-10 lg:grid-cols-4">
+          <!-- 遍历各步骤 / Iterate over steps -->
+          <li v-for="s in steps" :key="s.no" v-reveal class="relative border-t border-white/10 pt-8">
             <span class="absolute left-0 top-0 h-px w-10 bg-accent" />
             <span class="font-display text-sm text-accent">{{ s.no }}</span>
             <h3 class="mt-5 font-display text-xl font-semibold">{{ s.title }}</h3>
@@ -151,27 +123,19 @@
       </div>
     </section>
 
-    <!-- ============== FINAL CTA ============== -->
+    <!-- ============== FINAL CTA 末尾行动号召 ============== / FINAL CTA section -->
     <section class="relative border-t border-white/5">
       <div class="mx-auto max-w-5xl px-6 py-28 text-center sm:py-36">
-        <h2
-          v-reveal
-          class="font-display text-4xl font-semibold tracking-tight sm:text-6xl"
-        >
+        <h2 v-reveal class="font-display text-4xl font-semibold tracking-tight sm:text-6xl">
           {{ t('cta.title') }}
         </h2>
         <p v-reveal class="mt-6 text-stone-400">
           {{ t('cta.body') }}
         </p>
-        <div
-          v-reveal
-          class="mt-10 flex flex-wrap items-center justify-center gap-4"
-        >
-          <UButton
-            :to="localePath('/practice')"
-            size="xl"
-            class="bg-accent text-ink-950 hover:bg-accent-soft justify-start!"
-          >
+        <div v-reveal class="mt-10 flex flex-wrap items-center justify-center gap-4">
+          <!-- 跳转练习按钮 / Button to practice -->
+          <UButton :to="localePath('/practice')" size="xl"
+            class="bg-accent text-ink-950 hover:bg-accent-soft justify-start!">
             {{ t('cta.button') }}
             <template #trailing>
               <span class="transition-transform group-hover:translate-x-0.5">→</span>
@@ -184,51 +148,65 @@
 </template>
 
 <script setup lang="ts">
+// 获取 i18n 翻译函数 / Obtain the i18n translate function
 const { t } = useI18n()
+// 获取本地化路径工具 / Obtain the localized-path helper
 const localePath = useLocalePath()
 
+// 背景图生成提示词（英文，用于文生图 API）/ Prompt for the hero image (used by a text-to-image API)
 const heroPrompt =
   'cinematic moody photograph of a quiet minimalist study studio at dawn, warm amber rim light falling on an open book and a single wooden chair, deep shadow negative space on the left half, editorial photography, shallow depth of field, no people, no text, no signage, premium magazine aesthetic'
+// 拼接文生图接口地址 / Build the text-to-image API URL
 const heroImg = `https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=${encodeURIComponent(
   heroPrompt,
 )}&image_size=landscape_16_9`
 
+// 三个板块的 key / Keys for the three boards
 const boardKeys = ['practice', 'paraphrase', 'grammar'] as const
+// 计算属性：构建板块卡片数据 / Computed: build the board card data
 const boards = computed(() =>
   boardKeys.map((k) => ({
-    no: t(`boards.${k}.no`),
-    title: t(`boards.${k}.title`),
-    subtitle: t(`boards.${k}.subtitle`),
-    desc: t(`boards.${k}.desc`),
-    to: localePath(`/${k}`),
+    no: t(`boards.${k}.no`), // 序号 / Number
+    title: t(`boards.${k}.title`), // 标题 / Title
+    subtitle: t(`boards.${k}.subtitle`), // 副标题 / Subtitle
+    desc: t(`boards.${k}.desc`), // 描述 / Description
+    to: localePath(`/${k}`), // 跳转路径 / Nav path
   })),
 )
 
+// 四个流程步骤的 key / Keys for the four flow steps
 const stepKeys = ['generate', 'answer', 'judge', 'feedback'] as const
+// 计算属性：构建流程步骤数据 / Computed: build the flow step data
 const steps = computed(() =>
   stepKeys.map((k) => ({
-    no: t(`flow.${k}.no`),
-    title: t(`flow.${k}.title`),
-    caption: t(`flow.${k}.caption`),
-    desc: t(`flow.${k}.desc`),
+    no: t(`flow.${k}.no`), // 序号 / Number
+    title: t(`flow.${k}.title`), // 标题 / Title
+    caption: t(`flow.${k}.caption`), // 说明 / Caption
+    desc: t(`flow.${k}.desc`), // 描述 / Description
   })),
 )
 
-// Scroll-reveal directive: add .reveal, flip to .reveal-visible on intersection.
+// 滚动揭示指令：添加 .reveal，进入视口时切换为 .reveal-visible / Scroll-reveal directive: add .reveal, flip to .reveal-visible on intersection
 const vReveal = {
+  // 元素挂载时执行 / Runs when the element is mounted
   mounted(el: HTMLElement) {
+    // 先加隐藏类 / Add the hidden class
     el.classList.add('reveal')
+    // 创建交叉观察器 / Create an IntersectionObserver
     const io = new IntersectionObserver(
       (entries) => {
+        // 遍历观察条目 / Iterate over observed entries
         for (const entry of entries) {
+          // 进入视口则显示并停止观察 / When intersecting, reveal and stop observing
           if (entry.isIntersecting) {
             el.classList.add('reveal-visible')
             io.unobserve(el)
           }
         }
       },
-      { threshold: 0.15 },
+      { threshold: 0.15 }, // 可见比例阈值 / Visibility threshold
     )
+    // 开始观察元素 / Start observing the element
     io.observe(el)
   },
 }

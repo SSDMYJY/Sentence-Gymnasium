@@ -1,24 +1,18 @@
 <template>
     <div class="mx-auto max-w-3xl px-6 pb-20 pt-28">
         <div class="hero-rise">
+            <!-- 文档类型标签 / Document type label -->
             <p class="text-xs uppercase tracking-[0.28em] text-accent-soft">Legal Documents</p>
+            <!-- 标题 / Heading -->
             <h1 class="mt-3 font-display text-4xl font-bold tracking-tight">Terms and Conditions</h1>
+            <!-- 更新日期 / Last updated -->
             <p class="mt-3 text-sm text-stone-500">Last updated: July 6, 2026</p>
 
-            <!-- 当用户的语言不是英文时，显示该信息 -->
-            <p v-if="!['en'].includes($i18n.locale)" class="mt-3 text-sm text-red-400">
-                <span v-if="['zh-hans'].includes($i18n.locale)">
-                    本条款和条件的官方版本仅提供英文版本。若你需要当前语言的版本，请联系我们。
-                </span>
-                <span v-else-if="['zh-hant'].includes($i18n.locale)">
-                    本條款和條件的官方版本僅提供英文版本。若你需要當前語言的版本，請聯繫我們。
-                </span>
-                <span v-else-if="['ja'].includes($i18n.locale)">
-                    本利用規約の公式版は英語版のみです。現在の言語のバージョンが必要な場合は、お問い合わせください。
-                </span>
-            </p>
+            <EnglishOnlyTips />
 
+            <!-- 法律正文（英文，按章节组织）/ Legal body text (English, organized by sections) -->
             <div class="mt-12 space-y-12">
+                <!-- 01 Introduction / 01 简介 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">01</span> Introduction
@@ -37,6 +31,7 @@
                     </p>
                 </section>
 
+                <!-- 02 Description of Service / 02 服务说明 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">02</span> Description of Service
@@ -54,6 +49,7 @@
                     </p>
                 </section>
 
+                <!-- 03 Account Registration and Security / 03 账户注册与安全 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">03</span> Account Registration and Security
@@ -72,6 +68,7 @@
                         of the respective third-party provider.</p>
                 </section>
 
+                <!-- 04 Subscription and Payments / 04 订阅与支付 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">04</span> Subscription and Payments
@@ -89,6 +86,7 @@
                         privacy policies.</p>
                 </section>
 
+                <!-- 05 User Conduct and Prohibited Activities / 05 用户行为与禁止活动 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">05</span> User Conduct and Prohibited Activities
@@ -109,6 +107,7 @@
                     </ul>
                 </section>
 
+                <!-- 06 Intellectual Property Rights / 06 知识产权 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">06</span> Intellectual Property Rights
@@ -136,6 +135,7 @@
                         Output without our prior written consent.</p>
                 </section>
 
+                <!-- 07 Third-Party Services / 07 第三方服务 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">07</span> Third-Party Services
@@ -149,6 +149,7 @@
                         practices or content of any third-party services.</p>
                 </section>
 
+                <!-- 08 Disclaimer of Warranties / 08 免责声明 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">08</span> Disclaimer of Warranties
@@ -170,6 +171,7 @@
                     </p>
                 </section>
 
+                <!-- 09 Limitation of Liability / 09 责任限制 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">09</span> Limitation of Liability
@@ -187,6 +189,7 @@
                     </p>
                 </section>
 
+                <!-- 10 Indemnification / 10 赔偿 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">10</span> Indemnification
@@ -200,6 +203,7 @@
                     </p>
                 </section>
 
+                <!-- 11 Termination / 11 终止 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">11</span> Termination
@@ -215,6 +219,7 @@
                     </p>
                 </section>
 
+                <!-- 12 Governing Law and Dispute Resolution / 12 适用法律与争议解决 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">12</span> Governing Law and Dispute Resolution
@@ -232,6 +237,7 @@
                     </p>
                 </section>
 
+                <!-- 13 Changes to Terms / 13 条款变更 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">13</span> Changes to Terms
@@ -247,6 +253,7 @@
                     </p>
                 </section>
 
+                <!-- 14 Severability / 14 可分割性 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">14</span> Severability
@@ -259,6 +266,7 @@
                 </section>
             </div>
 
+            <!-- 返回首页 / Back to home -->
             <div class="mt-16 border-t border-white/5 pt-8">
                 <NuxtLink :to="localePath('/')" class="text-sm text-stone-400 transition-colors hover:text-white">
                     ← Back Home
@@ -269,7 +277,9 @@
 </template>
 
 <script setup lang="ts">
+// 关闭该页面的 i18n 自动注入（使用纯英文法律文本）/ Disable i18n auto-injection for this page (uses English-only legal text)
 definePageMeta({ i18n: false })
 
+// 获取本地化路径工具（用于返回首页链接）/ Obtain the localized-path helper (for the back-home link)
 const localePath = useLocalePath()
 </script>

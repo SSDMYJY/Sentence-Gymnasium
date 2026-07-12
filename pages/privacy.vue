@@ -1,25 +1,18 @@
 <template>
     <div class="mx-auto max-w-3xl px-6 pb-20 pt-28">
         <div class="hero-rise">
+            <!-- 文档类型标签 / Document type label -->
             <p class="text-xs uppercase tracking-[0.28em] text-accent-soft">Legal Documents</p>
+            <!-- 标题 / Heading -->
             <h1 class="mt-3 font-display text-4xl font-bold tracking-tight">Privacy Policy</h1>
+            <!-- 更新日期 / Last updated -->
             <p class="mt-3 text-sm text-stone-500">Last updated: July 6, 2026</p>
 
-            <!-- 当用户的语言不是英文时，显示该信息 -->
-            <p v-if="!['en'].includes($i18n.locale)" class="mt-3 text-sm text-red-400">
-                <span v-if="['zh-hans'].includes($i18n.locale)">
-                    本隐私政策的官方版本仅提供英文版本。若你需要当前语言的版本，请联系我们。
-                </span>
-                <span v-else-if="['zh-hant'].includes($i18n.locale)">
-                    本隱私政策的官方版本僅提供英文版本。若你需要當前語言的版本，請聯繫我們。
-                </span>
-                <span v-else-if="['ja'].includes($i18n.locale)">
-                    このプライバシーポリシーの公式版は英語のみで提供されています。現在の言語のバージョンが必要な場合は、お問い合わせください。
-                </span>
-            </p>
+            <EnglishOnlyTips />
 
+            <!-- 法律正文（英文，按章节组织）/ Legal body text (English, organized by sections) -->
             <div class="mt-12 space-y-12">
-                <!-- 01 Introduction -->
+                <!-- 01 Introduction / 01 简介 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">01</span> Introduction
@@ -34,7 +27,7 @@
                     </p>
                 </section>
 
-                <!-- 02 Information We Collect -->
+                <!-- 02 Information We Collect / 02 我们收集的信息 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">02</span> Information We Collect
@@ -70,7 +63,7 @@
                     </ul>
                 </section>
 
-                <!-- 03 How We Use Your Information -->
+                <!-- 03 How We Use Your Information / 03 信息的使用方式 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">03</span> How We Use Your Information
@@ -90,7 +83,7 @@
                     </ul>
                 </section>
 
-                <!-- 04 Legal Basis for Processing -->
+                <!-- 04 Legal Basis for Processing / 04 处理的法律依据 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">04</span> Legal Basis for Processing (GDPR and Similar Laws)
@@ -113,7 +106,7 @@
                     </ul>
                 </section>
 
-                <!-- 05 How We Share Your Information -->
+                <!-- 05 How We Share Your Information / 05 信息共享 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">05</span> How We Share Your Information
@@ -139,7 +132,7 @@
                     </ul>
                 </section>
 
-                <!-- 06 Data Storage and International Transfers -->
+                <!-- 06 Data Storage and International Transfers / 06 数据存储与跨境传输 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">06</span> Data Storage and International Transfers
@@ -167,7 +160,7 @@
                     </p>
                 </section>
 
-                <!-- 07 Data Retention -->
+                <!-- 07 Data Retention / 07 数据保留 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">07</span> Data Retention
@@ -184,7 +177,7 @@
                     </p>
                 </section>
 
-                <!-- 08 Your Privacy Rights -->
+                <!-- 08 Your Privacy Rights / 08 你的隐私权利 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">08</span> Your Privacy Rights
@@ -215,7 +208,7 @@
                     </p>
                 </section>
 
-                <!-- 09 Children's Privacy -->
+                <!-- 09 Children's Privacy / 09 儿童隐私 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">09</span> Children's Privacy
@@ -234,7 +227,7 @@
                     </p>
                 </section>
 
-                <!-- 10 Cookies and Tracking Technologies -->
+                <!-- 10 Cookies and Tracking Technologies / 10 Cookie 与追踪技术 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">10</span> Cookies and Tracking Technologies
@@ -247,7 +240,7 @@
                     </p>
                 </section>
 
-                <!-- 11 Security -->
+                <!-- 11 Security / 11 安全 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">11</span> Security
@@ -260,7 +253,7 @@
                     </p>
                 </section>
 
-                <!-- 12 Third-Party Links -->
+                <!-- 12 Third-Party Links / 12 第三方链接 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">12</span> Third-Party Links
@@ -272,7 +265,7 @@
                     </p>
                 </section>
 
-                <!-- 13 Changes to This Privacy Policy -->
+                <!-- 13 Changes to This Privacy Policy / 13 隐私政策变更 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">13</span> Changes to This Privacy Policy
@@ -285,7 +278,7 @@
                     </p>
                 </section>
 
-                <!-- 14 California Privacy Rights -->
+                <!-- 14 California Privacy Rights / 14 加州隐私权 -->
                 <section>
                     <h2 class="font-display text-lg font-semibold text-stone-100">
                         <span class="text-accent-soft">14</span> California Privacy Rights (CCPA/CPRA)
@@ -310,6 +303,7 @@
                 </section>
             </div>
 
+            <!-- 返回首页 / Back to home -->
             <div class="mt-16 border-t border-white/5 pt-8">
                 <NuxtLink :to="localePath('/')" class="text-sm text-stone-400 transition-colors hover:text-white">
                     ← Back Home
@@ -320,7 +314,9 @@
 </template>
 
 <script setup lang="ts">
+// 关闭该页面的 i18n 自动注入（使用纯英文法律文本）/ Disable i18n auto-injection for this page (uses English-only legal text)
 definePageMeta({ i18n: false })
 
+// 获取本地化路径工具（用于返回首页链接）/ Obtain the localized-path helper (for the back-home link)
 const localePath = useLocalePath()
 </script>
