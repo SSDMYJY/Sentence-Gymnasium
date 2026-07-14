@@ -154,6 +154,40 @@
 			"button": "Recharge +20",
 			"done": "Recharged +20",
 			"loading": "Processing…"
+		},
+		"dailyGoal": {
+			"title": "Daily Goal",
+			"label": "{current}/{goal} today",
+			"complete": "Goal reached!",
+			"adjust": "Adjust Goal"
+		},
+		"weekly": {
+			"title": "This Week",
+			"label": "Last 7 days"
+		},
+		"weakAreas": {
+			"title": "Areas to Improve",
+			"label": "Focus on these topics"
+		}
+	},
+	"bookmarks": {
+		"title": "Bookmarks",
+		"subtitle": "Your saved vocabulary and phrases",
+		"save": "Save",
+		"saved": "Saved",
+		"searchPlaceholder": "Search bookmarks…",
+		"loading": "Loading…",
+		"noData": "No bookmarks yet",
+		"startPractice": "Start Practice",
+		"allLangs": "All Languages",
+		"allCategories": "All Categories",
+		"prev": "Prev",
+		"next": "Next",
+		"pageInfo": "Page {page}/{total} · {count} items",
+		"category": {
+			"vocabulary": "Vocabulary",
+			"grammar": "Grammar",
+			"expression": "Expression"
 		}
 	},
 	"practice": {
@@ -398,5 +432,19 @@
 		"attempts": "Attempts",
 		"accuracy": "Accuracy",
 		"noData": "No data yet"
+	},
+	"review": {
+		"title": "Review",
+		"subtitle": "Revisit questions you got wrong",
+		"dueCount": "{count} items due",
+		"noDue": "All caught up!",
+		"skip": "Skip",
+		"originalAnswer": "Your Original Answer",
+		"newAnswer": "Your New Answer",
+		"reviewStats": {
+			"due": "Due",
+			"overdue": "Overdue",
+			"mastered": "Mastered"
+		}
 	}
 }

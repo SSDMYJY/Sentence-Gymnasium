@@ -8,13 +8,61 @@
       <p class="mt-2 text-stone-400">{{ t('dashboard.subtitle') }}</p>
     </header>
 
-    <!-- 顶部四项统计卡片 / Top four stat cards -->
-    <div class="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-4">
-      <!-- 遍历统计项 / Iterate stat items -->
-      <div v-for="s in stats" :key="s.label" class="flex flex-col items-center bg-ink-900 px-4 py-6 text-center">
-        <span class="text-2xl">{{ s.icon }}</span>
-        <p class="mt-3 font-display text-3xl font-semibold text-stone-100">{{ s.value }}</p>
-        <p class="mt-1 text-xs uppercase tracking-wide text-stone-500">{{ s.label }}</p>
+    <!-- Daily Goal Progress Ring + Top Stats -->
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-4">
+      <!-- Daily Goal Ring -->
+      <div class="relative flex flex-col items-center justify-center rounded-2xl border border-white/10 bg-ink-900/50 p-6">
+        <svg class="h-24 w-24 -rotate-90" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="8"
+            class="text-white/10" />
+          <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="8"
+            stroke-linecap="round"
+            :stroke-dasharray="circumference"
+            :stroke-dashoffset="goalOffset"
+            class="text-accent transition-all duration-700" />
+        </svg>
+        <div class="absolute top-1/2.25 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+          <span class="text-2xl font-bold text-stone-100">{{ todayAttempts }}/{{ dailyGoal }}</span>
+          <span class="text-xs text-stone-500">{{ t('dashboard.dailyGoal.title') }}</span>
+        </div>
+        <div class="relative mt-2">
+          <UButton variant="ghost" size="xs" class="text-xs text-stone-400 hover:text-accent"
+            @click="showGoalPopover = !showGoalPopover">
+            {{ t('dashboard.dailyGoal.adjust') }}
+          </UButton>
+          <div v-if="showGoalPopover"
+            class="absolute left-1/2 top-full z-10 mt-2 -translate-x-1/2 rounded-xl border border-white/10 bg-ink-800 p-3 shadow-xl">
+            <div class="flex gap-2">
+              <UButton v-for="g in goalOptions" :key="g" size="xs"
+                :variant="dailyGoal === g ? 'solid' : 'outline'"
+                :class="dailyGoal === g ? 'bg-accent text-white' : 'border-white/15 text-stone-300'"
+                @click="onSetGoal(g)">
+                {{ g }}
+              </UButton>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top four stat cards -->
+      <div class="col-span-1 lg:col-span-3 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-4">
+        <div v-for="s in stats" :key="s.label" class="flex flex-col items-center bg-ink-900 px-4 py-6 text-center">
+          <span class="text-2xl">{{ s.icon }}</span>
+          <p class="mt-3 font-display text-3xl font-semibold text-stone-100">{{ s.value }}</p>
+          <p class="mt-1 text-xs uppercase tracking-wide text-stone-500">{{ s.label }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weekly Activity Bars -->
+    <div v-if="weeklyActivity.length > 0" class="mt-6 rounded-2xl border border-white/10 bg-ink-900/50 p-6">
+      <h3 class="text-sm font-semibold text-stone-300 mb-4">{{ t('dashboard.weekly.title') }}</h3>
+      <div class="flex items-end justify-between gap-2">
+        <div v-for="day in weeklyActivity" :key="day.date" class="flex flex-1 flex-col items-center gap-1">
+          <div class="w-full rounded-t bg-accent/30 transition-all duration-500"
+            :style="{ height: `${Math.max(4, (day.count / maxWeeklyCount) * 80)}px` }" />
+          <span class="text-[10px] text-stone-500">{{ formatDayLabel(day.date) }}</span>
+        </div>
       </div>
     </div>
 
@@ -64,16 +112,44 @@
             <span>◎</span>
             {{ t('dashboard.quickActions.grammarFocus') }}
           </UButton>
-          <!-- 回顾错题 / Review mistakes -->
+          <!-- 复习错题 / Review mistakes -->
           <UButton
-            :to="localePath('/history')"
+            :to="localePath('/review')"
             variant="outline"
             class="w-full border-white/15 text-stone-300 hover:border-accent hover:text-white"
             size="lg"
           >
-            <span>📝</span>
+            <span>🔄</span>
             {{ t('dashboard.quickActions.reviewMistakes') }}
+            <span v-if="reviewDueCount > 0"
+              class="ml-auto rounded-full bg-accent/20 px-2 py-0.5 text-xs text-accent-soft">
+              {{ reviewDueCount }}
+            </span>
           </UButton>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weak Areas Section -->
+    <div v-if="weakAreas.length > 0" class="mt-6 rounded-2xl border border-white/10 bg-ink-900/50 p-6">
+      <h3 class="text-sm font-semibold text-stone-300">{{ t('dashboard.weakAreas.title') }}</h3>
+      <p class="mt-1 text-xs text-stone-500">{{ t('dashboard.weakAreas.label') }}</p>
+      <div class="mt-4 space-y-3">
+        <div v-for="area in weakAreas" :key="area.tag" class="flex items-center gap-4">
+          <div class="flex-1">
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-stone-200">{{ area.label }}</span>
+              <span class="text-sm font-medium"
+                :class="area.accuracy < 50 ? 'text-red-400' : area.accuracy < 70 ? 'text-yellow-400' : 'text-green-400'">
+                {{ area.accuracy }}%
+              </span>
+            </div>
+            <div class="mt-1 h-1.5 overflow-hidden rounded-full bg-ink-800">
+              <div class="h-full rounded-full transition-all duration-500"
+                :class="area.accuracy < 50 ? 'bg-red-500' : area.accuracy < 70 ? 'bg-yellow-500' : 'bg-green-500'"
+                :style="{ width: `${area.accuracy}%` }" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -158,11 +234,17 @@ const displayName = computed(() => user.value?.name || user.value?.email || '')
 
 // 单项统计结构 / Single-board stat shape
 interface BoardStat { total: number; correct: number }
+interface WeakArea { tag: string; label: string; total: number; correct: number; accuracy: number }
+interface WeeklyDay { date: string; count: number }
 // 统计接口返回结构 / Stats response shape
 interface StatsResp {
   total: number
   correct: number
   perBoard: { practice: BoardStat; paraphrase: BoardStat; grammar: BoardStat }
+  todayAttempts: number
+  dailyGoal: number
+  weeklyActivity: WeeklyDay[]
+  weakAreas: WeakArea[]
 }
 
 // 历史条目结构 / History entry shape
@@ -179,6 +261,11 @@ interface HistoryEntry {
 const statsResp = ref<StatsResp | null>(null)
 // 历史条目列表 / History entries
 const historyEntries = ref<HistoryEntry[]>([])
+// Goal popover
+const showGoalPopover = ref(false)
+const goalOptions = [3, 5, 10, 15]
+// Review due count
+const reviewDueCount = ref(0)
 
 // 加载统计与历史 / Load stats and history
 async function loadData() {
@@ -190,6 +277,11 @@ async function loadData() {
     // 获取历史数据 / Fetch history
     const history = await $fetch<{ entries: HistoryEntry[] }>('/api/history', { headers })
     historyEntries.value = history.entries
+    // Fetch review stats
+    try {
+      const reviewStats = await $fetch<{ dueCount: number }>('/api/review/stats', { headers })
+      reviewDueCount.value = reviewStats.dueCount
+    } catch {}
   } catch {
     // 失败则置空 / Reset on failure
     statsResp.value = null
@@ -207,6 +299,33 @@ const accRate = computed(() => {
   if (total === 0) return '—' // 无数据 / No data
   return `${Math.round((correct / total) * 100)}%` // 百分比 / Percentage
 })
+
+// Daily goal
+const dailyGoal = computed(() => statsResp.value?.dailyGoal ?? user.value?.dailyGoal ?? 5)
+const todayAttempts = computed(() => statsResp.value?.todayAttempts ?? 0)
+const circumference = 2 * Math.PI * 42 // r=42
+const goalOffset = computed(() => {
+  const goal = dailyGoal.value
+  const done = Math.min(todayAttempts.value, goal)
+  const fraction = goal > 0 ? done / goal : 0
+  return circumference * (1 - fraction)
+})
+
+// Weekly activity
+const weeklyActivity = computed(() => statsResp.value?.weeklyActivity ?? [])
+const maxWeeklyCount = computed(() => {
+  const counts = weeklyActivity.value.map(d => d.count)
+  return Math.max(1, ...counts)
+})
+
+function formatDayLabel(dateStr: string): string {
+  const d = new Date(dateStr + 'T00:00:00')
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  return days[d.getDay()]
+}
+
+// Weak areas
+const weakAreas = computed(() => statsResp.value?.weakAreas ?? [])
 
 // ---------- 等级 / Level ----------
 
@@ -274,5 +393,22 @@ const onRecharge = async () => {
     // 结束充值 / Stop recharging
     recharging.value = false
   }
+}
+
+// Set daily goal
+async function onSetGoal(goal: number) {
+  showGoalPopover.value = false
+  try {
+    const headers = import.meta.server ? useRequestHeaders(['cookie']) : undefined
+    const updated = await $fetch<SessionUser>('/api/stats/goal', {
+      method: 'PUT',
+      body: { dailyGoal: goal },
+      headers,
+    })
+    store.setUser(updated)
+    if (statsResp.value) {
+      statsResp.value.dailyGoal = goal
+    }
+  } catch {}
 }
 </script>

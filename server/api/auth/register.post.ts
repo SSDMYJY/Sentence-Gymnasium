@@ -46,6 +46,7 @@ export default defineEventHandler(async (event) => {
       streak: true,
       lastPracticeAt: true,
       level: true,
+      dailyGoal: true,
     },
   })
 

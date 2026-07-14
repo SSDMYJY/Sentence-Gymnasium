@@ -24,6 +24,7 @@ export interface SessionUser {
   streak: number
   lastPracticeAt: string | null
   level: number
+  dailyGoal: number
 }
 
 const COOKIE_NAME = 'sg_session'
@@ -100,6 +101,7 @@ export async function getSessionUser(event: H3Event): Promise<SessionUser | null
           streak: true,
           lastPracticeAt: true,
           level: true,
+          dailyGoal: true,
         },
       })
       if (user) {

@@ -1,0 +1,2 @@
+ALTER TABLE "attempts" ADD COLUMN "nextReviewAt" DATETIME;
+ALTER TABLE "attempts" ADD COLUMN "reviewLevel" INTEGER NOT NULL DEFAULT 0;

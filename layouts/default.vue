@@ -153,12 +153,28 @@ const user = computed(() => store.user)
 const loggingOut = ref(false)
 const mobileMenuOpen = ref(false)
 
+const reviewDueCount = ref(0)
+const showReviewBadge = computed(() => reviewDueCount.value > 0)
+
+// Fetch review due count for badge
+async function fetchReviewDueCount() {
+  try {
+    const headers = import.meta.server ? useRequestHeaders(['cookie']) : undefined
+    const stats = await $fetch<{ dueCount: number }>('/api/review/stats', { headers })
+    reviewDueCount.value = stats.dueCount
+  } catch {
+    reviewDueCount.value = 0
+  }
+}
+
 const navItems = computed(() => [
   { key: 'dashboard', label: t('auth.dashboard'), path: '/dashboard', icon: '🏠' },
   { key: 'practice', label: t('boards.practice.subtitle'), path: '/practice', icon: '⚡' },
   { key: 'paraphrase', label: t('boards.paraphrase.subtitle'), path: '/paraphrase', icon: '🔄' },
   { key: 'grammar', label: t('boards.grammar.subtitle'), path: '/grammar', icon: '◎' },
   { key: 'history', label: t('nav.history'), path: '/history', icon: '📝' },
+  { key: 'review', label: t('review.title'), path: '/review', icon: '🔄' },
+  { key: 'bookmarks', label: t('bookmarks.title'), path: '/bookmarks', icon: '🔖' },
   { key: 'ranking', label: t('ranking.nav'), path: '/ranking', icon: '🏆' },
 ])
 
@@ -166,6 +182,8 @@ const mobileTabs = computed(() => [
   { key: 'dashboard', shortLabel: t('auth.dashboard'), path: '/dashboard', icon: '🏠' },
   { key: 'practice', shortLabel: t('boards.practice.subtitle'), path: '/practice', icon: '⚡' },
   { key: 'grammar', shortLabel: t('boards.grammar.subtitle'), path: '/grammar', icon: '◎' },
+  { key: 'review', shortLabel: t('review.title'), path: '/review', icon: '🔄' },
+  { key: 'bookmarks', shortLabel: t('bookmarks.title'), path: '/bookmarks', icon: '🔖' },
   { key: 'history', shortLabel: t('nav.history'), path: '/history', icon: '📝' },
 ])
 

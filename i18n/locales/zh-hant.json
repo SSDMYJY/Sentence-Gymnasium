@@ -154,6 +154,20 @@
 			"button": "模擬充值 +20",
 			"done": "充值成功 +20",
 			"loading": "處理中…"
+		},
+		"dailyGoal": {
+			"title": "每日目標",
+			"label": "今日 {current}/{goal}",
+			"complete": "目標達成！",
+			"adjust": "調整目標"
+		},
+		"weekly": {
+			"title": "本週",
+			"label": "最近 7 天"
+		},
+		"weakAreas": {
+			"title": "薄弱環節",
+			"label": "重點突破這些知識點"
 		}
 	},
 	"practice": {
@@ -383,6 +397,40 @@
 		"minutesAgo": "{n} 分鐘前",
 		"hoursAgo": "{n} 小時前",
 		"daysAgo": "{n} 天前"
+	},
+	"bookmarks": {
+		"title": "收藏夾",
+		"subtitle": "你收藏的單詞和短語",
+		"save": "收藏",
+		"saved": "已收藏",
+		"searchPlaceholder": "搜索收藏…",
+		"loading": "載入中…",
+		"noData": "暫無收藏",
+		"startPractice": "開始練習",
+		"allLangs": "所有語言",
+		"allCategories": "全部分類",
+		"prev": "上一頁",
+		"next": "下一頁",
+		"pageInfo": "第 {page}/{total} 頁 · 共 {count} 條",
+		"category": {
+			"vocabulary": "詞彙",
+			"grammar": "語法",
+			"expression": "表達"
+		}
+	},
+	"review": {
+		"title": "複習",
+		"subtitle": "重新回顧做錯的題目",
+		"dueCount": "{count} 題待複習",
+		"noDue": "全部複習完畢！",
+		"skip": "跳過",
+		"originalAnswer": "你的原始答案",
+		"newAnswer": "你的新答案",
+		"reviewStats": {
+			"due": "待複習",
+			"overdue": "已逾期",
+			"mastered": "已掌握"
+		}
 	},
 	"streak": {
 		"days": "天"

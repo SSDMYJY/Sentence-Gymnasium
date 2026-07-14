@@ -154,6 +154,20 @@
 			"button": "模拟充值 +20",
 			"done": "充值成功 +20",
 			"loading": "处理中…"
+		},
+		"dailyGoal": {
+			"title": "每日目标",
+			"label": "今日 {current}/{goal}",
+			"complete": "目标达成！",
+			"adjust": "调整目标"
+		},
+		"weekly": {
+			"title": "本周",
+			"label": "最近 7 天"
+		},
+		"weakAreas": {
+			"title": "薄弱环节",
+			"label": "重点突破这些知识点"
 		}
 	},
 	"practice": {
@@ -383,6 +397,40 @@
 		"minutesAgo": "{n} 分钟前",
 		"hoursAgo": "{n} 小时前",
 		"daysAgo": "{n} 天前"
+	},
+	"bookmarks": {
+		"title": "收藏夹",
+		"subtitle": "你收藏的单词和短语",
+		"save": "收藏",
+		"saved": "已收藏",
+		"searchPlaceholder": "搜索收藏…",
+		"loading": "加载中…",
+		"noData": "暂无收藏",
+		"startPractice": "开始练习",
+		"allLangs": "所有语言",
+		"allCategories": "全部分类",
+		"prev": "上一页",
+		"next": "下一页",
+		"pageInfo": "第 {page}/{total} 页 · 共 {count} 条",
+		"category": {
+			"vocabulary": "词汇",
+			"grammar": "语法",
+			"expression": "表达"
+		}
+	},
+	"review": {
+		"title": "复习",
+		"subtitle": "重新回顾做错的题目",
+		"dueCount": "{count} 题待复习",
+		"noDue": "全部复习完毕！",
+		"skip": "跳过",
+		"originalAnswer": "你的原始答案",
+		"newAnswer": "你的新答案",
+		"reviewStats": {
+			"due": "待复习",
+			"overdue": "已逾期",
+			"mastered": "已掌握"
+		}
 	},
 	"streak": {
 		"days": "天"

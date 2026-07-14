@@ -154,6 +154,20 @@
 			"button": "模擬チャージ +20",
 			"done": "チャージ成功 +20",
 			"loading": "処理中…"
+		},
+		"dailyGoal": {
+			"title": "1日の目標",
+			"label": "今日 {current}/{goal}",
+			"complete": "目標達成！",
+			"adjust": "目標を調整"
+		},
+		"weekly": {
+			"title": "今週",
+			"label": "過去7日間"
+		},
+		"weakAreas": {
+			"title": "弱点分野",
+			"label": "これらのトピックを重点的に"
 		}
 	},
 	"practice": {
@@ -383,6 +397,40 @@
 		"minutesAgo": "{n}分前",
 		"hoursAgo": "{n}時間前",
 		"daysAgo": "{n}日前"
+	},
+	"bookmarks": {
+		"title": "ブックマーク",
+		"subtitle": "保存した単語とフレーズ",
+		"save": "保存",
+		"saved": "保存済み",
+		"searchPlaceholder": "ブックマークを検索…",
+		"loading": "読み込み中…",
+		"noData": "ブックマークがありません",
+		"startPractice": "練習を開始",
+		"allLangs": "すべての言語",
+		"allCategories": "すべてのカテゴリ",
+		"prev": "前へ",
+		"next": "次へ",
+		"pageInfo": "{page}/{total} ページ · {count} 件",
+		"category": {
+			"vocabulary": "語彙",
+			"grammar": "文法",
+			"expression": "表現"
+		}
+	},
+	"review": {
+		"title": "復習",
+		"subtitle": "間違えた問題を振り返る",
+		"dueCount": "復習待ち {count} 問",
+		"noDue": "すべて復習完了！",
+		"skip": "スキップ",
+		"originalAnswer": "あなたの元の答え",
+		"newAnswer": "あなたの新しい答え",
+		"reviewStats": {
+			"due": "復習待ち",
+			"overdue": "期限切れ",
+			"mastered": "習得済み"
+		}
 	},
 	"streak": {
 		"days": "日"

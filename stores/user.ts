@@ -21,6 +21,8 @@ export interface SessionUser {
   lastPracticeAt: string | null
   // 用户等级 / User level
   level: number
+  // 每日目标 / Daily goal
+  dailyGoal: number
 }
 
 // 定义名为 'user' 的 Pinia store / Define the Pinia store named 'user'

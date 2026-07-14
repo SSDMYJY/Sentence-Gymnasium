@@ -33,6 +33,7 @@ export default defineEventHandler(async (event) => {
     correctAttempts: true,
     streak: true,
     lastPracticeAt: true,
+    dailyGoal: true,
     passwordHash: true,
   }
 
@@ -68,7 +69,7 @@ export default defineEventHandler(async (event) => {
     streak: user.streak,
     lastPracticeAt: user.lastPracticeAt ? user.lastPracticeAt.toISOString() : null,
     level: typeof user.level === 'number' ? user.level : 1,
-    experience: typeof user.experience === 'number' ? user.experience : 0,
+    dailyGoal: typeof user.dailyGoal === 'number' ? user.dailyGoal : 5,
   })
 
   return {
@@ -81,6 +82,6 @@ export default defineEventHandler(async (event) => {
     streak: user.streak,
     lastPracticeAt: user.lastPracticeAt ? user.lastPracticeAt.toISOString() : null,
     level: typeof user.level === 'number' ? user.level : 1,
-    experience: typeof user.experience === 'number' ? user.experience : 0,
+    dailyGoal: typeof user.dailyGoal === 'number' ? user.dailyGoal : 5,
   }
 })

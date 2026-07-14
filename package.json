@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260702.1",
-    "@iconify-json/lucide": "^1.2.116",
+    "@iconify-json/lucide": "^1.2.117",
     "@types/bcryptjs": "^2.4.6",
     "@types/cloudflare-turnstile": "^0.2.2",
     "nitro-cloudflare-dev": "^0.2.2",

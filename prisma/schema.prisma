@@ -28,8 +28,10 @@ model User {
   lastPracticeAt  DateTime?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+  dailyGoal       Int      @default(5)
   attempts        Attempt[]
   generatedQuestions GeneratedQuestion[]
+  bookmarks       Bookmark[]
 
   @@map("users")
 }
@@ -61,9 +63,28 @@ model Attempt {
   isCorrect  Boolean
   feedback   String? // JSON string with AI explanation/suggestion
   createdAt  DateTime @default(now())
+  nextReviewAt DateTime?
+  reviewLevel  Int      @default(0)
   user       User     @relation(fields: [userId], references: [id])
   question   GeneratedQuestion @relation(fields: [questionId], references: [id])
 
   @@index([userId, createdAt])
+  @@index([nextReviewAt, reviewLevel])
   @@map("attempts")
+}
+
+model Bookmark {
+  id          String   @id @default(cuid())
+  userId      String
+  word        String
+  sentence    String?
+  sourceLang  String?
+  category    String?
+  notes       String?
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, word])
+  @@index([userId, createdAt])
+  @@map("bookmarks")
 }

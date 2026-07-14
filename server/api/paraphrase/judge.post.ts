@@ -44,13 +44,19 @@ export default defineEventHandler(async (event) => {
   const newTotalAttempts = user.totalAttempts + 1
   const levelResult = checkLevelUp(user.level, newTotalAttempts)
 
+  // Spaced repetition: set nextReviewAt for wrong answers
+  const isCorrect = result.isCorrect
+  const reviewData = isCorrect
+    ? {}
+    : { nextReviewAt: new Date(), reviewLevel: 0 }
+
   const [attempt, updatedUser] = await prisma.$transaction([
     prisma.attempt.create({
       data: {
         userId: user.id,
         questionId: question.id,
         userAnswer: userAnswer.trim(),
-        isCorrect: result.isCorrect,
+        isCorrect,
         feedback: JSON.stringify({
           score: result.score,
           verdict: result.verdict,
@@ -59,6 +65,7 @@ export default defineEventHandler(async (event) => {
           errors: result.errors ?? [],
           correctAnswer: question.correctAnswer,
         }),
+        ...reviewData,
       },
     }),
     prisma.user.update({
