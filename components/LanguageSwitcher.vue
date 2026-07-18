@@ -2,12 +2,7 @@
   <!-- 语言切换下拉菜单，右对齐、底部弹出 / Language switch dropdown menu, right-aligned and bottom-anchored -->
   <UDropdownMenu :items="dropdownItems" :content="{ align: 'end', side: 'bottom', sideOffset: 8 }">
     <!-- 触发按钮：显示地球图标 / Trigger button showing a globe icon -->
-    <UButton
-      variant="ghost"
-      size="sm"
-      class="lang-switch-btn p-2"
-      :aria-label="currentName"
-    >
+    <UButton variant="ghost" size="sm" square class="lang-switch-btn p-1.5" :aria-label="currentName">
       <!-- 前置插槽：地球 emoji / Leading slot: globe emoji -->
       <template #leading>
         <span class="leading-none">🌐</span>
@@ -70,7 +65,13 @@ const onChange = async (code: string) => {
   border: 1px solid var(--border-default) !important;
   color: var(--text-secondary) !important;
   transition: all 0.2s ease;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  padding: 0 !important;
 }
+
 /* 悬停时强化边框与文字颜色 / Strengthen border and text color on hover */
 .lang-switch-btn:hover {
   border-color: var(--border-strong) !important;
