@@ -57,7 +57,7 @@
 
     <section id="boards" class="relative border-t border-white/5">
       <div class="mx-auto max-w-7xl px-6 py-24 sm:py-32">
-        <div class="js-reveal max-w-2xl">
+        <div class="js-direction-reveal max-w-2xl">
           <p class="text-xs uppercase tracking-[0.28em] text-accent-soft">{{ t('boards.eyebrow') }}</p>
           <h2 class="mt-4 font-display text-3xl font-semibold tracking-tight sm:text-5xl">
             {{ t('boards.title') }}
@@ -72,7 +72,7 @@
             v-for="b in boards"
             :key="b.no"
             :to="b.to"
-            class="js-reveal js-board-card group relative border-b border-white/10 px-6 py-10 transition-colors hover:bg-ink-800/30 sm:px-8 md:border-b-0 md:border-r md:last:border-r-0 will-change-transform"
+            class="js-direction-reveal js-board-card group relative border-b border-white/10 px-6 py-10 transition-colors hover:bg-ink-800/30 sm:px-8 md:border-b-0 md:border-r md:last:border-r-0 will-change-transform"
           >
             <span class="js-board-line absolute left-0 top-0 h-px w-full origin-left scale-x-0 bg-accent" />
             <span class="block font-display text-sm text-stone-500">{{ b.no }}</span>
@@ -90,7 +90,7 @@
 
     <section id="flow" class="relative border-t border-white/5 bg-ink-900/40">
       <div class="mx-auto max-w-7xl px-6 py-24 sm:py-32">
-        <div class="js-reveal max-w-2xl">
+        <div class="js-direction-reveal max-w-2xl">
           <p class="text-xs uppercase tracking-[0.28em] text-accent-soft">{{ t('flow.eyebrow') }}</p>
           <h2 class="mt-4 font-display text-3xl font-semibold tracking-tight sm:text-5xl">
             {{ t('flow.title') }}
@@ -104,9 +104,9 @@
           <li
             v-for="s in steps"
             :key="s.no"
-            class="js-reveal relative border-t border-white/10 pt-8"
+            class="js-direction-reveal js-flow-step relative border-t border-white/10 pt-8"
           >
-            <span class="absolute left-0 top-0 h-px w-10 bg-accent" />
+            <span class="js-flow-line absolute left-0 top-0 h-px w-10 origin-left scale-x-0 bg-accent" />
             <span class="font-display text-sm text-accent">{{ s.no }}</span>
             <h3 class="mt-5 font-display text-xl font-semibold">{{ s.title }}</h3>
             <p class="mt-1 text-sm text-stone-500">{{ s.caption }}</p>
@@ -179,14 +179,16 @@ useHomeAnimations(rootRef)
 <style scoped>
 .home-page :deep(.js-hero-item),
 .home-page :deep(.js-reveal),
-.home-page :deep(.js-scroll-hint) {
+.home-page :deep(.js-scroll-hint),
+.home-page :deep(.js-direction-reveal) {
   opacity: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .home-page :deep(.js-hero-item),
   .home-page :deep(.js-reveal),
-  .home-page :deep(.js-scroll-hint) {
+  .home-page :deep(.js-scroll-hint),
+  .home-page :deep(.js-direction-reveal) {
     opacity: 1;
   }
 }

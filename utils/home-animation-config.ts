@@ -35,6 +35,46 @@ export const homeAnimationConfig = {
     batchInterval: 0.12,
   },
 
+  /** Boards section entrance */
+  boards: {
+    duration: 0.9,
+    ease: 'power3.out',
+    y: 40,
+    scale: 0.98,
+    start: 'top 80%',
+    stagger: 0.15,
+  },
+
+  /** Flow section entrance */
+  flow: {
+    duration: 0.8,
+    ease: 'power3.out',
+    y: 20,
+    x: -24,
+    start: 'top 80%',
+    stagger: 0.12,
+    line: {
+      duration: 0.6,
+      ease: 'power2.out',
+    },
+  },
+
+  /** Scroll-direction reveal (down 50px reveal, up 100px reset) */
+  directionReveal: {
+    /** Downward scroll distance (px) required to reveal */
+    thresholdDown: 50,
+    /** Upward scroll distance (px) required to reset for next reveal */
+    thresholdUp: 100,
+    /** Fade + translate duration (seconds) */
+    duration: 0.4,
+    /** Easing function */
+    ease: 'power2.out',
+    /** Upward translate distance (px) */
+    y: 12,
+    /** Stagger between elements (seconds) */
+    stagger: 0.08,
+  },
+
   /** Hero background parallax (scrubbed; desktop + motion OK only) */
   parallax: {
     yPercent: 12,

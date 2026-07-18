@@ -70,6 +70,8 @@ export function useHomeAnimations(rootRef: Ref<HTMLElement | null>) {
 
       // Full motion
       mm.add('(prefers-reduced-motion: no-preference)', () => {
+        const boardsSection = root.querySelector<HTMLElement>('#boards')
+        const flowSection = root.querySelector<HTMLElement>('#flow')
         const heroItems = gsap.utils.toArray<HTMLElement>('.js-hero-item')
         const heroCopy = root.querySelector<HTMLElement>('.js-hero-copy')
         const heroImage = root.querySelector<HTMLElement>('.js-hero-image')
@@ -191,6 +193,60 @@ export function useHomeAnimations(rootRef: Ref<HTMLElement | null>) {
             })
           },
         })
+
+        // Scroll-direction reveal: down 50px reveals, up 100px resets
+        const directionRevealEls = gsap.utils.toArray<HTMLElement>('.js-direction-reveal')
+        if (directionRevealEls.length) {
+          const dirCfg = cfg.directionReveal
+          let lastScrollY = window.scrollY
+          let accumulatedDown = 0
+          let accumulatedUp = 0
+          let isRevealed = false
+
+          gsap.set(directionRevealEls, {
+            autoAlpha: 0,
+            y: dirCfg.y,
+            force3D: true,
+          })
+
+          const revealTl = trackAnimation(
+            gsap.timeline({
+              paused: true,
+              defaults: { overwrite: true, force3D: true },
+            }),
+          )
+          revealTl.to(directionRevealEls, {
+            autoAlpha: 1,
+            y: 0,
+            duration: dirCfg.duration,
+            ease: dirCfg.ease,
+            stagger: dirCfg.stagger,
+          })
+
+          function onDirectionScroll() {
+            const currentScrollY = window.scrollY
+            const delta = currentScrollY - lastScrollY
+            lastScrollY = currentScrollY
+
+            if (delta > 0) {
+              accumulatedDown += delta
+              accumulatedUp = 0
+              if (!isRevealed && accumulatedDown >= dirCfg.thresholdDown) {
+                revealTl.play()
+                isRevealed = true
+              }
+            } else if (delta < 0) {
+              accumulatedUp += Math.abs(delta)
+              accumulatedDown = 0
+              if (isRevealed && accumulatedUp >= dirCfg.thresholdUp) {
+                revealTl.reverse()
+                isRevealed = false
+              }
+            }
+          }
+
+          window.addEventListener('scroll', onDirectionScroll, { passive: true, signal })
+        }
 
         // Board card hover: lift + scaleX line + arrow x (no width / layout thrash)
         const cards = gsap.utils.toArray<HTMLElement>('.js-board-card')
