@@ -1,5 +1,6 @@
 // Waffo Pancake 一次性设置脚本：
-// 创建/复用 store，为充值套餐创建 onetime 产品（test 环境），并打印 productId。
+// 创建/复用 store，为充值套餐创建 onetime 产品（test 环境），
+// 并把 productId 写入数据库 app_config 表（运行时读取数据库，不走环境变量）。
 //
 // 运行方式：
 //   WAFFO_MERCHANT_ID=<merchant-id> WAFFO_PRIVATE_KEY=<pem> npx tsx scripts/waffo-setup.ts
@@ -10,12 +11,12 @@
 //      - 恰好一个 store → 直接使用
 //      - 多个 store → 抛错，请在 dashboard 手动指定
 //   2. 为每个套餐创建 onetime 产品（若同名已存在则跳过创建，仅列出）。
-//   3. 输出每个套餐的 PROD_xxx id → 填入环境变量：
-//      WAFFO_PRODUCT_PACK_100 / WAFFO_PRODUCT_PACK_500 / WAFFO_PRODUCT_PACK_1500
+//   3. 将每个套餐的 PROD_xxx 写入 app_config（key: waffo.product.pack_xxx）。
 //   4. 联调通过后，请到 Waffo Dashboard 对产品执行 Publish 到生产环境。
 //
 // 需要 node >= 18；已安装 @waffo/pancake-ts。
-import { WaffoPancake } from '@waffo/pancake-ts'
+import { PrismaClient } from '@prisma/client'
+import { TaxCategory, WaffoPancake } from '@waffo/pancake-ts'
 
 const merchantId = process.env.WAFFO_MERCHANT_ID
 const privateKey = process.env.WAFFO_PRIVATE_KEY
@@ -26,11 +27,12 @@ if (!merchantId || !privateKey) {
 }
 
 const client = new WaffoPancake({ merchantId, privateKey })
+const prisma = new PrismaClient()
 
 const PACKS = [
-  { key: 'WAFFO_PRODUCT_PACK_100', name: '100 Credits', credits: 100, amount: '2.99' },
-  { key: 'WAFFO_PRODUCT_PACK_500', name: '500 Credits', credits: 500, amount: '12.99' },
-  { key: 'WAFFO_PRODUCT_PACK_1500', name: '1500 Credits', credits: 1500, amount: '29.99' },
+  { dbKey: 'waffo.product.pack_100', name: '100 Credits', credits: 100, amount: '2.99' },
+  { dbKey: 'waffo.product.pack_500', name: '500 Credits', credits: 500, amount: '12.99' },
+  { dbKey: 'waffo.product.pack_1500', name: '1500 Credits', credits: 1500, amount: '29.99' },
 ]
 
 async function main() {
@@ -76,21 +78,27 @@ async function main() {
         storeId,
         name: pack.name,
         description: `${pack.credits} Sentence Gymnasium credits`,
-        prices: { USD: { amount: pack.amount, taxIncluded: false, taxCategory: 'digital_goods' } },
+        prices: { USD: { amount: pack.amount, taxIncluded: false, taxCategory: TaxCategory.DigitalGoods } },
         metadata: { credits: String(pack.credits) },
       })
       productId = product.id
       console.log(`[created] ${pack.name}: ${product.id}`)
     }
 
-    console.log(`\n  ${pack.key}=${productId}`)
+    // 写入数据库 app_config（运行时读取）
+    await prisma.appConfig.upsert({
+      where: { key: pack.dbKey },
+      update: { value: productId },
+      create: { key: pack.dbKey, value: productId },
+    })
+    console.log(`[db]   ${pack.dbKey} = ${productId}`)
   }
 
-  console.log('\nDone. Add the product IDs above to your environment variables.')
+  console.log('\nDone. Product IDs written to the app_config table (runtime reads from DB).')
   console.log('Then publish products to production from the Waffo Dashboard.')
 }
 
 main().catch((err) => {
   console.error('Setup failed:', err?.message ?? err)
   process.exit(1)
-})
+}).finally(() => prisma.$disconnect())

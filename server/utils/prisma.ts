@@ -10,7 +10,7 @@ import type { H3Event } from 'h3'
 // (`usePrisma(event)` in server/api/**) stays unchanged.
 let _prisma: PrismaClient | null = null
 
-export function usePrisma(_event: H3Event): PrismaClient {
+export function usePrisma(_event?: H3Event): PrismaClient {
   if (!_prisma) {
     _prisma = new PrismaClient()
   }

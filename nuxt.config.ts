@@ -49,18 +49,12 @@ export default defineNuxtConfig({
   runtimeConfig: {
     // server-only secrets — populated automatically from NUXT_* env vars:
     // NUXT_AI_API_KEY, NUXT_AI_BASE_URL, NUXT_AI_MODEL, NUXT_AUTH_SECRET, ...
-    // plus WAFFO_* via server/plugins/env.ts.
+    // Waffo 支付配置（商户 ID / 私钥 / 产品 ID）从数据库 app_config 表读取，
+    // 不走环境变量（见 server/utils/config.ts）。
     aiApiKey: '',
     aiBaseUrl: 'https://api.openai.com/v1',
     aiModel: 'gpt-4o-mini',
     authSecret: '',
-    waffo: {
-      // Waffo Pancake payment — populated at runtime from WAFFO_MERCHANT_ID /
-      // WAFFO_PRIVATE_KEY env vars (see server/plugins/env.ts). NEVER hardcode
-      // keys here.
-      merchantId: '',
-      privateKey: ''
-    },
     turnstile: {
       // This can be overridden at runtime via the NUXT_TURNSTILE_SECRET_KEY
       // environment variable.

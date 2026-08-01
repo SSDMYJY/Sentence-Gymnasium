@@ -111,6 +111,27 @@ AUTH_SECRET=your_jwt_signing_secret_at_least_32_chars
 ```
 
 > 生产环境的密钥通过 EdgeOne Makers 控制台的**环境变量**注入（`edgeone makers env set <KEY> <VALUE>`），或使用 `NUXT_` 前缀环境变量驱动 runtimeConfig。
+> **Waffo 支付配置（商户 ID / 私钥 / 产品 ID）不从环境变量读取，改存数据库 `app_config` 表**（详见下方「Waffo 支付配置」）。
+
+### Waffo 支付配置（存数据库，不走环境变量）
+
+Waffo 的商户 ID、RSA 私钥与充值套餐产品 ID 存放在 MySQL `app_config` 表，
+运行时由 `server/utils/config.ts` 读取（带 60s 缓存），**不经过环境变量**
+（规避 EdgeOne 环境变量值 500 字节限制，私钥无需分段）。
+
+```bash
+# 1. 一次性：把 .env 中的 WAFFO_* 写入数据库
+pnpm waffo:seed
+
+# 2. 创建 Waffo onetime 产品并把 productId 写入数据库
+WAFFO_MERCHANT_ID=... WAFFO_PRIVATE_KEY=... pnpm waffo:setup
+
+# 3. 联调通过后到 Waffo Dashboard 将产品 Publish 到生产环境
+```
+
+写入的 key：`waffo.merchantId` / `waffo.privateKey` / `waffo.product.pack_100` 等。
+
+---
 
 ### 数据库
 
@@ -331,8 +352,8 @@ PAGES_SOURCE=skills edgeone login --site china
 
 # 2. 在 Makers 控制台配置环境变量（或 `edgeone makers env set`）
 #    DATABASE_URL / NUXT_AI_API_KEY / NUXT_AI_BASE_URL / NUXT_AI_MODEL /
-#    NUXT_AUTH_SECRET / NUXT_PUBLIC_TURNSTILE_SITE_KEY / NUXT_TURNSTILE_SECRET_KEY /
-#    WAFFO_MERCHANT_ID / WAFFO_PRIVATE_KEY
+#    NUXT_AUTH_SECRET / NUXT_PUBLIC_TURNSTILE_SITE_KEY / NUXT_TURNSTILE_SECRET_KEY
+#    （Waffo 配置存数据库，不走环境变量：pnpm waffo:seed）
 
 # 3. 构建并部署（首次部署会自动构建，产出 .output + cloud-functions）
 PAGES_SOURCE=skills edgeone makers deploy -n sentence-gymnasium

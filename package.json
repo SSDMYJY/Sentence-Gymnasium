@@ -10,6 +10,8 @@
     "db:generate": "prisma generate",
     "db:migrate:generate": "prisma migrate diff --from-empty --to-schema-datamodel ./prisma/schema.prisma --script --output ./migrations/0001_init.sql",
     "db:apply": "prisma db execute --file ./migrations/0001_init.sql --schema ./prisma/schema.prisma",
+    "waffo:seed": "tsx scripts/seed-waffo-config.ts",
+    "waffo:setup": "tsx scripts/waffo-setup.ts",
     "deploy": "edgeone makers deploy"
   },
   "dependencies": {
@@ -22,7 +24,6 @@
     "@prisma/client": "^6.19.3",
     "@waffo/pancake-ts": "^0.16.1",
     "bcryptjs": "^2.4.3",
-
     "gsap": "^3.15.0",
     "jose": "^6.2.5",
     "nuxt": "^4.5.1",
@@ -34,6 +35,7 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/cloudflare-turnstile": "^0.2.2",
     "prisma": "^6.19.3",
+    "tsx": "^4.23.1",
     "typescript": "^6.0.3",
     "vue-tsc": "^3.3.9"
   }

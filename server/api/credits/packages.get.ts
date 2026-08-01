@@ -3,5 +3,5 @@ import { getPublicPacks } from '../../utils/recharge-config'
 
 export default defineEventHandler(async (event) => {
   await requireAuth(event)
-  return { currency: 'USD', packs: getPublicPacks() }
+  return { currency: 'USD', packs: await getPublicPacks() }
 })

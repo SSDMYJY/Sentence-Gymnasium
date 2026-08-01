@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
   const user = await requireAuth(event)
   const body = await readBody<{ packId?: string }>(event)
 
-  const pack = getPack(body?.packId ?? '')
+  const pack = await getPack(body?.packId ?? '')
   if (!pack) {
     throw createError({ statusCode: 400, statusMessage: 'invalid_pack' })
   }
@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
   const prisma = usePrisma(event)
 
   // 先确认 Waffo 已配置（未配置直接 500，不创建订单）
-  const client = useWaffo()
+  const client = await useWaffo()
 
   // 1. 创建 pending 订单
   const order = await prisma.order.create({
