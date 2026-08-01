@@ -132,7 +132,6 @@ dist
 
 # pnpm
 .pnpm-store
-pnpm-workspace.yaml
 
 # yarn v3
 .pnp.*
