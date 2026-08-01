@@ -1,17 +1,17 @@
 <template>
-  <div class="mx-auto min-h-[calc(100svh-4rem)] max-w-2xl px-6 pb-24 pt-32">
+  <div class="mx-auto min-h-[calc(100svh-4rem)] max-w-3xl px-6 pb-24 pt-32">
     <!-- 步骤标题 / Step label -->
-    <p class="text-xs uppercase tracking-[0.28em] text-accent-soft">{{ t('health.step') }}</p>
+    <p class="ds-eyebrow">{{ t('health.step') }}</p>
     <!-- 页面主标题 / Page heading -->
-    <h1 class="mt-2 font-display text-4xl font-bold tracking-tight sm:text-5xl">{{ t('health.title') }}</h1>
+    <h1 class="mt-2 ds-heading-display text-4xl sm:text-5xl">{{ t('health.title') }}</h1>
     <!-- 说明正文（含高亮代码）/ Body text (with highlighted code) -->
-    <p class="mt-4 leading-relaxed text-stone-400" v-html="bodyHtml"></p>
+    <p class="mt-4 leading-relaxed text-tertiary" v-html="bodyHtml"></p>
 
     <!-- 健康检查面板 / Health-check panel -->
-    <div class="mt-10 rounded-2xl border border-white/10 bg-ink-800/60 p-6">
+    <div class="mt-10 ds-card bg-elevated">
       <div class="flex items-center justify-between">
         <!-- 接口标签 / Endpoint label -->
-        <p class="text-xs uppercase tracking-wide text-stone-500">{{ t('health.endpoint') }}</p>
+        <p class="ds-label">{{ t('health.endpoint') }}</p>
         <!-- 状态指示灯 / Status indicator light -->
         <span
           :class="[
@@ -21,11 +21,11 @@
         />
       </div>
       <!-- 原始返回内容 / Raw response -->
-      <pre class="mt-4 whitespace-pre-wrap break-all text-sm text-stone-200">{{ health }}</pre>
+      <pre class="mt-4 whitespace-pre-wrap break-all text-sm text-secondary">{{ health }}</pre>
     </div>
 
     <!-- 技术栈说明 / Stack note -->
-    <p class="mt-8 text-xs text-stone-500">
+    <p class="mt-8 text-xs text-muted">
       {{ t('health.stack') }}
     </p>
   </div>
@@ -45,7 +45,7 @@ const bodyHtml = computed(() => {
   // 将 okCode 替换为带样式的 code 标签 / Replace okCode with a styled code tag
   return text.replace(
     '{ ok: true }',
-    '<code class="rounded bg-ink-800 px-1.5 py-0.5 text-accent-soft">{ ok: true }</code>',
+    '<code class="rounded bg-elevated px-1.5 py-0.5 text-accent-soft">{ ok: true }</code>',
   )
 })
 

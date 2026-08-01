@@ -3,19 +3,19 @@
   <Listbox v-model="selectedKey" as="div" class="relative">
     <!-- 触发按钮 / Trigger button -->
     <ListboxButton
-      class="group inline-flex w-full items-center justify-between rounded-lg border border-white/10 bg-ink-900/50 px-4 py-3 text-left text-sm font-medium text-stone-200 transition-colors hover:border-white/30 focus:outline-none focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/40"
+      class="group inline-flex w-full items-center justify-between border border-line-default bg-card px-4 py-3 text-left text-sm font-medium text-secondary transition-colors hover:border-line-strong focus:outline-none focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/40"
       :aria-label="selectedLabel"
     >
       <!-- 左侧图标与当前选中标签 / Left icon and current selected label -->
       <span class="flex min-w-0 items-center gap-3">
-        <svg class="h-4 w-4 shrink-0 text-stone-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg class="h-4 w-4 shrink-0 text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M3 4l5 5" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
         <span class="truncate">{{ selectedLabel }}</span>
       </span>
       <!-- 右侧展开箭头 / Right chevron -->
       <svg
-        class="h-4 w-4 shrink-0 text-stone-500 transition-transform group-data-[headlessui-state=open]:rotate-180"
+        class="h-4 w-4 shrink-0 text-muted transition-transform group-data-[headlessui-state=open]:rotate-180"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -36,11 +36,11 @@
     >
       <!-- 下拉选项面板 / Dropdown panel -->
       <ListboxOptions
-        class="absolute z-30 mt-2 w-full overflow-hidden rounded-xl border border-white/10 bg-ink-800/95 shadow-2xl backdrop-blur-md focus:outline-none"
+        class="absolute z-30 mt-2 w-full overflow-hidden border border-line-default bg-elevated shadow-2xl backdrop-blur-md focus:outline-none"
       >
         <!-- 向上滚动热区 / Upward scroll hot-zone -->
         <div
-          class="flex h-7 items-center justify-center border-b border-white/5 text-stone-500 transition-colors hover:bg-white/5 hover:text-stone-300"
+          class="flex h-7 items-center justify-center border-b border-line-subtle text-muted transition-colors hover:bg-hover-subtle hover:text-tertiary"
           @mouseenter="startArrowScroll(-1)"
           @mouseleave="stopArrowScroll"
         >
@@ -58,11 +58,11 @@
           <!-- 随机场景选项 / Random scenario option -->
           <ListboxOption v-slot="{ active, selected }" value="random" as="template">
             <li
-              class="relative flex cursor-pointer select-none items-center rounded-lg px-3 py-2.5 text-sm transition-colors"
-              :class="active ? 'bg-white/5 text-white' : 'text-stone-300'"
+              class="relative flex cursor-pointer select-none items-center px-3 py-2.5 text-sm transition-colors"
+              :class="active ? 'bg-hover-subtle text-primary' : 'text-tertiary'"
             >
               <span class="truncate" :class="selected ? 'text-accent-soft' : ''">{{ t('practice.scenarioRandom') }}</span>
-              <span v-if="selected" class="absolute right-3 text-accent-soft">✓</span>
+              <UIcon v-if="selected" name="i-lucide-check" class="absolute right-3 size-4 text-accent-soft" />
             </li>
           </ListboxOption>
 
@@ -70,10 +70,10 @@
           <div
             v-for="(category, catIndex) in categories"
             :key="category.id"
-            class="mt-1 border-t border-white/5 first:mt-0 first:border-t-0"
+            class="mt-1 border-t border-line-subtle first:mt-0 first:border-t-0"
           >
             <!-- 大类标题 / Category heading -->
-            <div class="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wide text-stone-600">
+            <div class="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wide text-muted">
               {{ catIndex + 1 }}. {{ category.label }}
             </div>
 
@@ -86,14 +86,14 @@
               as="template"
             >
               <li
-                class="relative flex cursor-pointer select-none items-center rounded-lg px-3 py-2 text-sm transition-colors"
+                class="relative flex cursor-pointer select-none items-center px-3 py-2 text-sm transition-colors"
                 :class="[
-                  active ? 'bg-white/5 text-white' : 'text-stone-400',
+                  active ? 'bg-hover-subtle text-primary' : 'text-tertiary',
                   selected ? 'bg-accent/10 text-accent-soft' : '',
                 ]"
               >
                 <span class="truncate">{{ catIndex + 1 }}.{{ subIndex + 1 }} {{ sub.label }}</span>
-                <span v-if="selected" class="absolute right-3 text-accent-soft">✓</span>
+                <UIcon v-if="selected" name="i-lucide-check" class="absolute right-3 size-4 text-accent-soft" />
               </li>
             </ListboxOption>
           </div>
@@ -101,7 +101,7 @@
 
         <!-- 向下滚动热区 / Downward scroll hot-zone -->
         <div
-          class="flex h-7 items-center justify-center border-t border-white/5 text-stone-500 transition-colors hover:bg-white/5 hover:text-stone-300"
+          class="flex h-7 items-center justify-center border-t border-line-subtle text-muted transition-colors hover:bg-hover-subtle hover:text-tertiary"
           @mouseenter="startArrowScroll(1)"
           @mouseleave="stopArrowScroll"
         >

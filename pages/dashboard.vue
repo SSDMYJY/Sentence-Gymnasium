@@ -5,16 +5,16 @@
       <h1 class="font-display text-3xl font-bold tracking-tight sm:text-4xl">
         {{ t('auth.welcome', { name: displayName }) }}
       </h1>
-      <p class="mt-2 text-stone-400">{{ t('dashboard.subtitle') }}</p>
+      <p class="mt-2 text-tertiary">{{ t('dashboard.subtitle') }}</p>
     </header>
 
     <!-- Daily Goal Progress Ring + Top Stats -->
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-4">
       <!-- Daily Goal Ring -->
-      <div class="relative flex flex-col items-center justify-center rounded-2xl border border-white/10 bg-ink-900/50 p-6">
+      <div class="ds-card relative flex flex-col items-center justify-center">
         <svg class="h-24 w-24 -rotate-90" viewBox="0 0 100 100">
           <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="8"
-            class="text-white/10" />
+            class="text-line-default" />
           <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="8"
             stroke-linecap="round"
             :stroke-dasharray="circumference"
@@ -22,20 +22,20 @@
             class="text-accent transition-all duration-700" />
         </svg>
         <div class="absolute top-1/2.25 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-          <span class="text-2xl font-bold text-stone-100">{{ todayAttempts }}/{{ dailyGoal }}</span>
-          <span class="text-xs text-stone-500">{{ t('dashboard.dailyGoal.title') }}</span>
+          <span class="text-2xl font-bold text-primary">{{ todayAttempts }}/{{ dailyGoal }}</span>
+          <span class="text-xs text-muted">{{ t('dashboard.dailyGoal.title') }}</span>
         </div>
         <div class="relative mt-2">
-          <UButton variant="ghost" size="xs" class="text-xs text-stone-400 hover:text-accent"
+          <UButton variant="ghost" size="xs" class="text-xs text-tertiary hover:text-accent"
             @click="showGoalPopover = !showGoalPopover">
             {{ t('dashboard.dailyGoal.adjust') }}
           </UButton>
           <div v-if="showGoalPopover"
-            class="absolute left-1/2 top-full z-10 mt-2 -translate-x-1/2 rounded-xl border border-white/10 bg-ink-800 p-3 shadow-xl">
+            class="absolute left-1/2 top-full z-10 mt-2 -translate-x-1/2 border border-line-default bg-elevated p-3 shadow-lg">
             <div class="flex gap-2">
               <UButton v-for="g in goalOptions" :key="g" size="xs"
                 :variant="dailyGoal === g ? 'solid' : 'outline'"
-                :class="dailyGoal === g ? 'bg-accent text-white' : 'border-white/15 text-stone-300'"
+                :class="dailyGoal === g ? 'bg-accent text-ink-950' : 'border-line-strong text-tertiary'"
                 @click="onSetGoal(g)">
                 {{ g }}
               </UButton>
@@ -45,23 +45,23 @@
       </div>
 
       <!-- Top four stat cards -->
-      <div class="col-span-1 lg:col-span-3 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-4">
-        <div v-for="s in stats" :key="s.label" class="flex flex-col items-center bg-ink-900 px-4 py-6 text-center">
-          <span class="text-2xl">{{ s.icon }}</span>
-          <p class="mt-3 font-display text-3xl font-semibold text-stone-100">{{ s.value }}</p>
-          <p class="mt-1 text-xs uppercase tracking-wide text-stone-500">{{ s.label }}</p>
+      <div class="col-span-1 lg:col-span-3 grid grid-cols-2 gap-px overflow-hidden border border-line-default bg-line-default sm:grid-cols-4">
+        <div v-for="s in stats" :key="s.label" class="flex flex-col items-center bg-card px-4 py-6 text-center">
+          <UIcon :name="s.icon" class="text-2xl" />
+          <p class="mt-3 font-display text-3xl font-semibold text-primary">{{ s.value }}</p>
+          <p class="mt-1 text-xs uppercase tracking-wide text-muted">{{ s.label }}</p>
         </div>
       </div>
     </div>
 
     <!-- Weekly Activity Bars -->
-    <div v-if="weeklyActivity.length > 0" class="mt-6 rounded-2xl border border-white/10 bg-ink-900/50 p-6">
-      <h3 class="text-sm font-semibold text-stone-300 mb-4">{{ t('dashboard.weekly.title') }}</h3>
+    <div v-if="weeklyActivity.length > 0" class="mt-6 ds-card">
+      <h3 class="text-sm font-semibold text-tertiary mb-4">{{ t('dashboard.weekly.title') }}</h3>
       <div class="flex items-end justify-between gap-2">
         <div v-for="day in weeklyActivity" :key="day.date" class="flex flex-1 flex-col items-center gap-1">
-          <div class="w-full rounded-t bg-accent/30 transition-all duration-500"
+          <div class="w-full bg-accent/30 transition-all duration-500"
             :style="{ height: `${Math.max(4, (day.count / maxWeeklyCount) * 80)}px` }" />
-          <span class="text-[10px] text-stone-500">{{ formatDayLabel(day.date) }}</span>
+          <span class="text-[10px] text-muted">{{ formatDayLabel(day.date) }}</span>
         </div>
       </div>
     </div>
@@ -69,60 +69,60 @@
     <!-- 等级进度 + 快捷操作 / Level progress + quick actions -->
     <div class="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
       <!-- 等级卡片 / Level card -->
-      <div class="rounded-2xl border border-white/10 bg-ink-900/50 p-6 lg:col-span-2">
+      <div class="ds-card lg:col-span-2">
         <div class="flex items-center gap-3">
           <span class="text-xl">{{ levelInfo.icon }}</span>
           <div>
             <!-- 等级名 / Level name -->
-            <p class="font-display text-lg font-semibold text-stone-100">Lv.{{ userLevel }} {{ t(levelInfo.nameKey) }}</p>
+            <p class="font-display text-lg font-semibold text-primary">Lv.{{ userLevel }} {{ t(levelInfo.nameKey) }}</p>
             <!-- 当前等级经验 / XP within level -->
-            <p class="text-sm text-stone-400">{{ experienceInLevel }} / {{ XP_PER_LEVEL }} {{ t('dashboard.level.label') }}</p>
+            <p class="text-sm text-tertiary">{{ experienceInLevel }} / {{ XP_PER_LEVEL }} {{ t('dashboard.level.label') }}</p>
           </div>
         </div>
         <!-- 经验进度条 / XP progress bar -->
-        <div class="mt-4 h-2 overflow-hidden rounded-full bg-ink-800">
+        <div class="mt-4 h-2 overflow-hidden bg-elevated">
           <div
-            class="h-full rounded-full bg-accent transition-all duration-500"
+            class="h-full bg-accent transition-all duration-500"
             :style="{ width: `${experiencePercent}%` }"
           />
         </div>
-        <p class="mt-3 text-xs text-stone-500">{{ t('dashboard.level.hint') }}</p>
+        <p class="mt-3 text-xs text-muted">{{ t('dashboard.level.hint') }}</p>
       </div>
 
       <!-- 快捷操作卡片 / Quick actions card -->
-      <div class="rounded-2xl border border-white/10 bg-ink-900/50 p-6">
-        <h3 class="text-sm font-semibold text-stone-300">{{ t('dashboard.quickActions.title') }}</h3>
+      <div class="ds-card">
+        <h3 class="text-sm font-semibold text-tertiary">{{ t('dashboard.quickActions.title') }}</h3>
         <div class="mt-4 space-y-3">
           <!-- 开始练习 / Start practice -->
           <UButton
             :to="localePath('/practice')"
-            class="w-full bg-white text-ink-950 hover:bg-stone-100"
+            class="w-full bg-accent text-ink-950 hover:bg-accent-soft"
             size="lg"
           >
-            <span>⚡</span>
+            <UIcon name="i-lucide-zap" />
             {{ t('dashboard.quickActions.startPractice') }}
           </UButton>
           <!-- 语法专项 / Grammar focus -->
           <UButton
             :to="localePath('/grammar')"
             variant="outline"
-            class="w-full border-white/15 text-stone-300 hover:border-accent hover:text-white"
+            class="w-full border-line-strong text-tertiary hover:border-accent hover:text-primary"
             size="lg"
           >
-            <span>◎</span>
+            <UIcon name="i-lucide-circle" />
             {{ t('dashboard.quickActions.grammarFocus') }}
           </UButton>
           <!-- 复习错题 / Review mistakes -->
           <UButton
             :to="localePath('/review')"
             variant="outline"
-            class="w-full border-white/15 text-stone-300 hover:border-accent hover:text-white"
+            class="w-full border-line-strong text-tertiary hover:border-accent hover:text-primary"
             size="lg"
           >
-            <span>🔄</span>
+            <UIcon name="i-lucide-rotate-cw" />
             {{ t('dashboard.quickActions.reviewMistakes') }}
             <span v-if="reviewDueCount > 0"
-              class="ml-auto rounded-full bg-accent/20 px-2 py-0.5 text-xs text-accent-soft">
+              class="ml-auto bg-accent/20 px-2 py-0.5 text-xs text-accent-soft">
               {{ reviewDueCount }}
             </span>
           </UButton>
@@ -131,22 +131,22 @@
     </div>
 
     <!-- Weak Areas Section -->
-    <div v-if="weakAreas.length > 0" class="mt-6 rounded-2xl border border-white/10 bg-ink-900/50 p-6">
-      <h3 class="text-sm font-semibold text-stone-300">{{ t('dashboard.weakAreas.title') }}</h3>
-      <p class="mt-1 text-xs text-stone-500">{{ t('dashboard.weakAreas.label') }}</p>
+    <div v-if="weakAreas.length > 0" class="mt-6 ds-card">
+      <h3 class="text-sm font-semibold text-tertiary">{{ t('dashboard.weakAreas.title') }}</h3>
+      <p class="mt-1 text-xs text-muted">{{ t('dashboard.weakAreas.label') }}</p>
       <div class="mt-4 space-y-3">
         <div v-for="area in weakAreas" :key="area.tag" class="flex items-center gap-4">
           <div class="flex-1">
             <div class="flex items-center justify-between">
-              <span class="text-sm text-stone-200">{{ area.label }}</span>
+              <span class="text-sm text-secondary">{{ area.label }}</span>
               <span class="text-sm font-medium"
-                :class="area.accuracy < 50 ? 'text-red-400' : area.accuracy < 70 ? 'text-yellow-400' : 'text-green-400'">
+                :class="area.accuracy < 50 ? 'text-danger' : area.accuracy < 70 ? 'text-warning' : 'text-success'">
                 {{ area.accuracy }}%
               </span>
             </div>
-            <div class="mt-1 h-1.5 overflow-hidden rounded-full bg-ink-800">
-              <div class="h-full rounded-full transition-all duration-500"
-                :class="area.accuracy < 50 ? 'bg-red-500' : area.accuracy < 70 ? 'bg-yellow-500' : 'bg-green-500'"
+            <div class="mt-1 h-1.5 overflow-hidden bg-elevated">
+              <div class="h-full transition-all duration-500"
+                :class="area.accuracy < 50 ? 'bg-danger' : area.accuracy < 70 ? 'bg-warning' : 'bg-success'"
                 :style="{ width: `${area.accuracy}%` }" />
             </div>
           </div>
@@ -155,11 +155,11 @@
     </div>
 
     <!-- 最近记录 / Recent history -->
-    <section class="mt-10 rounded-2xl border border-white/10 bg-ink-900/50 p-6">
+    <section class="mt-10 ds-card">
       <div class="flex items-center justify-between">
         <div>
-          <h2 class="font-display text-lg font-semibold text-stone-100">{{ t('dashboard.recent.title') }}</h2>
-          <p class="mt-1 text-sm text-stone-500">{{ t('dashboard.recent.label') }}</p>
+          <h2 class="font-display text-lg font-semibold text-primary">{{ t('dashboard.recent.title') }}</h2>
+          <p class="mt-1 text-sm text-muted">{{ t('dashboard.recent.label') }}</p>
         </div>
         <!-- 查看全部历史 / View all history -->
         <NuxtLink :to="localePath('/history')" class="text-sm text-accent-soft transition-colors hover:text-accent">
@@ -168,30 +168,29 @@
       </div>
 
       <!-- 历史条目列表 / History entry list -->
-      <div v-if="historyEntries.length > 0" class="mt-6 border-t border-white/5">
+      <div v-if="historyEntries.length > 0" class="mt-6 border-t border-line-subtle">
         <!-- 遍历历史条目 / Iterate history entries -->
         <div
           v-for="(entry, i) in historyEntries"
           :key="entry.id"
-          class="flex items-start justify-between border-b border-white/5 py-4 last:border-b-0"
+          class="flex items-start justify-between border-b border-line-subtle py-4 last:border-b-0"
         >
           <div class="flex items-start gap-3">
             <!-- 对错图标 / Correct/incorrect icon -->
-            <span :class="['mt-1 text-sm', entry.isCorrect ? 'text-green-400' : 'text-red-400']">
-              {{ entry.isCorrect ? '✓' : '✗' }}
-            </span>
+            <UIcon :name="entry.isCorrect ? 'i-lucide-check' : 'i-lucide-x'"
+              :class="['mt-1 text-sm', entry.isCorrect ? 'text-success' : 'text-danger']" />
             <div>
-              <p class="font-medium text-stone-200">{{ entry.questionText }}</p>
-              <p class="mt-1 text-xs text-stone-500">{{ entry.topic }}</p>
+              <p class="font-medium text-secondary">{{ entry.questionText }}</p>
+              <p class="mt-1 text-xs text-muted">{{ entry.topic }}</p>
             </div>
           </div>
           <!-- 日期 / Date -->
-          <span class="text-xs text-stone-500">{{ formatDate(entry.createdAt) }}</span>
+          <span class="text-xs text-muted">{{ formatDate(entry.createdAt) }}</span>
         </div>
       </div>
 
       <!-- 无数据占位 / Empty state -->
-      <div v-else class="mt-8 text-center text-sm text-stone-500">
+      <div v-else class="mt-8 text-center text-sm text-muted">
         {{ t('dashboard.recent.noData') }}
       </div>
     </section>
@@ -201,11 +200,11 @@
       <UButton
         variant="outline"
         :loading="recharging"
-        class="border-white/15 text-stone-300 hover:border-accent hover:text-white"
+        class="border-line-strong text-tertiary hover:border-accent hover:text-primary"
         @click="onRecharge"
       >
         <template #leading>
-          <span class="text-accent-soft">⚡</span>
+          <UIcon name="i-lucide-zap" class="text-accent-soft" />
         </template>
         {{ recharging ? t('dashboard.recharge.loading') : t('dashboard.recharge.button') }}
       </UButton>
@@ -362,10 +361,10 @@ const levelInfo = computed(() => getLevelInfo(userLevel.value))
 
 // 顶部四张统计卡片 / Top four stat cards
 const stats = computed(() => [
-  { icon: '⚡', label: t('dashboard.stats.energy'), value: user.value?.credits ?? 0 }, // 能量 / Credits
-  { icon: '🔥', label: t('dashboard.stats.streak'), value: user.value?.streak ?? 0 }, // 连续 / Streak
-  { icon: '◎', label: t('dashboard.stats.accuracy'), value: accRate.value }, // 正确率 / Accuracy
-  { icon: '🏆', label: t('dashboard.stats.total'), value: user.value?.totalAttempts ?? 0 }, // 总数 / Total
+  { icon: 'i-lucide-zap', label: t('dashboard.stats.energy'), value: user.value?.credits ?? 0 }, // 能量 / Credits
+  { icon: 'i-lucide-flame', label: t('dashboard.stats.streak'), value: user.value?.streak ?? 0 }, // 连续 / Streak
+  { icon: 'i-lucide-target', label: t('dashboard.stats.accuracy'), value: accRate.value }, // 正确率 / Accuracy
+  { icon: 'i-lucide-trophy', label: t('dashboard.stats.total'), value: user.value?.totalAttempts ?? 0 }, // 总数 / Total
 ])
 
 // 日期格式化 / Format an ISO date

@@ -2,11 +2,11 @@
     <div class="mx-auto max-w-3xl px-6 pb-20 pt-28">
         <div class="hero-rise">
             <!-- 文档类型标签 / Document type label -->
-            <p class="text-xs uppercase tracking-[0.28em] text-accent-soft">Legal Documents</p>
+            <p class="ds-eyebrow">Legal Documents</p>
             <!-- 标题 / Heading -->
-            <h1 class="mt-3 font-display text-4xl font-bold tracking-tight">Privacy Policy</h1>
+            <h1 class="mt-3 ds-heading-display text-4xl">Privacy Policy</h1>
             <!-- 更新日期 / Last updated -->
-            <p class="mt-3 text-sm text-stone-500">Last updated: July 6, 2026</p>
+            <p class="mt-3 text-sm text-muted">Last updated: July 6, 2026</p>
 
             <EnglishOnlyTips />
 
@@ -14,14 +14,14 @@
             <div class="mt-12 space-y-12">
                 <!-- 01 Introduction / 01 简介 -->
                 <section>
-                    <h2 class="font-display text-lg font-semibold text-stone-100">
+                    <h2 class="font-display text-lg font-semibold text-primary">
                         <span class="text-accent-soft">01</span> Introduction
                     </h2>
-                    <p class="mt-3 text-sm leading-relaxed text-stone-400">
+                    <p class="mt-3 text-sm leading-relaxed text-tertiary">
                         MFJip612 ("we," "our," or "us") operates Sentence Gymnasium (the "Service"). This Privacy Policy
                         explains how we collect, use, disclose, and safeguard your information when you use our Service.
                     </p>
-                    <p class="mt-3 text-sm leading-relaxed text-stone-400">
+                    <p class="mt-3 text-sm leading-relaxed text-tertiary">
                         We are committed to protecting your privacy and handling your personal data with transparency
                         and care. By using the Service, you consent to the practices described in this Privacy Policy.
                     </p>
@@ -29,49 +29,49 @@
 
                 <!-- 02 Information We Collect / 02 我们收集的信息 -->
                 <section>
-                    <h2 class="font-display text-lg font-semibold text-stone-100">
+                    <h2 class="font-display text-lg font-semibold text-primary">
                         <span class="text-accent-soft">02</span> Information We Collect
                     </h2>
-                    <h3 class="mt-6 text-sm font-semibold text-stone-200">2.1 Personal Information</h3>
-                    <p class="mt-3 text-sm leading-relaxed text-stone-400">
+                    <h3 class="mt-6 text-sm font-semibold text-secondary">2.1 Personal Information</h3>
+                    <p class="mt-3 text-sm leading-relaxed text-tertiary">
                         We may collect the following categories of personal information:
                     </p>
-                    <ul class="mt-3 space-y-2 pl-5 text-sm leading-relaxed text-stone-400 list-disc">
-                        <li><strong class="text-stone-300">Contact Information:</strong> Name, email address, and other
+                    <ul class="mt-3 space-y-2 pl-5 text-sm leading-relaxed text-tertiary list-disc">
+                        <li><strong class="text-tertiary">Contact Information:</strong> Name, email address, and other
                             information you provide during registration;</li>
-                        <li><strong class="text-stone-300">Account Information:</strong> Username, password, profile
+                        <li><strong class="text-tertiary">Account Information:</strong> Username, password, profile
                             information, and account preferences;</li>
-                        <li><strong class="text-stone-300">Payment Information:</strong> Billing address and payment
+                        <li><strong class="text-tertiary">Payment Information:</strong> Billing address and payment
                             method details (processed by third-party payment processors; we do not store full payment
                             card numbers);</li>
-                        <li><strong class="text-stone-300">User Content:</strong> Sentences, responses, and other
+                        <li><strong class="text-tertiary">User Content:</strong> Sentences, responses, and other
                             content you submit for AI evaluation and training purposes.</li>
                     </ul>
-                    <h3 class="mt-6 text-sm font-semibold text-stone-200">2.2 Automatically Collected Information</h3>
-                    <p class="mt-3 text-sm leading-relaxed text-stone-400">
+                    <h3 class="mt-6 text-sm font-semibold text-secondary">2.2 Automatically Collected Information</h3>
+                    <p class="mt-3 text-sm leading-relaxed text-tertiary">
                         When you access or use the Service, we automatically collect certain information, including:
                     </p>
-                    <ul class="mt-3 space-y-2 pl-5 text-sm leading-relaxed text-stone-400 list-disc">
-                        <li><strong class="text-stone-300">Device Information:</strong> IP address, browser type,
+                    <ul class="mt-3 space-y-2 pl-5 text-sm leading-relaxed text-tertiary list-disc">
+                        <li><strong class="text-tertiary">Device Information:</strong> IP address, browser type,
                             operating system, device identifiers;</li>
-                        <li><strong class="text-stone-300">Usage Data:</strong> Pages visited, features used, time spent
+                        <li><strong class="text-tertiary">Usage Data:</strong> Pages visited, features used, time spent
                             on the Service, clickstream data;</li>
-                        <li><strong class="text-stone-300">Location Information:</strong> General geographic location
+                        <li><strong class="text-tertiary">Location Information:</strong> General geographic location
                             derived from your IP address;</li>
-                        <li><strong class="text-stone-300">Cookies and Similar Technologies:</strong> We use cookies and
+                        <li><strong class="text-tertiary">Cookies and Similar Technologies:</strong> We use cookies and
                             similar tracking technologies to enhance your experience and analyze Service usage.</li>
                     </ul>
                 </section>
 
                 <!-- 03 How We Use Your Information / 03 信息的使用方式 -->
                 <section>
-                    <h2 class="font-display text-lg font-semibold text-stone-100">
+                    <h2 class="font-display text-lg font-semibold text-primary">
                         <span class="text-accent-soft">03</span> How We Use Your Information
                     </h2>
-                    <p class="mt-3 text-sm leading-relaxed text-stone-400">
+                    <p class="mt-3 text-sm leading-relaxed text-tertiary">
                         We use the information we collect for the following purposes:
                     </p>
-                    <ul class="mt-3 space-y-2 pl-5 text-sm leading-relaxed text-stone-400 list-disc">
+                    <ul class="mt-3 space-y-2 pl-5 text-sm leading-relaxed text-tertiary list-disc">
                         <li>To provide, maintain, and improve the Service;</li>
                         <li>To process transactions and manage your subscriptions;</li>
                         <li>To generate personalized AI-powered feedback and learning recommendations;</li>
@@ -85,74 +85,74 @@
 
                 <!-- 04 Legal Basis for Processing / 04 处理的法律依据 -->
                 <section>
-                    <h2 class="font-display text-lg font-semibold text-stone-100">
+                    <h2 class="font-display text-lg font-semibold text-primary">
                         <span class="text-accent-soft">04</span> Legal Basis for Processing (GDPR and Similar Laws)
                     </h2>
-                    <p class="mt-3 text-sm leading-relaxed text-stone-400">
+                    <p class="mt-3 text-sm leading-relaxed text-tertiary">
                         If you are located in the European Economic Area (EEA), the United Kingdom, or other
                         jurisdictions with similar data protection laws, we process your personal data based on the
                         following legal grounds:
                     </p>
-                    <ul class="mt-3 space-y-2 pl-5 text-sm leading-relaxed text-stone-400 list-disc">
-                        <li><strong class="text-stone-300">Performance of a Contract:</strong> Processing necessary to
+                    <ul class="mt-3 space-y-2 pl-5 text-sm leading-relaxed text-tertiary list-disc">
+                        <li><strong class="text-tertiary">Performance of a Contract:</strong> Processing necessary to
                             provide the Service under our Terms and Conditions;</li>
-                        <li><strong class="text-stone-300">Legitimate Interests:</strong> Processing necessary for our
+                        <li><strong class="text-tertiary">Legitimate Interests:</strong> Processing necessary for our
                             legitimate interests, such as improving the Service and ensuring security, provided these
                             interests are not overridden by your rights;</li>
-                        <li><strong class="text-stone-300">Consent:</strong> Processing based on your explicit consent,
+                        <li><strong class="text-tertiary">Consent:</strong> Processing based on your explicit consent,
                             which you may withdraw at any time;</li>
-                        <li><strong class="text-stone-300">Legal Obligation:</strong> Processing necessary to comply
+                        <li><strong class="text-tertiary">Legal Obligation:</strong> Processing necessary to comply
                             with applicable laws and regulations.</li>
                     </ul>
                 </section>
 
                 <!-- 05 How We Share Your Information / 05 信息共享 -->
                 <section>
-                    <h2 class="font-display text-lg font-semibold text-stone-100">
+                    <h2 class="font-display text-lg font-semibold text-primary">
                         <span class="text-accent-soft">05</span> How We Share Your Information
                     </h2>
-                    <p class="mt-3 text-sm leading-relaxed text-stone-400">
+                    <p class="mt-3 text-sm leading-relaxed text-tertiary">
                         We do not sell your personal information. We may share your information in the following
                         circumstances:
                     </p>
-                    <ul class="mt-3 space-y-2 pl-5 text-sm leading-relaxed text-stone-400 list-disc">
-                        <li><strong class="text-stone-300">Service Providers:</strong> With third-party vendors and
+                    <ul class="mt-3 space-y-2 pl-5 text-sm leading-relaxed text-tertiary list-disc">
+                        <li><strong class="text-tertiary">Service Providers:</strong> With third-party vendors and
                             service providers who perform services on our behalf, such as payment processing, data
                             analysis, email delivery, and customer support;</li>
-                        <li><strong class="text-stone-300">AI Processing:</strong> User input data is processed through
+                        <li><strong class="text-tertiary">AI Processing:</strong> User input data is processed through
                             our self-hosted AI/ML infrastructure. No personal data is shared with external AI service
                             providers;</li>
-                        <li><strong class="text-stone-300">Legal Compliance:</strong> When required by law, regulation,
+                        <li><strong class="text-tertiary">Legal Compliance:</strong> When required by law, regulation,
                             legal process, or governmental request;</li>
-                        <li><strong class="text-stone-300">Business Transfers:</strong> In connection with a merger,
+                        <li><strong class="text-tertiary">Business Transfers:</strong> In connection with a merger,
                             acquisition, or sale of assets, your information may be transferred as part of that
                             transaction;</li>
-                        <li><strong class="text-stone-300">With Your Consent:</strong> We may share your information
+                        <li><strong class="text-tertiary">With Your Consent:</strong> We may share your information
                             with third parties when you have given us your explicit consent to do so.</li>
                     </ul>
                 </section>
 
                 <!-- 06 Data Storage and International Transfers / 06 数据存储与跨境传输 -->
                 <section>
-                    <h2 class="font-display text-lg font-semibold text-stone-100">
+                    <h2 class="font-display text-lg font-semibold text-primary">
                         <span class="text-accent-soft">06</span> Data Storage and International Transfers
                     </h2>
-                    <p class="mt-3 text-sm leading-relaxed text-stone-400">
+                    <p class="mt-3 text-sm leading-relaxed text-tertiary">
                         Your information is stored and processed exclusively on infrastructure provided by <strong
-                            class="text-stone-300">Cloudflare, Inc.</strong> and its affiliated services, including but
+                            class="text-tertiary">Cloudflare, Inc.</strong> and its affiliated services, including but
                         not limited to Cloudflare Workers, Cloudflare Pages, Cloudflare D1, Cloudflare R2, and
                         Cloudflare KV (collectively, the "Cloudflare Platform"). All aspects of the Service — including
                         application hosting, data storage, edge caching, and serverless computing — are deployed on the
                         Cloudflare Platform.
                     </p>
-                    <p class="mt-3 text-sm leading-relaxed text-stone-400">
+                    <p class="mt-3 text-sm leading-relaxed text-tertiary">
                         Due to the global nature of Cloudflare's network, your data may be processed and cached in edge
                         locations around the world to optimize performance and availability. By using the Service, you
                         acknowledge and consent to the transfer, storage, and processing of your information on
                         Cloudflare's global infrastructure, which may include data centers located outside your country
                         of residence.
                     </p>
-                    <p class="mt-3 text-sm leading-relaxed text-stone-400">
+                    <p class="mt-3 text-sm leading-relaxed text-tertiary">
                         Cloudflare acts as a data processor on our behalf. Our use of Cloudflare's services is governed
                         by Cloudflare's Data Processing Addendum and Privacy Policy. We have implemented appropriate
                         contractual safeguards to ensure that your personal data receives adequate protection in
@@ -162,14 +162,14 @@
 
                 <!-- 07 Data Retention / 07 数据保留 -->
                 <section>
-                    <h2 class="font-display text-lg font-semibold text-stone-100">
+                    <h2 class="font-display text-lg font-semibold text-primary">
                         <span class="text-accent-soft">07</span> Data Retention
                     </h2>
-                    <p class="mt-3 text-sm leading-relaxed text-stone-400">
+                    <p class="mt-3 text-sm leading-relaxed text-tertiary">
                         We retain your personal information for as long as necessary to fulfill the purposes outlined in
                         this Privacy Policy, unless a longer retention period is required or permitted by law.
                     </p>
-                    <p class="mt-3 text-sm leading-relaxed text-stone-400">
+                    <p class="mt-3 text-sm leading-relaxed text-tertiary">
                         When you request deletion of your account, we will delete or anonymize your personal data in
                         accordance with our data retention schedule, except where we are required to retain certain
                         information for legal, tax, or regulatory compliance purposes. Anonymized data may be retained
@@ -179,30 +179,30 @@
 
                 <!-- 08 Your Privacy Rights / 08 你的隐私权利 -->
                 <section>
-                    <h2 class="font-display text-lg font-semibold text-stone-100">
+                    <h2 class="font-display text-lg font-semibold text-primary">
                         <span class="text-accent-soft">08</span> Your Privacy Rights
                     </h2>
-                    <p class="mt-3 text-sm leading-relaxed text-stone-400">
+                    <p class="mt-3 text-sm leading-relaxed text-tertiary">
                         Depending on your location, you may have the following rights regarding your personal
                         information:
                     </p>
-                    <ul class="mt-3 space-y-2 pl-5 text-sm leading-relaxed text-stone-400 list-disc">
-                        <li><strong class="text-stone-300">Access:</strong> The right to request copies of your personal
+                    <ul class="mt-3 space-y-2 pl-5 text-sm leading-relaxed text-tertiary list-disc">
+                        <li><strong class="text-tertiary">Access:</strong> The right to request copies of your personal
                             data;</li>
-                        <li><strong class="text-stone-300">Rectification:</strong> The right to request correction of
+                        <li><strong class="text-tertiary">Rectification:</strong> The right to request correction of
                             inaccurate or incomplete data;</li>
-                        <li><strong class="text-stone-300">Erasure ("Right to be Forgotten"):</strong> The right to
+                        <li><strong class="text-tertiary">Erasure ("Right to be Forgotten"):</strong> The right to
                             request deletion of your personal data under certain conditions;</li>
-                        <li><strong class="text-stone-300">Restriction:</strong> The right to request restriction of
+                        <li><strong class="text-tertiary">Restriction:</strong> The right to request restriction of
                             processing under certain conditions;</li>
-                        <li><strong class="text-stone-300">Data Portability:</strong> The right to request transfer of
+                        <li><strong class="text-tertiary">Data Portability:</strong> The right to request transfer of
                             your data to another controller;</li>
-                        <li><strong class="text-stone-300">Objection:</strong> The right to object to processing based
+                        <li><strong class="text-tertiary">Objection:</strong> The right to object to processing based
                             on legitimate interests;</li>
-                        <li><strong class="text-stone-300">Withdraw Consent:</strong> The right to withdraw consent at
+                        <li><strong class="text-tertiary">Withdraw Consent:</strong> The right to withdraw consent at
                             any time where processing is based on consent.</li>
                     </ul>
-                    <p class="mt-3 text-sm leading-relaxed text-stone-400">
+                    <p class="mt-3 text-sm leading-relaxed text-tertiary">
                         To exercise any of these rights, please contact us at <strong>info@netstd.eu.cc</strong>. We
                         will respond to your request within the timeframe required by applicable law.
                     </p>
@@ -210,15 +210,15 @@
 
                 <!-- 09 Children's Privacy / 09 儿童隐私 -->
                 <section>
-                    <h2 class="font-display text-lg font-semibold text-stone-100">
+                    <h2 class="font-display text-lg font-semibold text-primary">
                         <span class="text-accent-soft">09</span> Children's Privacy
                     </h2>
-                    <p class="mt-3 text-sm leading-relaxed text-stone-400">
+                    <p class="mt-3 text-sm leading-relaxed text-tertiary">
                         Our Service is available to users of all ages, including children under the age of 13 (or the
                         applicable age of digital consent in your jurisdiction), provided they have obtained parental or
                         guardian consent.
                     </p>
-                    <p class="mt-3 text-sm leading-relaxed text-stone-400">
+                    <p class="mt-3 text-sm leading-relaxed text-tertiary">
                         We do not knowingly collect personal information from children without verifiable parental
                         consent. If we learn that we have collected personal information from a child without
                         appropriate consent, we will take steps to delete that information as soon as possible. If you
@@ -229,10 +229,10 @@
 
                 <!-- 10 Cookies and Tracking Technologies / 10 Cookie 与追踪技术 -->
                 <section>
-                    <h2 class="font-display text-lg font-semibold text-stone-100">
+                    <h2 class="font-display text-lg font-semibold text-primary">
                         <span class="text-accent-soft">10</span> Cookies and Tracking Technologies
                     </h2>
-                    <p class="mt-3 text-sm leading-relaxed text-stone-400">
+                    <p class="mt-3 text-sm leading-relaxed text-tertiary">
                         We use cookies and similar tracking technologies to collect and track information about your
                         browsing activities on our Service. You can instruct your browser to refuse all cookies or to
                         indicate when a cookie is being sent. However, if you do not accept cookies, you may not be able
@@ -242,10 +242,10 @@
 
                 <!-- 11 Security / 11 安全 -->
                 <section>
-                    <h2 class="font-display text-lg font-semibold text-stone-100">
+                    <h2 class="font-display text-lg font-semibold text-primary">
                         <span class="text-accent-soft">11</span> Security
                     </h2>
-                    <p class="mt-3 text-sm leading-relaxed text-stone-400">
+                    <p class="mt-3 text-sm leading-relaxed text-tertiary">
                         We implement appropriate technical and organizational measures to protect your personal
                         information against unauthorized access, alteration, disclosure, or destruction. However, no
                         method of transmission over the Internet or electronic storage is 100% secure, and we cannot
@@ -255,10 +255,10 @@
 
                 <!-- 12 Third-Party Links / 12 第三方链接 -->
                 <section>
-                    <h2 class="font-display text-lg font-semibold text-stone-100">
+                    <h2 class="font-display text-lg font-semibold text-primary">
                         <span class="text-accent-soft">12</span> Third-Party Links
                     </h2>
-                    <p class="mt-3 text-sm leading-relaxed text-stone-400">
+                    <p class="mt-3 text-sm leading-relaxed text-tertiary">
                         Our Service may contain links to third-party websites or services that are not owned or
                         controlled by us. We have no control over, and assume no responsibility for, the content,
                         privacy policies, or practices of any third-party websites or services.
@@ -267,10 +267,10 @@
 
                 <!-- 13 Changes to This Privacy Policy / 13 隐私政策变更 -->
                 <section>
-                    <h2 class="font-display text-lg font-semibold text-stone-100">
+                    <h2 class="font-display text-lg font-semibold text-primary">
                         <span class="text-accent-soft">13</span> Changes to This Privacy Policy
                     </h2>
-                    <p class="mt-3 text-sm leading-relaxed text-stone-400">
+                    <p class="mt-3 text-sm leading-relaxed text-tertiary">
                         We may update this Privacy Policy from time to time. We will notify you of any changes by
                         posting the new Privacy Policy on this page and updating the "Last Updated" date. You are
                         advised to review this Privacy Policy periodically for any changes. Changes to this Privacy
@@ -280,15 +280,15 @@
 
                 <!-- 14 California Privacy Rights / 14 加州隐私权 -->
                 <section>
-                    <h2 class="font-display text-lg font-semibold text-stone-100">
+                    <h2 class="font-display text-lg font-semibold text-primary">
                         <span class="text-accent-soft">14</span> California Privacy Rights (CCPA/CPRA)
                     </h2>
-                    <p class="mt-3 text-sm leading-relaxed text-stone-400">
+                    <p class="mt-3 text-sm leading-relaxed text-tertiary">
                         If you are a California resident, you have specific rights regarding your personal information
                         under the California Consumer Privacy Act (CCPA) and California Privacy Rights Act (CPRA),
                         including:
                     </p>
-                    <ul class="mt-3 space-y-2 pl-5 text-sm leading-relaxed text-stone-400 list-disc">
+                    <ul class="mt-3 space-y-2 pl-5 text-sm leading-relaxed text-tertiary list-disc">
                         <li>The right to know what personal information is being collected about you;</li>
                         <li>The right to know whether your personal information is sold or disclosed and to whom;</li>
                         <li>The right to say no to the sale of personal information (we do not sell personal
@@ -296,7 +296,7 @@
                         <li>The right to access your personal information;</li>
                         <li>The right to equal service and price, even if you exercise your privacy rights.</li>
                     </ul>
-                    <p class="mt-3 text-sm leading-relaxed text-stone-400">
+                    <p class="mt-3 text-sm leading-relaxed text-tertiary">
                         To exercise your California privacy rights, please contact us at
                         <strong>info@netstd.eu.cc</strong>.
                     </p>
@@ -304,8 +304,8 @@
             </div>
 
             <!-- 返回首页 / Back to home -->
-            <div class="mt-16 border-t border-white/5 pt-8">
-                <NuxtLink :to="localePath('/')" class="text-sm text-stone-400 transition-colors hover:text-white">
+            <div class="mt-16 border-t border-line-subtle pt-8">
+                <NuxtLink :to="localePath('/')" class="text-sm text-tertiary transition-colors hover:text-primary">
                     ← Back Home
                 </NuxtLink>
             </div>

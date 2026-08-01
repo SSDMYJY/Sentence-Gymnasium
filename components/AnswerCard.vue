@@ -152,58 +152,56 @@ async function onBookmark() {
 
 <template>
   <!-- 判题加载 / Judging spinner -->
-  <div v-if="showJudging" class="rounded-2xl border border-white/10 bg-ink-900/50 p-12 text-center">
+  <div v-if="showJudging" class="ds-card p-12 text-center">
     <!-- 转圈加载图标 / Spinning loader icon -->
-    <div class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-accent" />
+    <div class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-line-strong border-t-accent" />
     <!-- 判题中提示文案 / Judging hint text -->
-    <p class="mt-4 text-sm text-stone-400">{{ t(judgingLabel) }}</p>
+    <p class="mt-4 text-sm text-tertiary">{{ t(judgingLabel) }}</p>
   </div>
 
   <!-- 判题结果 / Judging result -->
   <div v-else-if="showResult && judgeResult" class="space-y-6">
     <!-- 结果概览 / Result overview -->
     <div :class="[
-      'rounded-2xl border p-6',
+      'ds-card p-6',
       judgeResult.isCorrect
-        ? 'border-green-500/30 bg-green-500/5' // 全对：绿色 / All correct: green
+        ? 'border-success/30 bg-success/5' // 全对：绿色 / All correct: green
         : judgeResult.verdict === 'partial'
-          ? 'border-yellow-500/30 bg-yellow-500/5' // 部分：黄色 / Partial: yellow
-          : 'border-red-500/30 bg-red-500/5', // 错误：红色 / Incorrect: red
+          ? 'border-warning/30 bg-warning/5' // 部分：黄色 / Partial: yellow
+          : 'border-danger/30 bg-danger/5', // 错误：红色 / Incorrect: red
     ]">
       <!-- 图标与得分 / Icon and score -->
       <div class="flex items-center gap-4">
-        <span class="text-4xl">
-          {{ judgeResult.isCorrect ? '✓' : judgeResult.verdict === 'partial' ? '◐' : '✗' }}
-        </span>
+        <UIcon :name="judgeResult.isCorrect ? 'i-lucide-check' : judgeResult.verdict === 'partial' ? 'i-lucide-circle-dashed' : 'i-lucide-x'" class="text-4xl" />
         <div>
           <!-- 判定等级文案 / Verdict label -->
-          <p class="font-display text-xl font-bold text-stone-100">
+          <p class="font-display text-xl font-bold text-primary">
             {{ verdictLabel(judgeResult.verdict) }}
           </p>
           <!-- 得分 / Score -->
-          <p class="text-sm text-stone-400">{{ judgeResult.score }} / 10</p>
+          <p class="text-sm text-tertiary">{{ judgeResult.score }} / 10</p>
         </div>
       </div>
     </div>
 
     <!-- 题目 + 答案回顾 / Question + answer review -->
-    <div class="rounded-2xl border border-white/10 bg-ink-900/50 p-6">
+    <div class="ds-card">
       <div class="space-y-4">
         <div>
           <!-- 题目标签 / Question label -->
-          <p class="text-xs uppercase tracking-wide text-stone-500">{{ t(resultLabels.question) }}</p>
+          <p class="ds-label">{{ t(resultLabels.question) }}</p>
           <!-- 题目文本 / Question text -->
-          <p class="mt-1 text-stone-200">{{ questionText }}</p>
+          <p class="mt-1 text-secondary">{{ questionText }}</p>
         </div>
         <div>
           <!-- 你的答案标签 / Your-answer label -->
-          <p class="text-xs uppercase tracking-wide text-stone-500">{{ t(resultLabels.yourAnswer) }}</p>
+          <p class="ds-label">{{ t(resultLabels.yourAnswer) }}</p>
           <!-- 用户作答内容 / User's answer -->
-          <p class="mt-1 text-stone-200">{{ modelValue }}</p>
+          <p class="mt-1 text-secondary">{{ modelValue }}</p>
         </div>
         <div>
           <!-- 参考答案标签 / Reference label -->
-          <p class="text-xs uppercase tracking-wide text-stone-500">{{ t(resultLabels.reference) }}</p>
+          <p class="ds-label">{{ t(resultLabels.reference) }}</p>
           <!-- 参考答案内容 / Reference answer -->
           <p class="mt-1 text-accent-soft">{{ judgeResult.correctAnswer }}</p>
         </div>
@@ -218,42 +216,42 @@ async function onBookmark() {
       <UButton
         variant="ghost"
         size="sm"
-        class="text-stone-400 hover:text-yellow-400 transition-colors"
+        class="text-tertiary hover:text-warning transition-colors"
         :disabled="bookmarking"
         @click="onBookmark"
       >
-        <span :class="bookmarked ? 'text-yellow-400' : ''">🔖</span>
+        <UIcon :name="bookmarked ? 'i-lucide-bookmark' : 'i-lucide-bookmark'" :class="bookmarked ? 'text-warning' : ''" />
         <span class="ml-1 text-xs">{{ bookmarked ? t('bookmarks.saved') : t('bookmarks.save') }}</span>
       </UButton>
     </div>
 
     <!-- AI 反馈 / AI feedback -->
-    <div class="rounded-2xl border border-white/10 bg-ink-900/50 p-6">
+    <div class="ds-card">
       <!-- 反馈标题 / Feedback heading -->
-      <h3 class="text-sm font-semibold text-stone-300">{{ t(feedbackLabel) }}</h3>
+      <h3 class="text-sm font-semibold text-tertiary">{{ t(feedbackLabel) }}</h3>
       <!-- 反馈正文 / Feedback body -->
-      <p class="mt-3 text-sm leading-relaxed text-stone-300">{{ judgeResult.feedback }}</p>
+      <p class="mt-3 text-sm leading-relaxed text-tertiary">{{ judgeResult.feedback }}</p>
 
       <!-- 错误列表 / Errors list -->
       <div v-if="judgeResult.errors?.length" class="mt-4">
         <!-- 错误列表标题 / Errors heading -->
-        <p class="text-xs uppercase tracking-wide text-stone-500">{{ t(errorsLabel) }}</p>
+        <p class="ds-label">{{ t(errorsLabel) }}</p>
         <ul class="mt-2 space-y-1">
           <!-- 逐条渲染错误 / Render each error -->
           <li v-for="(err, i) in judgeResult.errors" :key="i"
-            class="flex items-start gap-2 text-sm text-stone-400">
-            <span class="mt-0.5 text-red-400">·</span>
+            class="flex items-start gap-2 text-sm text-tertiary">
+            <span class="mt-0.5 text-danger">·</span>
             <span>{{ err }}</span>
           </li>
         </ul>
       </div>
 
       <!-- 改进建议 / Suggestion -->
-      <div v-if="judgeResult.suggestion" class="mt-4 rounded-lg border border-accent/20 bg-accent/5 p-4">
+      <div v-if="judgeResult.suggestion" class="mt-4 border border-accent/20 bg-accent/5 p-4">
         <!-- 建议标题 / Suggestion heading -->
-        <p class="text-xs uppercase tracking-wide text-accent-soft">{{ t(suggestionLabel) }}</p>
+        <p class="ds-label text-accent-soft">{{ t(suggestionLabel) }}</p>
         <!-- 建议内容 / Suggestion body -->
-        <p class="mt-1 text-sm text-stone-200">{{ judgeResult.suggestion }}</p>
+        <p class="mt-1 text-sm text-secondary">{{ judgeResult.suggestion }}</p>
       </div>
     </div>
 
@@ -261,21 +259,21 @@ async function onBookmark() {
     <div class="flex gap-3">
       <!-- nextFirst 模式下先展示下一题 / When nextFirst, show "next" first -->
       <template v-if="nextFirst">
-        <UButton class="flex-1 bg-white text-ink-950 hover:bg-stone-100" @click="emit('next')">
+        <UButton class="flex-1 bg-accent text-ink-950 hover:bg-accent-soft" @click="emit('next')">
           {{ t(nextButtonLabel) }}
         </UButton>
         <UButton variant="outline"
-          class="flex-1 border-white/15 text-stone-300 hover:border-white/30 hover:text-white" @click="emit('back')">
+          class="flex-1 border-line-strong text-tertiary hover:border-accent hover:text-primary" @click="emit('back')">
           {{ t(backButtonLabel) }}
         </UButton>
       </template>
       <!-- 默认模式先展示返回设置 / Default: show "back" first -->
       <template v-else>
         <UButton variant="outline"
-          class="flex-1 border-white/15 text-stone-300 hover:border-white/30 hover:text-white" @click="emit('back')">
+          class="flex-1 border-line-strong text-tertiary hover:border-accent hover:text-primary" @click="emit('back')">
           {{ t(backButtonLabel) }}
         </UButton>
-        <UButton class="flex-1 bg-white text-ink-950 hover:bg-stone-100" @click="emit('next')">
+        <UButton class="flex-1 bg-accent text-ink-950 hover:bg-accent-soft" @click="emit('next')">
           {{ t(nextButtonLabel) }}
         </UButton>
       </template>
@@ -285,11 +283,11 @@ async function onBookmark() {
   <!-- 答题阶段 / Answering phase -->
   <div v-else-if="showAnswering" class="space-y-6">
     <!-- 题目卡片 / Question card -->
-    <div class="rounded-2xl border border-white/10 bg-ink-900/50 p-6">
+    <div class="ds-card">
       <!-- 题目元信息插槽 / Question-meta slot -->
       <slot name="question-meta" />
       <!-- 题目文本 / Question text -->
-      <p class="mt-6 font-display text-xl font-medium leading-relaxed text-stone-100">
+      <p class="mt-6 font-display text-xl font-medium leading-relaxed text-primary">
         {{ questionText }}
       </p>
       <!-- 题目额外内容插槽 / Question-extra slot -->
@@ -297,16 +295,16 @@ async function onBookmark() {
     </div>
 
     <!-- 作答区 / Answer area -->
-    <div class="rounded-2xl border border-white/10 bg-ink-900/50 p-6">
+    <div class="ds-card">
       <!-- 你的答案标签 / Your-answer label -->
-      <label class="block text-xs uppercase tracking-wide text-stone-500">{{ t(yourAnswerLabel) }}</label>
+      <label class="block ds-label">{{ t(yourAnswerLabel) }}</label>
       <!-- 作答提示插槽 / Answer-hint slot -->
       <slot name="answer-hint" />
       <!-- 多行输入框 / Multi-line textarea -->
       <UTextarea v-model="answer" :rows="rows" :placeholder="placeholder" :disabled="judging" :ui="{
         root: 'w-full',
         wrapper: 'mt-3',
-        textarea: 'w-full resize-none border-white/10 bg-ink-950 text-stone-100 placeholder-stone-600 focus:border-accent focus:ring-accent/30 select-none',
+        textarea: 'w-full resize-none border-line-default bg-surface text-primary placeholder-muted focus:border-accent focus:ring-accent/30 select-none',
       }" @keydown.meta.enter="emit('submit')" @keydown.ctrl.enter="emit('submit')"
         @paste="restrictClipboard ? $event.preventDefault() : undefined"
         @copy="restrictClipboard ? $event.preventDefault() : undefined"
@@ -314,10 +312,10 @@ async function onBookmark() {
         @contextmenu="restrictClipboard ? $event.preventDefault() : undefined" />
       <!-- 提交行：快捷键提示 + 提交按钮 / Submit row: shortcut hint + submit button -->
       <div class="mt-3 flex items-center justify-between">
-        <span class="text-xs text-stone-600">⌘/Ctrl + Enter {{ t(submitHint) }}</span>
+        <span class="text-xs text-muted">⌘/Ctrl + Enter {{ t(submitHint) }}</span>
         <!-- 判题中或无内容时禁用提交 / Disabled while judging or empty -->
         <UButton :loading="judging || !answer.trim()" :disabled="judging || !answer.trim()"
-          class="bg-white text-ink-950 hover:bg-stone-100" @click="emit('submit')">
+          class="bg-accent text-ink-950 hover:bg-accent-soft" @click="emit('submit')">
           {{ judging ? t(judgingLabel) : t(submitLabel) }}
         </UButton>
       </div>

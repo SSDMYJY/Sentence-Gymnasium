@@ -14,7 +14,7 @@
 
       <div class="js-hero-copy relative z-10 mx-auto flex min-h-svh max-w-7xl flex-col justify-center px-6 pb-20 pt-28 will-change-transform">
         <div class="max-w-2xl">
-          <p class="js-hero-item text-xs uppercase tracking-[0.32em] text-accent-soft sm:text-sm">
+          <p class="js-hero-item text-xs uppercase tracking-[var(--tracking-eyebrow)] text-accent-soft sm:text-sm">
             {{ t('hero.eyebrow') }}
           </p>
 
@@ -22,11 +22,11 @@
             Sentence<br />Gymnasium
           </h1>
 
-          <p class="js-hero-item mt-5 font-display text-xl text-stone-200 sm:text-2xl">
+          <p class="js-hero-item mt-5 font-display text-xl text-secondary sm:text-2xl">
             {{ t('hero.subtitle') }}
           </p>
 
-          <p class="js-hero-item mt-5 max-w-xl leading-relaxed text-stone-400">
+          <p class="js-hero-item mt-5 max-w-xl leading-relaxed text-tertiary">
             {{ t('hero.body') }}
           </p>
 
@@ -36,11 +36,11 @@
               class="js-hero-cta-primary group inline-flex items-center gap-2 bg-accent px-7 py-3.5 text-sm font-semibold text-ink-950 transition-colors hover:bg-accent-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-soft/70"
             >
               {{ t('hero.ctaPrimary') }}
-              <span class="js-hero-cta-arrow inline-block">→</span>
+              <UIcon name="i-lucide-arrow-right" class="js-hero-cta-arrow inline-block" />
             </a>
             <a
               href="#flow"
-              class="js-hero-cta-secondary inline-flex items-center gap-2 border border-white/15 px-7 py-3.5 text-sm font-medium text-stone-200 transition-colors hover:border-white/40 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+              class="js-hero-cta-secondary inline-flex items-center gap-2 border border-line-strong px-7 py-3.5 text-sm font-medium text-secondary transition-colors hover:border-accent hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30"
             >
               {{ t('hero.ctaSecondary') }}
             </a>
@@ -49,53 +49,53 @@
       </div>
 
       <div class="absolute bottom-6 left-1/2 -translate-x-1/2">
-        <div class="js-scroll-hint text-[10px] uppercase tracking-[0.3em] text-stone-500">
+        <div class="js-scroll-hint text-[10px] uppercase tracking-[var(--tracking-eyebrow)] text-muted">
           {{ t('hero.scroll') }}
         </div>
       </div>
     </section>
 
-    <section id="boards" class="relative border-t border-white/5">
+    <section id="boards" class="relative border-t border-line-subtle">
       <div class="mx-auto max-w-7xl px-6 py-24 sm:py-32">
         <div class="js-direction-reveal max-w-2xl">
-          <p class="text-xs uppercase tracking-[0.28em] text-accent-soft">{{ t('boards.eyebrow') }}</p>
+          <p class="ds-eyebrow">{{ t('boards.eyebrow') }}</p>
           <h2 class="mt-4 font-display text-3xl font-semibold tracking-tight sm:text-5xl">
             {{ t('boards.title') }}
           </h2>
-          <p class="mt-4 leading-relaxed text-stone-400">
+          <p class="mt-4 leading-relaxed text-tertiary">
             {{ t('boards.body') }}
           </p>
         </div>
 
-        <div class="boards-grid mt-16 grid grid-cols-1 border-t border-white/10 md:grid-cols-3">
+        <div class="boards-grid mt-16 grid grid-cols-1 border-t border-line-default md:grid-cols-3">
           <NuxtLink
             v-for="b in boards"
             :key="b.no"
             :to="b.to"
-            class="js-direction-reveal js-board-card group relative border-b border-white/10 px-6 py-10 transition-colors hover:bg-ink-800/30 sm:px-8 md:border-b-0 md:border-r md:last:border-r-0 will-change-transform"
+            class="js-direction-reveal js-board-card group relative border-b border-line-default px-6 py-10 transition-colors hover:bg-hover-subtle sm:px-8 md:border-b-0 md:border-r md:last:border-r-0 will-change-transform"
           >
             <span class="js-board-line absolute left-0 top-0 h-px w-full origin-left scale-x-0 bg-accent" />
-            <span class="block font-display text-sm text-stone-500">{{ b.no }}</span>
+            <span class="block font-display text-sm text-muted">{{ b.no }}</span>
             <span class="mt-6 block font-display text-2xl font-semibold">{{ b.title }}</span>
             <span class="mt-1 block text-sm text-accent-soft">{{ b.subtitle }}</span>
-            <p class="mt-4 text-sm leading-relaxed text-stone-400">{{ b.desc }}</p>
-            <span class="mt-8 inline-flex items-center gap-2 text-sm text-stone-300 transition-colors group-hover:text-white">
+            <p class="mt-4 text-sm leading-relaxed text-tertiary">{{ b.desc }}</p>
+            <span class="mt-8 inline-flex items-center gap-2 text-sm text-tertiary transition-colors group-hover:text-primary">
               {{ t('boards.enter') }}
-              <span class="js-board-arrow inline-block">→</span>
+              <UIcon name="i-lucide-arrow-right" class="js-board-arrow inline-block" />
             </span>
           </NuxtLink>
         </div>
       </div>
     </section>
 
-    <section id="flow" class="relative border-t border-white/5 bg-ink-900/40">
+    <section id="flow" class="relative border-t border-line-subtle bg-elevated">
       <div class="mx-auto max-w-7xl px-6 py-24 sm:py-32">
         <div class="js-direction-reveal max-w-2xl">
-          <p class="text-xs uppercase tracking-[0.28em] text-accent-soft">{{ t('flow.eyebrow') }}</p>
+          <p class="ds-eyebrow">{{ t('flow.eyebrow') }}</p>
           <h2 class="mt-4 font-display text-3xl font-semibold tracking-tight sm:text-5xl">
             {{ t('flow.title') }}
           </h2>
-          <p class="mt-4 leading-relaxed text-stone-400">
+          <p class="mt-4 leading-relaxed text-tertiary">
             {{ t('flow.body') }}
           </p>
         </div>
@@ -104,24 +104,24 @@
           <li
             v-for="s in steps"
             :key="s.no"
-            class="js-direction-reveal js-flow-step relative border-t border-white/10 pt-8"
+            class="js-direction-reveal js-flow-step relative border-t border-line-default pt-8"
           >
             <span class="js-flow-line absolute left-0 top-0 h-px w-10 origin-left scale-x-0 bg-accent" />
             <span class="font-display text-sm text-accent">{{ s.no }}</span>
             <h3 class="mt-5 font-display text-xl font-semibold">{{ s.title }}</h3>
-            <p class="mt-1 text-sm text-stone-500">{{ s.caption }}</p>
-            <p class="mt-4 text-sm leading-relaxed text-stone-400">{{ s.desc }}</p>
+            <p class="mt-1 text-sm text-muted">{{ s.caption }}</p>
+            <p class="mt-4 text-sm leading-relaxed text-tertiary">{{ s.desc }}</p>
           </li>
         </ol>
       </div>
     </section>
 
-    <section class="relative border-t border-white/5">
+    <section class="relative border-t border-line-subtle">
       <div class="mx-auto max-w-5xl px-6 py-28 text-center sm:py-36">
         <h2 class="js-reveal font-display text-4xl font-semibold tracking-tight sm:text-6xl">
           {{ t('cta.title') }}
         </h2>
-        <p class="js-reveal mt-6 text-stone-400">
+        <p class="js-reveal mt-6 text-tertiary">
           {{ t('cta.body') }}
         </p>
         <div class="js-reveal mt-10 flex flex-wrap items-center justify-center gap-4">
@@ -132,7 +132,7 @@
           >
             {{ t('cta.button') }}
             <template #trailing>
-              <span class="transition-transform group-hover:translate-x-0.5">→</span>
+              <UIcon name="i-lucide-arrow-right" class="transition-transform group-hover:translate-x-0.5" />
             </template>
           </UButton>
         </div>

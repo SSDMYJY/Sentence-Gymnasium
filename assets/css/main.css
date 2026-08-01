@@ -23,6 +23,53 @@
   --color-accent-soft: #fbbf24;
 
   --tracking-tightest: -0.04em;
+  --tracking-eyebrow: 0.28em;
+
+  --text-display-xl: 6rem;
+  --text-display-lg: 4.5rem;
+  --text-display-md: 3rem;
+  --text-display-sm: 2rem;
+
+  --leading-tight: 0.95;
+  --leading-snug: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
+
+  --radius-sharp: 0px;
+  --radius-pill: 9999px;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.15);
+  --shadow-md: 0 4px 10px -2px rgb(0 0 0 / 0.25);
+  --shadow-lg: 0 10px 25px -5px rgb(0 0 0 / 0.35);
+}
+
+/*
+ * 语义色 Token —— 注册进 @theme（非 static）以生成可用工具类
+ * （bg-card / text-primary / border-default / text-success 等），
+ * 值引用运行时 CSS 变量，从而在明暗主题切换时自动响应。
+ */
+@theme {
+  --color-surface: var(--bg-primary);
+  --color-card: var(--bg-card);
+  --color-elevated: var(--bg-elevated);
+
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-tertiary: var(--text-tertiary);
+  --color-muted: var(--text-muted);
+
+  --color-line-subtle: var(--border-subtle);
+  --color-line-default: var(--border-default);
+  --color-line-strong: var(--border-strong);
+
+  --color-hover-subtle: var(--hover-subtle);
+
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
 }
 
 :root {
@@ -41,6 +88,8 @@
   --border-default: rgba(255, 255, 255, 0.1);
   --border-strong: rgba(255, 255, 255, 0.15);
 
+  --hover-subtle: rgba(255, 255, 255, 0.05);
+
   --accent-color: var(--color-accent);
   --accent-soft: var(--color-accent-soft);
   --accent-fg: var(--color-ink-950);
@@ -54,6 +103,13 @@
   --mobile-nav-bg: rgba(10, 10, 11, 0.9);
 
   --card-hover: rgba(31, 31, 34, 0.3);
+
+  --success: #22c55e;
+  --success-soft: #4ade80;
+  --warning: #eab308;
+  --warning-soft: #facc15;
+  --danger: #ef4444;
+  --danger-soft: #f87171;
 }
 
 html.dark {
@@ -72,6 +128,8 @@ html.dark {
   --border-default: rgba(255, 255, 255, 0.1);
   --border-strong: rgba(255, 255, 255, 0.15);
 
+  --hover-subtle: rgba(255, 255, 255, 0.05);
+
   --accent-color: var(--color-accent);
   --accent-soft: var(--color-accent-soft);
   --accent-fg: var(--color-ink-950);
@@ -85,6 +143,13 @@ html.dark {
   --mobile-nav-bg: rgba(10, 10, 11, 0.9);
 
   --card-hover: rgba(31, 31, 34, 0.3);
+
+  --success: #22c55e;
+  --success-soft: #4ade80;
+  --warning: #eab308;
+  --warning-soft: #facc15;
+  --danger: #ef4444;
+  --danger-soft: #f87171;
 }
 
 html.light {
@@ -103,6 +168,8 @@ html.light {
   --border-default: rgba(0, 0, 0, 0.08);
   --border-strong: rgba(0, 0, 0, 0.12);
 
+  --hover-subtle: rgba(0, 0, 0, 0.04);
+
   --accent-color: #d97706;
   --accent-soft: #f59e0b;
   --accent-fg: #ffffff;
@@ -116,6 +183,13 @@ html.light {
   --mobile-nav-bg: rgba(250, 248, 245, 0.95);
 
   --card-hover: rgba(235, 231, 223, 0.5);
+
+  --success: #16a34a;
+  --success-soft: #22c55e;
+  --warning: #ca8a04;
+  --warning-soft: #eab308;
+  --danger: #dc2626;
+  --danger-soft: #ef4444;
 
   --color-ink-950: #faf8f5;
   --color-ink-900: #f5f2ed;
@@ -300,4 +374,68 @@ body {
     opacity: 1 !important;
     transform: none !important;
   }
+}
+
+/* ==========================================================================
+   设计系统组件类（Design System component utilities）
+   Tailwind v4 @utility —— 单一来源，模板层消费。变体用工具类叠加。
+   锐角编辑风：所有容器/控件圆角为 0。
+   ========================================================================== */
+
+/* 卡片：最高频组合，统一边框/底色/内边距 */
+@utility ds-card {
+  border: 1px solid var(--border-default);
+  background-color: var(--bg-card);
+  padding: 1.5rem;
+}
+
+/* 眉头标签：章节小标题，大写字距 accent */
+@utility ds-eyebrow {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-eyebrow);
+  color: var(--accent-soft);
+}
+
+/* 字段标签：表单/列表小标签，大写 muted */
+@utility ds-label {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  color: var(--text-muted);
+}
+
+/* 分隔线：subtle 顶边 */
+@utility ds-divider {
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* 表单输入基础：边框/底色/文字/占位/聚焦 */
+@utility ds-input {
+  border: 1px solid var(--border-default);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  padding: 0.625rem 0.875rem;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:focus-visible {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 30%, transparent);
+  }
+
+  &::placeholder {
+    color: var(--text-muted);
+  }
+}
+
+/* 展示标题：display 字体加粗紧凑 */
+@utility ds-heading-display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: var(--tracking-tightest);
+  line-height: var(--leading-tight);
 }
