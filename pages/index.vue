@@ -88,7 +88,7 @@
       </div>
     </section>
 
-    <section id="flow" class="relative border-t border-line-subtle bg-secondary">
+    <section id="flow" class="relative border-t border-line-subtle bg-elevated">
       <div class="mx-auto max-w-7xl px-6 py-24 sm:py-32">
         <div class="js-direction-reveal max-w-2xl">
           <p class="ds-eyebrow">{{ t('flow.eyebrow') }}</p>
