@@ -1,10 +1,10 @@
 <template>
   <div class="mx-auto max-w-5xl px-6 pb-24 pt-28">
     <header class="mb-10">
-      <h1 class="font-display text-3xl font-bold tracking-tight sm:text-4xl">
-        🔖 {{ t('bookmarks.title') }}
+      <h1 class="ds-heading-display text-3xl sm:text-4xl">
+        <UIcon name="i-lucide-bookmark" /> {{ t('bookmarks.title') }}
       </h1>
-      <p class="mt-2 text-stone-400">{{ t('bookmarks.subtitle') }}</p>
+      <p class="mt-2 text-tertiary">{{ t('bookmarks.subtitle') }}</p>
     </header>
 
     <!-- Filters -->
@@ -30,15 +30,15 @@
     </div>
 
     <!-- Loading -->
-    <div v-if="loading" class="rounded-2xl border border-white/10 bg-ink-900/50 p-12 text-center">
-      <div class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-accent" />
-      <p class="mt-4 text-sm text-stone-400">{{ t('bookmarks.loading') }}</p>
+    <div v-if="loading" class="ds-card p-12 text-center">
+      <div class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-line-strong border-t-accent" />
+      <p class="mt-4 text-sm text-tertiary">{{ t('bookmarks.loading') }}</p>
     </div>
 
     <!-- Empty -->
-    <div v-else-if="bookmarks.length === 0" class="rounded-2xl border border-white/10 bg-ink-900/50 p-12 text-center">
-      <p class="text-stone-400">{{ t('bookmarks.noData') }}</p>
-      <UButton :to="localePath('/practice')" class="mt-4 bg-white text-ink-950 hover:bg-stone-100">
+    <div v-else-if="bookmarks.length === 0" class="ds-card p-12 text-center">
+      <p class="text-tertiary">{{ t('bookmarks.noData') }}</p>
+      <UButton :to="localePath('/practice')" class="mt-4 bg-accent text-ink-950 hover:bg-accent-soft">
         {{ t('bookmarks.startPractice') }}
       </UButton>
     </div>
@@ -48,27 +48,27 @@
       <div
         v-for="bm in bookmarks"
         :key="bm.id"
-        class="group flex items-start justify-between rounded-2xl border border-white/10 bg-ink-900/50 p-5 transition-colors hover:border-white/20"
+        class="group flex items-start justify-between ds-card p-5 transition-colors hover:border-line-strong"
       >
         <div class="flex-1">
           <div class="flex items-center gap-2">
-            <span class="font-display text-lg font-semibold text-stone-100">{{ bm.word }}</span>
+            <span class="font-display text-lg font-semibold text-primary">{{ bm.word }}</span>
             <span v-if="bm.sourceLang" class="rounded bg-accent/10 px-2 py-0.5 text-xs text-accent-soft">
               {{ bm.sourceLang }}
             </span>
-            <span v-if="bm.category" class="rounded bg-ink-800 px-2 py-0.5 text-xs text-stone-400">
+            <span v-if="bm.category" class="rounded bg-elevated px-2 py-0.5 text-xs text-tertiary">
               {{ t(`bookmarks.category.${bm.category}`, bm.category) }}
             </span>
           </div>
-          <p v-if="bm.sentence" class="mt-2 text-sm text-stone-400 italic">"{{ bm.sentence }}"</p>
-          <p class="mt-1 text-xs text-stone-500">{{ formatDate(bm.createdAt) }}</p>
+          <p v-if="bm.sentence" class="mt-2 text-sm text-tertiary italic">"{{ bm.sentence }}"</p>
+          <p class="mt-1 text-xs text-muted">{{ formatDate(bm.createdAt) }}</p>
         </div>
         <UButton
           variant="ghost"
-          class="ml-4 text-red-400 hover:text-red-300 opacity-0 group-hover:opacity-100 transition-opacity"
+          class="ml-4 text-danger hover:text-danger-soft opacity-0 group-hover:opacity-100 transition-opacity"
           @click="onDelete(bm.id)"
         >
-          ✕
+          <UIcon name="i-lucide-x" />
         </UButton>
       </div>
 
@@ -77,16 +77,16 @@
         <UButton
           variant="outline"
           :disabled="page <= 1"
-          class="border-white/15 text-stone-300"
+          class="border-line-strong text-tertiary hover:border-accent hover:text-primary"
           @click="page > 1 && goTo(page - 1)"
         >
           {{ t('bookmarks.prev') }}
         </UButton>
-        <span class="text-sm text-stone-500">{{ t('bookmarks.pageInfo', { page, total: totalPages, count: total }) }}</span>
+        <span class="text-sm text-muted">{{ t('bookmarks.pageInfo', { page, total: totalPages, count: total }) }}</span>
         <UButton
           variant="outline"
           :disabled="page >= totalPages"
-          class="border-white/15 text-stone-300"
+          class="border-line-strong text-tertiary hover:border-accent hover:text-primary"
           @click="page < totalPages && goTo(page + 1)"
         >
           {{ t('bookmarks.next') }}

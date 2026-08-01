@@ -3,9 +3,9 @@
   <UDropdownMenu :items="dropdownItems" :content="{ align: 'end', side: 'bottom', sideOffset: 8 }">
     <!-- 触发按钮：显示地球图标 / Trigger button showing a globe icon -->
     <UButton variant="ghost" size="sm" square class="lang-switch-btn p-1.5" :aria-label="currentName">
-      <!-- 前置插槽：地球 emoji / Leading slot: globe emoji -->
+      <!-- 前置插槽：地球图标 / Leading slot: globe icon -->
       <template #leading>
-        <span class="leading-none">🌐</span>
+        <UIcon name="i-lucide-globe" class="size-5" />
       </template>
     </UButton>
     <!-- 每项右侧尾缀：当前语言打勾 / Trailing slot per item: check mark on active locale -->

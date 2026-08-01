@@ -5,22 +5,22 @@
 			<div class="flex items-center gap-3">
 				<div>
 					<!-- 页面主标题 / Page heading -->
-					<h1 class="font-display text-2xl font-bold tracking-tight text-stone-100 sm:text-3xl">
+					<h1 class="font-display text-2xl font-bold tracking-tight text-primary sm:text-3xl">
 						{{ t('boards.practice.subtitle') }}
 					</h1>
 					<!-- 页面描述 / Page description -->
-					<p class="mt-1 text-sm text-stone-500">{{ t('boards.practice.desc') }}</p>
+					<p class="mt-1 text-sm text-muted">{{ t('boards.practice.desc') }}</p>
 				</div>
 			</div>
 		</header>
 
 		<!-- 设置面板（选择语言对 + 难度 + 场景）/ Settings panel (language pair, difficulty, scenario) -->
-		<div v-if="phase === 'idle'" class="rounded-2xl border border-white/10 bg-ink-900/50 p-6">
-			<h2 class="text-sm font-semibold text-stone-300">{{ t('practice.settings') }}</h2>
+		<div v-if="phase === 'idle'" class="ds-card">
+			<h2 class="text-sm font-semibold text-tertiary">{{ t('practice.settings') }}</h2>
 
 			<!-- 语言对选择 / Language pair selection -->
 			<div class="mt-5">
-				<label class="text-xs uppercase tracking-wide text-stone-500">{{ t('practice.languagePair') }}</label>
+				<label class="ds-label">{{ t('practice.languagePair') }}</label>
 				<div class="mt-3 grid grid-cols-2 gap-3">
 					<!-- 遍历语言对 / Iterate language pairs -->
 					<UButton v-for="pair in languagePairs" :key="pair.value" variant="ghost"
@@ -28,7 +28,7 @@
 							'justify-start px-4 py-3 border text-sm font-medium',
 							selectedPair === pair.value
 								? 'border-accent bg-accent/10 text-accent-soft' // 选中态 / Selected
-								: 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white', // 未选中 / Unselected
+								: 'border-line-default text-tertiary hover:border-accent hover:text-primary', // 未选中 / Unselected
 						]" @click="selectedPair = pair.value">
 						{{ pair.label }}
 					</UButton>
@@ -42,10 +42,10 @@
 			<!-- 场景选择 / Scenario selection -->
 			<div class="mt-6">
 				<div class="flex items-center justify-between">
-					<label class="text-xs uppercase tracking-wide text-stone-500">{{ t('practice.scenarioTitle')
+					<label class="ds-label">{{ t('practice.scenarioTitle')
 					}}</label>
 					<!-- 当前场景文案 / Current scenario label -->
-					<span class="text-xs text-stone-600">{{ scenarioDisplayLabel(selectedScenario) }}</span>
+					<span class="text-xs text-muted">{{ scenarioDisplayLabel(selectedScenario) }}</span>
 				</div>
 				<div class="mt-3">
 					<!-- 场景下拉组件 / Scenario dropdown component -->
@@ -54,23 +54,23 @@
 			</div>
 
 			<!-- 能量提示与开始按钮 / Credits hint and start button -->
-			<div class="mt-6 flex items-center justify-between border-t border-white/5 pt-4">
-				<span class="text-sm text-stone-500">
-					⚡ {{ store.credits }} {{ t('practice.credits') }}
-					<span class="text-stone-600"> · {{ t('practice.cost', { cost: 1 }) }}</span>
+			<div class="mt-6 flex items-center justify-between border-t border-line-subtle pt-4">
+				<span class="text-sm text-muted">
+					<UIcon name="i-lucide-zap" /> {{ store.credits }} {{ t('practice.credits') }}
+					<span class="text-muted"> · {{ t('practice.cost', { cost: 1 }) }}</span>
 				</span>
 				<!-- 积分不足或生成中则禁用 / Disabled when generating or out of credits -->
 				<UButton :loading="generating || store.credits < 1" :disabled="generating || store.credits < 1"
-					class="bg-white text-ink-950 hover:bg-stone-100" @click="onGenerate">
+					class="bg-accent text-ink-950 hover:bg-accent-soft" @click="onGenerate">
 					{{ generating ? t('practice.generating') : t('practice.start') }}
 				</UButton>
 			</div>
 		</div>
 
 		<!-- 加载中 / Generating state -->
-		<div v-if="phase === 'generating'" class="rounded-2xl border border-white/10 bg-ink-900/50 p-12 text-center">
-			<div class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-accent" />
-			<p class="mt-4 text-sm text-stone-400">{{ t('practice.generating') }}</p>
+		<div v-if="phase === 'generating'" class="ds-card p-12 text-center">
+			<div class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-line-strong border-t-accent" />
+			<p class="mt-4 text-sm text-tertiary">{{ t('practice.generating') }}</p>
 		</div>
 
 		<!-- 答题 / 判题 / 结果 / Answer / judge / result -->
@@ -85,14 +85,14 @@
 			<!-- 题头元信息：语言对 + 难度 + 场景 / Question meta: language pair, difficulty, scenario -->
 			<template #question-meta>
 				<div class="flex flex-wrap items-center justify-between gap-2">
-					<span class="rounded-full bg-ink-800 px-3 py-1 text-xs text-stone-400">
+					<span class="bg-elevated px-3 py-1 text-xs text-tertiary">
 						{{ pairLabel(currentQuestion!.languagePair) }}
 					</span>
 					<div class="flex items-center gap-2">
-						<span class="rounded-full bg-ink-800 px-3 py-1 text-xs text-stone-500">
+						<span class="bg-elevated px-3 py-1 text-xs text-muted">
 							{{ difficultyLabel(currentQuestion!.difficulty) }}
 						</span>
-						<span class="rounded-full bg-ink-800 px-3 py-1 text-xs text-stone-500">
+						<span class="bg-elevated px-3 py-1 text-xs text-muted">
 							{{ scenarioDisplayLabel(currentQuestion!.scenario) }}
 						</span>
 					</div>

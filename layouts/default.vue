@@ -8,19 +8,19 @@
 				</NuxtLink>
 
 				<nav v-if="user" class="hidden items-center gap-1 text-sm font-medium sm:flex">
-					<NuxtLink v-for="item in navItems" :key="item.key" :to="localePath(item.path)"
-						class="nav-link rounded-lg px-4 py-2 transition-colors"
-						:class="{ 'nav-link-active': isActive(item.path) }">
-						{{ item.label }}
-					</NuxtLink>
-				</nav>
+				<NuxtLink v-for="item in navItems" :key="item.key" :to="localePath(item.path)"
+					class="nav-link px-4 py-2 transition-colors"
+					:class="{ 'nav-link-active': isActive(item.path) }">
+					{{ item.label }}
+				</NuxtLink>
+			</nav>
 
 				<div class="flex items-center gap-3">
 					<LanguageSwitcher />
 					<ThemeToggle />
 					<template v-if="user">
 						<div class="credits-badge hidden items-center gap-1 px-3 py-1 text-xs sm:flex">
-							<span class="credits-dot">●</span>
+							<span class="inline-block h-1.5 w-1.5 rounded-full bg-accent-soft" aria-hidden="true" />
 							<span class="credits-text">{{ user.credits }}</span>
 						</div>
 						<UButton variant="ghost" :loading="loggingOut"
@@ -57,24 +57,27 @@
 				<div v-if="mobileMenuOpen && user" class="mobile-menu sm:hidden">
 					<nav class="mx-auto max-w-7xl px-6 py-3">
 						<NuxtLink v-for="item in navItems" :key="item.key" :to="localePath(item.path)"
-							class="mobile-nav-link flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-colors"
-							:class="{ 'mobile-nav-link-active': isActive(item.path) }" @click="mobileMenuOpen = false">
-							<span class="text-base">{{ item.icon }}</span>
-							{{ item.label }}
-						</NuxtLink>
-						<div class="mobile-menu-divider mt-2 pt-3">
-							<div class="flex items-center justify-between px-3 py-2 text-sm">
-								<span class="mobile-menu-label">⚡ {{ t('dashboard.stats.energy') }}</span>
-								<span class="mobile-menu-value">{{ user.credits }}</span>
-							</div>
-							<UButton variant="ghost" :loading="loggingOut"
-								class="mt-1 w-full justify-start mobile-logout-btn" @click="onLogout">
-								<template #leading>
-									<span class="text-base">↪</span>
-								</template>
-								{{ t('auth.logout') }}
-							</UButton>
+						class="mobile-nav-link flex items-center gap-3 px-3 py-3 text-sm font-medium transition-colors"
+						:class="{ 'mobile-nav-link-active': isActive(item.path) }" @click="mobileMenuOpen = false">
+						<UIcon :name="item.icon" class="text-base shrink-0" />
+						{{ item.label }}
+					</NuxtLink>
+					<div class="mobile-menu-divider mt-2 pt-3">
+						<div class="flex items-center justify-between px-3 py-2 text-sm">
+							<span class="mobile-menu-label flex items-center gap-1.5">
+								<UIcon name="i-lucide-zap" class="text-accent-soft" />
+								{{ t('dashboard.stats.energy') }}
+							</span>
+							<span class="mobile-menu-value">{{ user.credits }}</span>
 						</div>
+						<UButton variant="ghost" :loading="loggingOut"
+							class="mt-1 w-full justify-start mobile-logout-btn" @click="onLogout">
+							<template #leading>
+								<UIcon name="i-lucide-log-out" class="text-base" />
+							</template>
+							{{ t('auth.logout') }}
+						</UButton>
+					</div>
 					</nav>
 				</div>
 			</Transition>
@@ -87,11 +90,11 @@
 		<nav v-if="user" class="bottom-nav fixed inset-x-0 bottom-0 z-40 sm:hidden">
 			<div class="mx-auto flex max-w-lg items-center justify-around px-2 py-1.5">
 				<NuxtLink v-for="tab in mobileTabs" :key="tab.key" :to="localePath(tab.path)"
-					class="bottom-nav-item flex flex-1 flex-col items-center gap-0.5 rounded-lg py-2 transition-colors"
-					:class="{ 'bottom-nav-item-active': isActive(tab.path) }">
-					<span class="text-lg leading-none">{{ tab.icon }}</span>
-					<span class="text-[10px] font-medium leading-tight">{{ tab.shortLabel }}</span>
-				</NuxtLink>
+				class="bottom-nav-item flex flex-1 flex-col items-center gap-0.5 py-2 transition-colors"
+				:class="{ 'bottom-nav-item-active': isActive(tab.path) }">
+				<UIcon :name="tab.icon" class="text-lg leading-none" />
+				<span class="text-[10px] font-medium leading-tight">{{ tab.shortLabel }}</span>
+			</NuxtLink>
 			</div>
 		</nav>
 
@@ -134,23 +137,23 @@ async function fetchReviewDueCount() {
 }
 
 const navItems = computed(() => [
-	{ key: 'dashboard', label: t('auth.dashboard'), path: '/dashboard', icon: '🏠' },
-	{ key: 'practice', label: t('boards.practice.subtitle'), path: '/practice', icon: '⚡' },
-	{ key: 'paraphrase', label: t('boards.paraphrase.subtitle'), path: '/paraphrase', icon: '🔄' },
-	{ key: 'grammar', label: t('boards.grammar.subtitle'), path: '/grammar', icon: '◎' },
-	{ key: 'history', label: t('nav.history'), path: '/history', icon: '📝' },
-	{ key: 'review', label: t('review.title'), path: '/review', icon: '🔄' },
-	{ key: 'bookmarks', label: t('bookmarks.title'), path: '/bookmarks', icon: '🔖' },
-	{ key: 'ranking', label: t('ranking.nav'), path: '/ranking', icon: '🏆' },
+	{ key: 'dashboard', label: t('auth.dashboard'), path: '/dashboard', icon: 'i-lucide-home' },
+	{ key: 'practice', label: t('boards.practice.subtitle'), path: '/practice', icon: 'i-lucide-zap' },
+	{ key: 'paraphrase', label: t('boards.paraphrase.subtitle'), path: '/paraphrase', icon: 'i-lucide-refresh-cw' },
+	{ key: 'grammar', label: t('boards.grammar.subtitle'), path: '/grammar', icon: 'i-lucide-circle' },
+	{ key: 'history', label: t('nav.history'), path: '/history', icon: 'i-lucide-file-text' },
+	{ key: 'review', label: t('review.title'), path: '/review', icon: 'i-lucide-rotate-cw' },
+	{ key: 'bookmarks', label: t('bookmarks.title'), path: '/bookmarks', icon: 'i-lucide-bookmark' },
+	{ key: 'ranking', label: t('ranking.nav'), path: '/ranking', icon: 'i-lucide-trophy' },
 ])
 
 const mobileTabs = computed(() => [
-	{ key: 'dashboard', shortLabel: t('auth.dashboard'), path: '/dashboard', icon: '🏠' },
-	{ key: 'practice', shortLabel: t('boards.practice.subtitle'), path: '/practice', icon: '⚡' },
-	{ key: 'grammar', shortLabel: t('boards.grammar.subtitle'), path: '/grammar', icon: '◎' },
-	{ key: 'review', shortLabel: t('review.title'), path: '/review', icon: '🔄' },
-	{ key: 'bookmarks', shortLabel: t('bookmarks.title'), path: '/bookmarks', icon: '🔖' },
-	{ key: 'history', shortLabel: t('nav.history'), path: '/history', icon: '📝' },
+	{ key: 'dashboard', shortLabel: t('auth.dashboard'), path: '/dashboard', icon: 'i-lucide-home' },
+	{ key: 'practice', shortLabel: t('boards.practice.subtitle'), path: '/practice', icon: 'i-lucide-zap' },
+	{ key: 'grammar', shortLabel: t('boards.grammar.subtitle'), path: '/grammar', icon: 'i-lucide-circle' },
+	{ key: 'review', shortLabel: t('review.title'), path: '/review', icon: 'i-lucide-rotate-cw' },
+	{ key: 'bookmarks', shortLabel: t('bookmarks.title'), path: '/bookmarks', icon: 'i-lucide-bookmark' },
+	{ key: 'history', shortLabel: t('nav.history'), path: '/history', icon: 'i-lucide-file-text' },
 ])
 
 function isActive(path: string): boolean {
@@ -228,10 +231,6 @@ watch(() => route.path, () => {
 
 .credits-badge {
 	background-color: var(--bg-tertiary);
-}
-
-.credits-dot {
-	color: var(--accent-soft);
 }
 
 .credits-text {

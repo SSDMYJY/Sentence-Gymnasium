@@ -2,7 +2,7 @@
 	<!-- 难度选择外层容器 / Difficulty selector outer container -->
 	<div class="mt-6">
 		<!-- 难度标题标签 / Difficulty title label -->
-		<label class="text-xs uppercase tracking-wide text-stone-500">{{ t(labelKey) }}</label>
+		<label class="ds-label">{{ t(labelKey) }}</label>
 		<!-- 四列网格排布各难度按钮 / Four-column grid of difficulty buttons -->
 		<div class="mt-3 grid grid-cols-4 gap-3">
 			<UButton
@@ -10,17 +10,17 @@
 				:key="d"
 				variant="ghost"
 				:class="[
-					'rounded-lg border px-4 py-3 text-left text-sm font-medium transition-colors justify-start! items-start!',
+					'border px-4 py-3 text-left text-sm font-medium transition-colors justify-start! items-start!',
 					modelValue === d
 						? 'border-accent bg-accent/10 text-accent-soft' // 选中态 / Selected
-						: 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white', // 未选中 / Unselected
+						: 'border-line-default text-tertiary hover:border-accent hover:text-primary', // 未选中 / Unselected
 				]"
 				@click="emit('update:modelValue', d)"
 			>
 				<!-- 按钮内文案：名称 + 描述 / Button content: name + description -->
 				<span class="block w-full text-left">
 					<span class="block">{{ difficultyOptionLabel(d) }}</span>
-					<span class="mt-0.5 block text-xs font-normal text-stone-500">{{ difficultyOptionDesc(d) }}</span>
+					<span class="mt-0.5 block text-xs font-normal text-muted">{{ difficultyOptionDesc(d) }}</span>
 				</span>
 			</UButton>
 		</div>

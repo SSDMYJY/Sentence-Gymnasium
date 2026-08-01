@@ -6,22 +6,22 @@
 				<!-- 图标占位（已注释）/ Icon placeholder (commented out) -->
 				<div>
 					<!-- 页面主标题 / Page heading -->
-					<h1 class="font-display text-2xl font-bold tracking-tight text-stone-100 sm:text-3xl">
+					<h1 class="font-display text-2xl font-bold tracking-tight text-primary sm:text-3xl">
 						{{ t('boards.grammar.subtitle') }}
 					</h1>
 					<!-- 页面描述 / Page description -->
-					<p class="mt-1 text-sm text-stone-500">{{ t('boards.grammar.desc') }}</p>
+					<p class="mt-1 text-sm text-muted">{{ t('boards.grammar.desc') }}</p>
 				</div>
 			</div>
 		</header>
 
 		<!-- 设置面板（语言 + 语法点 + 题型同时展示）/ Settings panel (language, grammar point, question type) -->
-		<div v-if="phase === 'idle'" class="rounded-2xl border border-white/10 bg-ink-900/50 p-6">
-			<h2 class="text-sm font-semibold text-stone-300">{{ t('grammar.settings') }}</h2>
+		<div v-if="phase === 'idle'" class="ds-card">
+			<h2 class="text-sm font-semibold text-tertiary">{{ t('grammar.settings') }}</h2>
 
 			<!-- 语言选择 / Language selection -->
 			<div class="mt-5">
-				<label class="text-xs uppercase tracking-wide text-stone-500">{{ t('grammar.language') }}</label>
+				<label class="ds-label">{{ t('grammar.language') }}</label>
 				<div class="mt-3 flex gap-3">
 					<!-- 遍历语言 / Iterate languages -->
 					<UButton
@@ -29,10 +29,10 @@
 						:key="lang.value"
 						variant="ghost"
 						:class="[
-							'flex-1 rounded-lg border px-4 py-3 text-sm font-medium transition-colors',
+							'flex-1 border px-4 py-3 text-sm font-medium transition-colors',
 							selectedLang === lang.value
 								? 'border-accent bg-accent/10 text-accent-soft' // 选中态 / Selected
-								: 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white', // 未选中 / Unselected
+								: 'border-line-default text-tertiary hover:border-accent hover:text-primary', // 未选中 / Unselected
 						]"
 						@click="selectedLang = lang.value; selectedTag = filteredGrammarTags[0]?.value ?? 'te-form'"
 					>
@@ -43,7 +43,7 @@
 
 			<!-- 语法点选择（随语言切换）/ Grammar point selection (varies by language) -->
 			<div class="mt-5">
-				<label class="text-xs uppercase tracking-wide text-stone-500">{{ t('grammar.grammarPoint') }}</label>
+				<label class="ds-label">{{ t('grammar.grammarPoint') }}</label>
 				<div class="mt-3 grid gap-3"
 					:class="filteredGrammarTags.length % 3 === 0 ? 'grid-cols-3' : 'grid-cols-2'">
 					<!-- 遍历语法点 / Iterate grammar tags -->
@@ -52,10 +52,10 @@
 						:key="tag.value"
 						variant="ghost"
 						:class="[
-							'rounded-lg border px-4 py-3 text-sm font-medium transition-colors',
+							'border px-4 py-3 text-sm font-medium transition-colors',
 							selectedTag === tag.value
 								? 'border-accent bg-accent/10 text-accent-soft' // 选中态 / Selected
-								: 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white', // 未选中 / Unselected
+								: 'border-line-default text-tertiary hover:border-accent hover:text-primary', // 未选中 / Unselected
 						]"
 						@click="selectedTag = tag.value"
 					>
@@ -66,7 +66,7 @@
 
 			<!-- 题型选择（仅填空题 + 改错题）/ Question type selection (fill-blank or error-correction) -->
 			<div class="mt-6">
-				<label class="text-xs uppercase tracking-wide text-stone-500">{{ t('grammar.questionType') }}</label>
+				<label class="ds-label">{{ t('grammar.questionType') }}</label>
 				<div class="mt-3 flex gap-3">
 					<!-- 遍历题型 / Iterate question types -->
 					<UButton
@@ -74,10 +74,10 @@
 						:key="qt.value"
 						variant="ghost"
 						:class="[
-							'flex-1 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors',
+							'flex-1 border px-4 py-2.5 text-sm font-medium transition-colors',
 							selectedType === qt.value
 								? 'border-accent bg-accent/10 text-accent-soft' // 选中态 / Selected
-								: 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white', // 未选中 / Unselected
+								: 'border-line-default text-tertiary hover:border-accent hover:text-primary', // 未选中 / Unselected
 						]"
 						@click="selectedType = qt.value"
 					>
@@ -87,10 +87,10 @@
 			</div>
 
 			<!-- 开始按钮（免费）/ Start button (free) -->
-			<div class="mt-6 flex items-center justify-end border-t border-white/5 pt-4">
+			<div class="mt-6 flex items-center justify-end border-t border-line-subtle pt-4">
 				<UButton
 					:loading="generating"
-					class="bg-white text-ink-950 hover:bg-stone-100"
+					class="bg-accent text-ink-950 hover:bg-accent-soft"
 					@click="onGenerate"
 				>
 					{{ t('grammar.start') }}
@@ -99,9 +99,9 @@
 		</div>
 
 		<!-- 加载中 / Generating state -->
-		<div v-if="phase === 'generating'" class="rounded-2xl border border-white/10 bg-ink-900/50 p-12 text-center">
-			<div class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-accent" />
-			<p class="mt-4 text-sm text-stone-400">{{ t('grammar.generating') }}</p>
+		<div v-if="phase === 'generating'" class="ds-card p-12 text-center">
+			<div class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-line-strong border-t-accent" />
+			<p class="mt-4 text-sm text-tertiary">{{ t('grammar.generating') }}</p>
 		</div>
 
 		<!-- 答题 / 判题 / 结果 / Answer / judge / result -->
@@ -117,18 +117,18 @@
 			<!-- 题头元信息：语法点 + 题型 / Question meta: grammar tag and type -->
 			<template #question-meta>
 				<div class="flex items-center justify-between">
-					<span class="rounded-full bg-ink-800 px-3 py-1 text-xs text-stone-400">
+					<span class="bg-elevated px-3 py-1 text-xs text-tertiary">
 						{{ tagLabel(currentQuestion!.grammarTag) }}
 					</span>
-					<span class="text-xs text-stone-500">{{ typeLabel(currentQuestion!.questionType) }}</span>
+					<span class="text-xs text-muted">{{ typeLabel(currentQuestion!.questionType) }}</span>
 				</div>
 			</template>
 			<!-- 结果额外：语法解析 / Result extra: grammar explanation -->
 			<template #result-extra>
 				<div v-if="currentQuestion?.explanation || judgeResult?.explanation"
-					class="rounded-2xl border border-accent/20 bg-accent/5 p-6">
+					class="border border-accent/20 bg-accent/5 p-6">
 					<h3 class="text-sm font-semibold text-accent-soft">{{ t('grammar.explanation') }}</h3>
-					<p class="mt-2 text-sm leading-relaxed text-stone-300">
+					<p class="mt-2 text-sm leading-relaxed text-tertiary">
 						{{ judgeResult?.explanation || currentQuestion?.explanation }}
 					</p>
 				</div>

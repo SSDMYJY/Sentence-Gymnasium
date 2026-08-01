@@ -6,29 +6,29 @@
 				<!-- 图标占位（已注释）/ Icon placeholder (commented out) -->
 				<div>
 					<!-- 页面主标题 / Page heading -->
-					<h1 class="font-display text-2xl font-bold tracking-tight text-stone-100 sm:text-3xl">
+					<h1 class="font-display text-2xl font-bold tracking-tight text-primary sm:text-3xl">
 						{{ t('boards.paraphrase.subtitle') }}
 					</h1>
 					<!-- 页面描述 / Page description -->
-					<p class="mt-1 text-sm text-stone-500">{{ t('boards.paraphrase.desc') }}</p>
+					<p class="mt-1 text-sm text-muted">{{ t('boards.paraphrase.desc') }}</p>
 				</div>
 			</div>
 		</header>
 
 		<!-- 设置面板（选择语言 + 难度）/ Settings panel (language and difficulty) -->
-		<div v-if="phase === 'idle'" class="rounded-2xl border border-white/10 bg-ink-900/50 p-6">
-			<h2 class="text-sm font-semibold text-stone-300">{{ t('paraphrase.settings') }}</h2>
+		<div v-if="phase === 'idle'" class="ds-card">
+			<h2 class="text-sm font-semibold text-tertiary">{{ t('paraphrase.settings') }}</h2>
 
 			<!-- 源语言选择 / Source language selection -->
 			<div class="mt-5">
-				<label class="text-xs uppercase tracking-wide text-stone-500">{{ t('paraphrase.sourceLang') }}</label>
+				<label class="ds-label">{{ t('paraphrase.sourceLang') }}</label>
 				<div class="mt-3 grid grid-cols-2 gap-3">
 					<!-- 遍历源语言 / Iterate source languages -->
 					<UButton v-for="lang in sourceLangs" :key="lang.value" variant="ghost" :class="[
-						'w-full rounded-lg border px-4 py-3 text-sm font-medium transition-colors',
+						'w-full border px-4 py-3 text-sm font-medium transition-colors',
 						selectedLang === lang.value
 							? 'border-accent bg-accent/10 text-accent-soft' // 选中态 / Selected
-							: 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white', // 未选中 / Unselected
+							: 'border-line-default text-tertiary hover:border-accent hover:text-primary', // 未选中 / Unselected
 					]" @click="selectedLang = lang.value">
 						{{ lang.label }}
 					</UButton>
@@ -40,23 +40,23 @@
 				label-key="paraphrase.difficulty" />
 
 			<!-- 能量提示与开始按钮 / Credits hint and start button -->
-			<div class="mt-6 flex items-center justify-between border-t border-white/5 pt-4">
-				<span class="text-sm text-stone-500">
-					⚡ {{ store.credits }} {{ t('paraphrase.credits') }}
-					<span class="text-stone-600"> · {{ t('paraphrase.cost', { cost: 1 }) }}</span>
+			<div class="mt-6 flex items-center justify-between border-t border-line-subtle pt-4">
+				<span class="text-sm text-muted">
+					<UIcon name="i-lucide-zap" /> {{ store.credits }} {{ t('paraphrase.credits') }}
+					<span class="text-muted"> · {{ t('paraphrase.cost', { cost: 1 }) }}</span>
 				</span>
 				<!-- 积分不足则禁用 / Disabled when out of credits -->
 				<UButton :loading="generating" :disabled="store.credits < 1"
-					class="bg-white text-ink-950 hover:bg-stone-100" @click="onGenerate">
+					class="bg-accent text-ink-950 hover:bg-accent-soft" @click="onGenerate">
 					{{ t('paraphrase.start') }}
 				</UButton>
 			</div>
 		</div>
 
 		<!-- 加载中 / Generating state -->
-		<div v-if="phase === 'generating'" class="rounded-2xl border border-white/10 bg-ink-900/50 p-12 text-center">
-			<div class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-accent" />
-			<p class="mt-4 text-sm text-stone-400">{{ t('paraphrase.generating') }}</p>
+		<div v-if="phase === 'generating'" class="ds-card p-12 text-center">
+			<div class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-line-strong border-t-accent" />
+			<p class="mt-4 text-sm text-tertiary">{{ t('paraphrase.generating') }}</p>
 		</div>
 
 		<!-- 答题 / 判题 / 结果 / Answer / judge / result -->
@@ -71,22 +71,22 @@
 			<!-- 题头元信息：源语言 + 难度 / Question meta: source language and difficulty -->
 			<template #question-meta>
 				<div class="flex items-center justify-between">
-					<span class="rounded-full bg-ink-800 px-3 py-1 text-xs text-stone-400">
+					<span class="bg-elevated px-3 py-1 text-xs text-tertiary">
 						{{ langLabel(currentQuestion!.sourceLang) }}
 					</span>
-					<span class="text-xs text-stone-500">{{ difficultyLabel(currentQuestion!.difficulty) }}</span>
+					<span class="text-xs text-muted">{{ difficultyLabel(currentQuestion!.difficulty) }}</span>
 				</div>
 			</template>
 			<!-- 题目额外：提示 / Question extra: hint -->
 			<template #question-extra>
-				<div v-if="currentQuestion?.hint" class="mt-4 rounded-lg border border-accent/20 bg-accent/5 p-3">
+				<div v-if="currentQuestion?.hint" class="mt-4 border border-accent/20 bg-accent/5 p-3">
 					<p class="text-xs text-accent-soft">{{ t('paraphrase.hint') }}</p>
-					<p class="mt-1 text-sm text-stone-300">{{ currentQuestion.hint }}</p>
+					<p class="mt-1 text-sm text-tertiary">{{ currentQuestion.hint }}</p>
 				</div>
 			</template>
 			<!-- 作答提示 / Answer hint -->
 			<template #answer-hint>
-				<p class="mt-1 text-xs text-stone-500">{{ t('paraphrase.answerHint') }}</p>
+				<p class="mt-1 text-xs text-muted">{{ t('paraphrase.answerHint') }}</p>
 			</template>
 		</AnswerCard>
 	</div>

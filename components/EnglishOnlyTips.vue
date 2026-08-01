@@ -1,6 +1,6 @@
 <template>
     <!-- 当用户的语言不是英文时，显示该信息 / Show this notice only when the user's language is not English -->
-    <p v-if="!['en'].includes($i18n.locale)" class="mt-3 text-sm text-red-400">
+    <p v-if="!['en'].includes($i18n.locale)" class="mt-3 text-sm text-danger">
         <!-- 简体中文提示 / Simplified Chinese notice -->
         <span v-if="['zh-hans'].includes($i18n.locale)">
             本隐私政策的官方版本仅提供英文版本。若你需要当前语言的版本，请联系我们。

@@ -4,26 +4,26 @@
       <h1 class="font-display text-3xl font-bold tracking-tight sm:text-4xl">
         {{ t('review.title') }}
       </h1>
-      <p class="mt-2 text-stone-400">{{ t('review.subtitle') }}</p>
+      <p class="mt-2 text-tertiary">{{ t('review.subtitle') }}</p>
       <p v-if="dueCount > 0" class="mt-1 text-sm text-accent-soft">
         {{ t('review.dueCount', { count: dueCount }) }}
       </p>
-      <p v-else class="mt-1 text-sm text-green-400">
+      <p v-else class="mt-1 text-sm text-success">
         {{ t('review.noDue') }}
       </p>
     </header>
 
     <!-- Loading -->
-    <div v-if="loading" class="rounded-2xl border border-white/10 bg-ink-900/50 p-12 text-center">
-      <div class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-accent" />
-      <p class="mt-4 text-sm text-stone-400">{{ t('history.loading') }}</p>
+    <div v-if="loading" class="ds-card p-12 text-center">
+      <div class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-line-strong border-t-accent" />
+      <p class="mt-4 text-sm text-tertiary">{{ t('history.loading') }}</p>
     </div>
 
     <!-- Empty / All caught up -->
-    <div v-else-if="items.length === 0" class="rounded-2xl border border-white/10 bg-ink-900/50 p-12 text-center">
+    <div v-else-if="items.length === 0" class="ds-card p-12 text-center">
       <p class="text-4xl">🎉</p>
-      <p class="mt-4 text-stone-400">{{ t('review.noDue') }}</p>
-      <UButton :to="localePath('/dashboard')" class="mt-6 bg-white text-ink-950 hover:bg-stone-100">
+      <p class="mt-4 text-tertiary">{{ t('review.noDue') }}</p>
+      <UButton :to="localePath('/dashboard')" class="mt-6 bg-accent text-ink-950 hover:bg-accent-soft">
         {{ t('auth.dashboard') }}
       </UButton>
     </div>
@@ -33,29 +33,29 @@
       <div
         v-for="item in items"
         :key="item.id"
-        class="rounded-2xl border border-white/10 bg-ink-900/50 p-6"
+        class="ds-card"
       >
         <!-- Question -->
         <div class="mb-4">
-          <p class="text-xs uppercase tracking-wide text-stone-500">{{ t('practice.question') }}</p>
-          <p class="mt-1 font-display text-lg font-medium text-stone-100">{{ item.question.questionText }}</p>
+          <p class="ds-label">{{ t('practice.question') }}</p>
+          <p class="mt-1 font-display text-lg font-medium text-primary">{{ item.question.questionText }}</p>
         </div>
 
         <!-- Original Answer -->
-        <div class="mb-4 rounded-lg bg-ink-800/50 p-4">
-          <p class="text-xs uppercase tracking-wide text-stone-500">{{ t('review.originalAnswer') }}</p>
-          <p class="mt-1 text-stone-300">{{ item.userAnswer }}</p>
+        <div class="mb-4 bg-elevated p-4">
+          <p class="ds-label">{{ t('review.originalAnswer') }}</p>
+          <p class="mt-1 text-tertiary">{{ item.userAnswer }}</p>
         </div>
 
         <!-- Reference -->
         <div class="mb-4">
-          <p class="text-xs uppercase tracking-wide text-stone-500">{{ t('practice.referenceAnswer') }}</p>
+          <p class="ds-label">{{ t('practice.referenceAnswer') }}</p>
           <p class="mt-1 text-accent-soft">{{ item.question.correctAnswer }}</p>
         </div>
 
         <!-- Your New Answer -->
         <div class="mb-4">
-          <label class="block text-xs uppercase tracking-wide text-stone-500">{{ t('review.newAnswer') }}</label>
+          <label class="block ds-label">{{ t('review.newAnswer') }}</label>
           <UTextarea
             v-model="newAnswers[item.id]"
             :rows="3"
@@ -63,7 +63,7 @@
             :ui="{
               root: 'w-full mt-2',
               wrapper: 'w-full',
-              textarea: 'w-full resize-none border-white/10 bg-ink-950 text-stone-100 placeholder-stone-600 focus:border-accent focus:ring-accent/30',
+              textarea: 'w-full resize-none border-line-default bg-surface text-primary placeholder-muted focus:border-accent focus:ring-accent/30',
             }"
           />
         </div>
@@ -72,13 +72,13 @@
         <div class="flex gap-3">
           <UButton
             variant="outline"
-            class="border-white/15 text-stone-300 hover:border-accent hover:text-white"
+            class="border-line-strong text-tertiary hover:border-accent hover:text-primary"
             @click="onSkip(item.id)"
           >
             {{ t('review.skip') }}
           </UButton>
           <UButton
-            class="bg-white text-ink-950 hover:bg-stone-100"
+            class="bg-accent text-ink-950 hover:bg-accent-soft"
             :loading="judging[item.id]"
             :disabled="!newAnswers[item.id]?.trim()"
             @click="onJudge(item)"
@@ -91,17 +91,17 @@
 
     <!-- Stats -->
     <div v-if="reviewStats" class="mt-10 grid grid-cols-3 gap-4">
-      <div class="rounded-xl border border-white/10 bg-ink-900/50 p-4 text-center">
-        <p class="text-2xl font-bold text-yellow-400">{{ reviewStats.dueCount }}</p>
-        <p class="mt-1 text-xs text-stone-500">{{ t('review.reviewStats.due') }}</p>
+      <div class="ds-card p-4 text-center">
+        <p class="text-2xl font-bold text-warning">{{ reviewStats.dueCount }}</p>
+        <p class="mt-1 text-xs text-muted">{{ t('review.reviewStats.due') }}</p>
       </div>
-      <div class="rounded-xl border border-white/10 bg-ink-900/50 p-4 text-center">
-        <p class="text-2xl font-bold text-red-400">{{ reviewStats.overdueCount }}</p>
-        <p class="mt-1 text-xs text-stone-500">{{ t('review.reviewStats.overdue') }}</p>
+      <div class="ds-card p-4 text-center">
+        <p class="text-2xl font-bold text-danger">{{ reviewStats.overdueCount }}</p>
+        <p class="mt-1 text-xs text-muted">{{ t('review.reviewStats.overdue') }}</p>
       </div>
-      <div class="rounded-xl border border-white/10 bg-ink-900/50 p-4 text-center">
-        <p class="text-2xl font-bold text-green-400">{{ reviewStats.masteredCount }}</p>
-        <p class="mt-1 text-xs text-stone-500">{{ t('review.reviewStats.mastered') }}</p>
+      <div class="ds-card p-4 text-center">
+        <p class="text-2xl font-bold text-success">{{ reviewStats.masteredCount }}</p>
+        <p class="mt-1 text-xs text-muted">{{ t('review.reviewStats.mastered') }}</p>
       </div>
     </div>
   </div>

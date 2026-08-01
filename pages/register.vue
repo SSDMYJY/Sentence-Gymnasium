@@ -3,45 +3,45 @@
   <div class="mx-auto flex min-h-[calc(100svh-4rem)] max-w-md flex-col justify-center px-6 py-16">
     <div class="hero-rise">
       <!-- 标题区 / Heading area -->
-      <p class="text-xs uppercase tracking-[0.28em] text-accent-soft">{{ t('auth.register') }}</p>
-      <h1 class="mt-3 font-display text-4xl font-bold tracking-tight">{{ t('auth.registerTitle') }}</h1>
-      <p class="mt-3 text-sm text-stone-400">{{ t('auth.registerSubtitle') }}</p>
+      <p class="ds-eyebrow">{{ t('auth.register') }}</p>
+      <h1 class="mt-3 ds-heading-display text-4xl">{{ t('auth.registerTitle') }}</h1>
+      <p class="mt-3 text-sm text-tertiary">{{ t('auth.registerSubtitle') }}</p>
 
       <!-- 注册表单 / Register form -->
       <form class="mt-10 space-y-5" @submit.prevent="onSubmit">
         <!-- 邮箱输入 / Email input -->
         <div>
-          <label class="block text-xs uppercase tracking-wide text-stone-500" for="email">{{
+          <label class="block ds-label" for="email">{{
             t('auth.email')
           }}</label>
           <UInput id="email" v-model="email" type="email" :placeholder="t('auth.emailPlaceholder')" :ui="{
             root: 'w-full',
             wrapper: 'mt-2',
-            input: 'border-white/10 bg-ink-800/60 text-stone-100 placeholder-stone-500 focus:border-accent focus:ring-accent/30',
+            input: 'border-line-default bg-surface text-primary placeholder-muted focus:border-accent focus:ring-accent/30',
           }" />
         </div>
 
         <!-- 昵称输入 / Name input -->
         <div>
-          <label class="block text-xs uppercase tracking-wide text-stone-500" for="name">{{
+          <label class="block ds-label" for="name">{{
             t('auth.name')
           }}</label>
           <UInput id="name" v-model="name" type="text" :placeholder="t('auth.namePlaceholder')" :ui="{
             root: 'w-full',
             wrapper: 'mt-2',
-            input: 'border-white/10 bg-ink-800/60 text-stone-100 placeholder-stone-500 focus:border-accent focus:ring-accent/30',
+            input: 'border-line-default bg-surface text-primary placeholder-muted focus:border-accent focus:ring-accent/30',
           }" />
         </div>
 
         <!-- 密码输入 / Password input -->
         <div>
-          <label class="block text-xs uppercase tracking-wide text-stone-500" for="password">{{
+          <label class="block ds-label" for="password">{{
             t('auth.password')
           }}</label>
           <UInput id="password" v-model="password" type="password" :placeholder="t('auth.passwordPlaceholder')" :ui="{
             root: 'w-full',
             wrapper: 'mt-2',
-            input: 'border-white/10 bg-ink-800/60 text-stone-100 placeholder-stone-500 focus:border-accent focus:ring-accent/30',
+            input: 'border-line-default bg-surface text-primary placeholder-muted focus:border-accent focus:ring-accent/30',
           }" />
         </div>
 
@@ -49,7 +49,7 @@
         <NuxtTurnstile ref="turnstileRef" v-model="token" :options="turnstileOptions" />
 
         <!-- 错误提示 / Error message -->
-        <p v-if="error" class="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+        <p v-if="error" class="border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-danger-soft">
           {{ error }}
         </p>
 
@@ -62,8 +62,8 @@
 
       <!-- 跳转登录 / Link to login -->
       <NuxtLink :to="localePath('/login')"
-        class="mt-8 inline-block text-sm text-stone-400 transition-colors hover:text-white">
-        {{ t('auth.toLogin') }} →
+        class="mt-8 inline-block text-sm text-tertiary transition-colors hover:text-primary">
+        {{ t('auth.toLogin') }} <UIcon name="i-lucide-arrow-right" />
       </NuxtLink>
     </div>
   </div>

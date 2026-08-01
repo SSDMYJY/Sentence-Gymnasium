@@ -4,10 +4,10 @@
     <header class="mb-8">
       <div class="flex items-center gap-3">
         <div>
-          <h1 class="font-display text-2xl font-bold tracking-tight text-stone-100 sm:text-3xl">
+          <h1 class="ds-heading-display text-2xl text-primary sm:text-3xl">
             {{ t('nav.history') }}
           </h1>
-          <p class="mt-1 text-sm text-stone-500">{{ t('history.subtitle') }}</p>
+          <p class="mt-1 text-sm text-muted">{{ t('history.subtitle') }}</p>
         </div>
       </div>
     </header>
@@ -23,7 +23,7 @@
         :class="[
           selectedCategory === cat.value
             ? 'border-accent bg-accent/10 text-accent-soft' // 选中态 / Selected
-            : 'border-white/10 text-stone-400 hover:border-white/30 hover:text-white', // 未选中 / Unselected
+            : 'border-line-default text-tertiary hover:border-accent hover:text-primary', // 未选中 / Unselected
         ]"
         @click="onCategoryChange(cat.value)"
       >
@@ -32,18 +32,18 @@
     </div>
 
     <!-- 加载中 / Loading -->
-    <div v-if="loading" class="rounded-2xl border border-white/10 bg-ink-900/50 p-12 text-center">
-      <div class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-accent" />
-      <p class="mt-4 text-sm text-stone-400">{{ t('history.loading') }}</p>
+    <div v-if="loading" class="ds-card p-12 text-center">
+      <div class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-line-strong border-t-accent" />
+      <p class="mt-4 text-sm text-tertiary">{{ t('history.loading') }}</p>
     </div>
 
     <!-- 空数据 / Empty data -->
-    <div v-else-if="entries.length === 0" class="rounded-2xl border border-white/10 bg-ink-900/50 p-12 text-center">
+    <div v-else-if="entries.length === 0" class="ds-card p-12 text-center">
       <div class="text-5xl">📭</div>
-      <p class="mt-4 text-sm text-stone-500">{{ t('history.noData') }}</p>
+      <p class="mt-4 text-sm text-muted">{{ t('history.noData') }}</p>
       <UButton
         :to="localePath('/practice')"
-        class="mt-6 bg-white text-ink-950 hover:bg-stone-100"
+        class="mt-6 bg-accent text-ink-950 hover:bg-accent-soft"
       >
         {{ t('history.startPractice') }}
       </UButton>
@@ -53,53 +53,55 @@
     <div v-else class="space-y-3">
       <!-- 遍历条目 / Iterate entries -->
       <div v-for="(entry, idx) in entries" :key="entry.id"
-        class="rounded-xl border border-white/10 bg-ink-900/50 overflow-hidden">
+        class="ds-card p-0 overflow-hidden">
         <!-- 条目头部（可点击展开）/ Entry header (click to expand) -->
         <UButton
           variant="ghost"
-          class="flex w-full items-center gap-4 px-5 py-4 text-left transition-colors hover:bg-white/5 justify-start! rounded-none! p-0!"
+          class="flex w-full items-center gap-4 px-5 py-4 text-left transition-colors hover:bg-hover-subtle justify-start! rounded-none! p-0!"
           @click="toggleExpand(entry.id)"
         >
           <!-- 序号 / Index -->
-          <span class="w-8 shrink-0 text-center text-xs text-stone-600">
+          <span class="w-8 shrink-0 text-center text-xs text-muted">
             {{ (page - 1) * pageSize + idx + 1 }}
           </span>
 
           <!-- 对错标记 / Correct/incorrect badge -->
           <span :class="[
-            'flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold',
+            'flex h-8 w-8 shrink-0 items-center justify-center text-sm font-bold',
             entry.isCorrect
-              ? 'bg-green-500/15 text-green-400' // 全对 / Correct
+              ? 'bg-success/15 text-success' // 全对 / Correct
               : entry.verdict === 'partial'
-                ? 'bg-yellow-500/15 text-yellow-400' // 部分 / Partial
-                : 'bg-red-500/15 text-red-400', // 错误 / Incorrect
+                ? 'bg-warning/15 text-warning' // 部分 / Partial
+                : 'bg-danger/15 text-danger', // 错误 / Incorrect
           ]">
-            {{ entry.isCorrect ? '✓' : entry.verdict === 'partial' ? '◐' : '✗' }}
+            <UIcon v-if="entry.isCorrect" name="i-lucide-check" />
+            <span v-else-if="entry.verdict === 'partial'">◐</span>
+            <UIcon v-else name="i-lucide-x" />
           </span>
 
           <!-- 题目与元信息 / Question and meta -->
           <div class="min-w-0 flex-1">
-            <p class="truncate text-sm text-stone-200">{{ entry.questionText }}</p>
+            <p class="truncate text-sm text-secondary">{{ entry.questionText }}</p>
             <div class="mt-1 flex items-center gap-2">
               <!-- 分类标签 / Category tag -->
-              <span class="rounded bg-ink-800 px-2 py-0.5 text-xs text-stone-400">{{ categoryLabel(entry.category)
+              <span class="rounded bg-elevated px-2 py-0.5 text-xs text-tertiary">{{ categoryLabel(entry.category)
                 }}</span>
               <!-- 主题标签 / Topic tag -->
-              <span v-if="entry.topic" class="text-xs text-stone-500">{{ topicLabel(entry) }}</span>
-              <span class="text-xs text-stone-600">·</span>
+              <span v-if="entry.topic" class="text-xs text-muted">{{ topicLabel(entry) }}</span>
+              <span class="text-xs text-muted">·</span>
               <!-- 时间 / Time -->
-              <span class="text-xs text-stone-500">{{ formatDate(entry.createdAt) }}</span>
+              <span class="text-xs text-muted">{{ formatDate(entry.createdAt) }}</span>
             </div>
           </div>
 
           <!-- 得分 / Score -->
-          <span v-if="entry.score !== null" class="shrink-0 text-sm font-semibold text-stone-300">
+          <span v-if="entry.score !== null" class="shrink-0 text-sm font-semibold text-tertiary">
             {{ entry.score }}
-            <span class="text-xs text-stone-600">/10</span>
+            <span class="text-xs text-muted">/10</span>
           </span>
 
           <!-- 展开箭头 / Expand arrow -->
-          <span class="shrink-0 text-stone-500 transition-transform duration-200"
+          <span class="shrink-0 text-muted transition-transform duration-200"
             :class="{ 'rotate-180': expandedIds.has(entry.id) }">
             ▾
           </span>
@@ -107,35 +109,35 @@
 
         <!-- 展开详情 / Expanded detail -->
         <Transition name="expand">
-          <div v-if="expandedIds.has(entry.id)" class="border-t border-white/5">
+          <div v-if="expandedIds.has(entry.id)" class="border-t border-line-subtle">
             <div class="space-y-4 px-5 py-4">
               <!-- 你的答案 / Your answer -->
               <div>
-                <p class="text-xs uppercase tracking-wide text-stone-500">{{ t('history.yourAnswer') }}</p>
-                <p class="mt-1 text-sm text-stone-200">{{ entry.userAnswer }}</p>
+                <p class="ds-label">{{ t('history.yourAnswer') }}</p>
+                <p class="mt-1 text-sm text-secondary">{{ entry.userAnswer }}</p>
               </div>
 
               <!-- 参考答案 / Correct answer -->
               <div v-if="entry.correctAnswer">
-                <p class="text-xs uppercase tracking-wide text-stone-500">{{ t('history.correctAnswer') }}</p>
+                <p class="ds-label">{{ t('history.correctAnswer') }}</p>
                 <p class="mt-1 text-sm text-accent-soft">{{ entry.correctAnswer }}</p>
               </div>
 
               <!-- 解析 / Explanation -->
-              <div v-if="entry.explanation" class="rounded-lg border border-accent/20 bg-accent/5 p-3">
+              <div v-if="entry.explanation" class="border border-accent/20 bg-accent/5 p-3">
                 <p class="text-xs uppercase tracking-wide text-accent-soft">{{ t('history.explanation') }}</p>
-                <p class="mt-1 text-sm leading-relaxed text-stone-300">{{ entry.explanation }}</p>
+                <p class="mt-1 text-sm leading-relaxed text-tertiary">{{ entry.explanation }}</p>
               </div>
 
               <!-- AI 反馈 / AI feedback -->
               <div v-if="entry.feedback">
-                <p class="text-xs uppercase tracking-wide text-stone-500">{{ t('history.aiFeedback') }}</p>
-                <p class="mt-1 text-sm leading-relaxed text-stone-300">{{ entry.feedback }}</p>
+                <p class="ds-label">{{ t('history.aiFeedback') }}</p>
+                <p class="mt-1 text-sm leading-relaxed text-tertiary">{{ entry.feedback }}</p>
               </div>
 
               <!-- 判定 / Verdict -->
               <div v-if="entry.verdict" class="flex items-center gap-2">
-                <span class="text-xs uppercase tracking-wide text-stone-500">{{ t('history.verdict') }}</span>
+                <span class="ds-label">{{ t('history.verdict') }}</span>
                 <span :class="verdictClass(entry.verdict)" class="text-sm font-medium">
                   {{ verdictLabel(entry.verdict) }}
                 </span>
@@ -147,7 +149,7 @@
 
       <!-- 分页 / Pagination -->
       <div v-if="totalPages > 1" class="mt-6 flex items-center justify-between">
-        <span class="text-sm text-stone-500">
+        <span class="text-sm text-muted">
           {{ t('history.pageInfo', { page, total: totalPages, count: total }) }}
         </span>
         <div class="flex gap-2">
@@ -155,7 +157,7 @@
           <UButton
             variant="outline"
             :disabled="page <= 1"
-            class="border-white/10 text-stone-300 hover:border-white/30 hover:text-white disabled:opacity-40"
+            class="border-line-default text-tertiary hover:border-accent hover:text-primary disabled:opacity-40"
             @click="onPageChange(page - 1)"
           >
             {{ t('history.prev') }}
@@ -164,7 +166,7 @@
           <UButton
             variant="outline"
             :disabled="page >= totalPages"
-            class="border-white/10 text-stone-300 hover:border-white/30 hover:text-white disabled:opacity-40"
+            class="border-line-default text-tertiary hover:border-accent hover:text-primary disabled:opacity-40"
             @click="onPageChange(page + 1)"
           >
             {{ t('history.next') }}
@@ -260,9 +262,9 @@ function verdictLabel(v: string): string {
 
 // 判定等级颜色类 / Verdict color class
 function verdictClass(v: string): string {
-  if (v === 'correct') return 'text-green-400' // 绿 / Green
-  if (v === 'partial') return 'text-yellow-400' // 黄 / Yellow
-  return 'text-red-400' // 红 / Red
+  if (v === 'correct') return 'text-success' // 绿 / Green
+  if (v === 'partial') return 'text-warning' // 黄 / Yellow
+  return 'text-danger' // 红 / Red
 }
 
 // 相对时间格式化 / Format relative time
