@@ -1,13 +1,11 @@
 // SSR 阶段直接用原始 H3 event 调用 getSessionUser，绕过 $fetch。 / During SSR, call getSessionUser directly with the raw H3 event, bypassing $fetch.
 //
-// 根因：store.fetch() 在 SSR 阶段用 $fetch('/api/auth/session') 拉会话时， / Root cause: when store.fetch() uses $fetch('/api/auth/session') during SSR,
-// $fetch 会在 Nitro 内部创建一个全新的 H3 event。这个新 event 虽然能拿到 / $fetch creates a brand-new H3 event inside Nitro. That new event can carry
-// 转发的 Cookie 头，但 event.context.cloudflare（含 D1 binding）不存在， / the forwarded cookie header, but event.context.cloudflare (with the D1 binding) is missing,
-// 导致 usePrisma() 抛错 → session 返回 null → 中间件误判未登录 → 跳转 login。 / causing usePrisma() to throw → session returns null → middleware wrongly redirects to login.
+// 说明：store.fetch() 在 SSR 阶段用 $fetch('/api/auth/session') 拉会话时， / Note: when store.fetch() uses $fetch('/api/auth/session') during SSR,
+// $fetch 会在 Nitro 内部创建一个全新的 H3 event。直接调用原始 event 可确保 / $fetch creates a brand-new H3 event inside Nitro. Calling getSessionUser
+// 复用当前请求的完整上下文（Cookie、请求级缓存），行为更可预期。 / with the raw event reuses the current request's full context.
 //
 // 解决：在 .server 插件中用 useRequestEvent() 拿到原始 event，直接调用 / Fix: in this .server plugin, use useRequestEvent() to get the raw event and call
-// server/utils 的 getSessionUser(event)，该 event 拥有完整的 Cloudflare 上下文。 / server/utils' getSessionUser(event), which has the full Cloudflare context.
-// 结果写入 Pinia store，随 SSR payload 传递到客户端。 / The result is stored in Pinia and sent to the client via the SSR payload.
+// server/utils 的 getSessionUser(event)。结果写入 Pinia store，随 SSR payload 传递到客户端。 / server/utils' getSessionUser(event). The result is stored in Pinia and sent to the client via the SSR payload.
 // 引入服务端鉴权工具 getSessionUser / Import the server-side auth helper getSessionUser
 import { getSessionUser } from '~~/server/utils/auth'
 

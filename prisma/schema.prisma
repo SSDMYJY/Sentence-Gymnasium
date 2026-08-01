@@ -1,16 +1,16 @@
-// Prisma schema for Sentence Gymnasium (Cloudflare D1 / SQLite via @prisma/adapter-d1)
-// Note: D1 is SQLite-compatible. SQLite has no native JSON type, so JSON-shaped
-// fields (options / extraData / feedback) are stored as String and parsed at the
-// code layer with JSON.parse / JSON.stringify.
+// Prisma schema for Sentence Gymnasium (MySQL).
+// Note: JSON-shaped fields (options / extraData / feedback) are stored as String
+// and parsed at the code layer with JSON.parse / JSON.stringify — MySQL keeps
+// the same String-column semantics, so no type changes were needed.
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["driverAdapters"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
-  // Used only by the Prisma CLI (migrate diff). At runtime the D1 binding is used.
+  provider = "mysql"
+  // Read at runtime by PrismaClient (server/utils/prisma.ts) and by the Prisma CLI.
+  // Example: mysql://user:password@host:3306/database
   url = env("DATABASE_URL")
 }
 
@@ -32,6 +32,7 @@ model User {
   attempts        Attempt[]
   generatedQuestions GeneratedQuestion[]
   bookmarks       Bookmark[]
+  orders          Order[]
 
   @@map("users")
 }
@@ -41,10 +42,10 @@ model GeneratedQuestion {
   category      String // 'practice' | 'paraphrase' | 'grammar'
   languagePair  String? // 'ja-en' etc.; for paraphrase stores source lang e.g. 'ja'
   grammarTag    String? // 'te-form', 'present-perfect', ...
-  questionText  String // displayed prompt text
-  correctAnswer String // canonical answer
-  options       String? // JSON string for choice questions
-  extraData     String? // JSON string (e.g. paraphrase original text, grammar notes)
+  questionText  String   @db.Text // displayed prompt text
+  correctAnswer String   @db.Text // canonical answer
+  options       String?  @db.Text // JSON string for choice questions
+  extraData     String?  @db.Text // JSON string (e.g. paraphrase original text, grammar notes)
   usedCount     Int      @default(0)
   createdAt     DateTime @default(now())
   generatedById String?
@@ -59,9 +60,9 @@ model Attempt {
   id         String   @id @default(cuid())
   userId     String
   questionId String
-  userAnswer String
+  userAnswer String   @db.Text
   isCorrect  Boolean
-  feedback   String? // JSON string with AI explanation/suggestion
+  feedback   String?  @db.Text // JSON string with AI explanation/suggestion
   createdAt  DateTime @default(now())
   nextReviewAt DateTime?
   reviewLevel  Int      @default(0)
@@ -77,14 +78,37 @@ model Bookmark {
   id          String   @id @default(cuid())
   userId      String
   word        String
-  sentence    String?
+  sentence    String?  @db.Text
   sourceLang  String?
   category    String?
-  notes       String?
+  notes       String?  @db.Text
   createdAt   DateTime @default(now())
   user        User     @relation(fields: [userId], references: [id])
 
   @@unique([userId, word])
   @@index([userId, createdAt])
   @@map("bookmarks")
+}
+
+// Waffo Pancake 充值订单。status: pending → completed | failed | refunded
+model Order {
+  id                String   @id @default(cuid())
+  userId            String
+  packId            String // internal pack id (e.g. 'pack_100')
+  productId         String // Waffo PROD_xxx
+  credits           Int // credits granted on completion
+  amount            String // display amount e.g. "2.99"
+  currency          String   @default("USD")
+  status            String   @default("pending")
+  checkoutSessionId String? // Waffo cs_xxx session id
+  waffoOrderId      String? // Waffo ORD_xxx (set by webhook)
+  waffoEventId      String? // Waffo delivery event id (idempotency dedup)
+  buyerEmail        String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id])
+
+  @@index([userId, createdAt])
+  @@index([status])
+  @@map("orders")
 }

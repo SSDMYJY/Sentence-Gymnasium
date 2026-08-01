@@ -7,9 +7,8 @@ import { usePrisma } from './prisma'
 // ---------- Session/JWT ----------
 //
 // 手写 JWT 认证（不依赖 next-auth / @sidebase/nuxt-auth 的 authjs provider）。
-// 原因：next-auth v4 在 Cloudflare Workers edge runtime 有兼容性风险
-// （crypto.randomBytes / Buffer 等 Node-only API），而 jose + bcryptjs 全部
-// 基于 WebCrypto / 纯 JS，在 Workers 上稳定。
+// 原因：jose + bcryptjs 全部基于 WebCrypto / 纯 JS，跨 Node.js / 边缘运行时稳定，
+// 且无第三方认证服务依赖。
 //
 // Cookie 名固定为 `sg_session`，httpOnly + SameSite=Lax + 7 天过期。
 // JWT 载荷只放 { sub: userId, email }，不携带敏感信息。

@@ -77,9 +77,44 @@
 	"health": {
 		"step": "Step 1",
 		"title": "Health Check",
-		"body": "Verify the Nuxt SSR → Cloudflare D1 binding → Prisma chain. The response below should return {okCode}.",
+		"body": "Verify the Nuxt SSR → Prisma (MySQL) chain. The response below should return {okCode}.",
 		"endpoint": "GET /api/health",
-		"stack": "Nuxt 3 SSR · Cloudflare Workers · D1 · Prisma"
+		"stack": "Nuxt 4 SSR · Node.js · MySQL · Prisma"
+	},
+	"recharge": {
+		"title": "Recharge Credits",
+		"subtitle": "Top up energy to keep training. Payments are processed securely by Waffo Pancake.",
+		"currentBalance": "Current balance:",
+		"selectPack": "Select a package",
+		"creditsUnit": "credits",
+		"noPacks": "No recharge packages are configured yet. Please try again later.",
+		"paymentMethod": "Payment method",
+		"paymentMethodHint": "Payment is completed on the secure Waffo checkout page — all methods below are supported.",
+		"methods": {
+			"all": "All methods",
+			"card": "Card",
+			"alipay": "Alipay",
+			"wechat": "WeChat Pay"
+		},
+		"payNow": "Pay {amount}",
+		"processing": "Processing…",
+		"secureNote": "🔒 Secured by Waffo Pancake",
+		"checkoutFailed": "Failed to start payment. Please try again.",
+		"error": "Something went wrong. Please try again."
+	},
+	"rechargeSuccess": {
+		"processing": "Payment processing…",
+		"processingHint": "Complete the payment in the window that just opened. This page updates automatically when it's done.",
+		"completed": "Payment successful!",
+		"completedHint": "{credits} credits have been added to your balance.",
+		"failed": "Payment not completed",
+		"failedHint": "The payment was not completed. You can try again.",
+		"notFound": "Order not found",
+		"refresh": "Refresh status",
+		"retry": "Try again",
+		"goPractice": "Start training",
+		"goDashboard": "Back to dashboard",
+		"toast": "Credits added! Your balance has been updated."
 	},
 	"footer": {
 		"copyright": "Sentence Gymnasium © 2026 · All rights reserved"

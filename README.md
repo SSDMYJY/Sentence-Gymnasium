@@ -1,8 +1,8 @@
 # Sentence Gymnasium · 句子健身房
 
 [![Nuxt](https://img.shields.io/badge/Nuxt-4-00DC82?logo=nuxt)](https://nuxt.com)
-[![Cloudflare Workers](https://img.shields.io/badge/Cloudflare%20Workers-deployed-F38020?logo=cloudflare)](https://workers.cloudflare.com)
-[![Prisma](https://img.shields.io/badge/Prisma-D1-2D3748?logo=prisma)](https://prisma.io)
+[![EdgeOne Makers](https://img.shields.io/badge/EdgeOne%20Makers-deployed-006EFF)](https://edgeone.ai)
+[![Prisma](https://img.shields.io/badge/Prisma-MySQL-2D3748?logo=prisma)](https://prisma.io)
 [![License](https://img.shields.io/badge/license-MIT-blue)](#license)
 
 **AI 驱动的多语言句子训练平台。**  
@@ -56,9 +56,10 @@ Sentence Gymnasium 是一个面向多语言学习者的在线训练平台。用�
 - **🏆 排行榜** — 按做题总数和正确率排名
 - **👤 用户认证** — 基于 JWT 的手写认证（jose + bcryptjs），无需第三方认证服务
 - **🌐 多语言界面** — 简体中文 / 繁体中文 / 英文 / 日文，带 URL 前缀与 Cookie 记忆
-- **⚡ Credits 经济系统** — 每次训练消耗 1 Credits，新用户赠送 20 Credits
+- **⚡ Credits 经济系统** — 每次训练消耗 1 Credits，新用户赠送 20 Credits，可充值
+- **💳 充值支付** — 基于 Waffo Pancake 托管支付页（固定套餐 + 支付方式选择）
 - **📱 响应式设计** — 基于 Nuxt UI + Tailwind CSS，深色主题
-- **☁️ Cloudflare 原生部署** — 全站运行在 Cloudflare Workers + D1，边缘友好
+- **🚀 EdgeOne Makers 部署** — Node.js Cloud Functions 运行全站 SSR + MySQL
 
 ---
 
@@ -67,13 +68,14 @@ Sentence Gymnasium 是一个面向多语言学习者的在线训练平台。用�
 | 层级 | 技术 |
 |------|------|
 | **前端** | Nuxt 4, Vue 3, Nuxt UI (v4), Pinia, Tailwind CSS, Headless UI |
-| **后端** | Nitro (Nuxt 服务引擎), H3 |
-| **部署环境** | Cloudflare Workers (ES Module) |
-| **数据库** | Cloudflare D1 (SQLite) via Prisma + `@prisma/adapter-d1` |
+| **后端** | Nitro (Nuxt 服务引擎, node-server preset), H3 |
+| **部署环境** | Tencent EdgeOne Makers (Node.js Cloud Functions) |
+| **数据库** | MySQL (云托管) via Prisma |
 | **AI** | OpenAI 兼容 API (可配置为 DeepSeek / GPT 等) |
+| **支付** | Waffo Pancake（托管支付页 + Webhook 验签） |
 | **认证** | 手写 JWT — `jose` (JWT 签发/验证) + `bcryptjs` (密码哈希) |
 | **国际化** | `@nuxtjs/i18n` v10 — 策略: prefix, 4 个语言包 |
-| **构建工具** | TypeScript, Wrangler CLI |
+| **构建工具** | TypeScript, edgeone CLI |
 
 ---
 
@@ -83,8 +85,8 @@ Sentence Gymnasium 是一个面向多语言学习者的在线训练平台。用�
 
 - [Node.js](https://nodejs.org) >= 18
 - [pnpm](https://pnpm.io)（推荐）或 npm / yarn
-- [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/)（本地 D1 开发与部署）
-- [Cloudflare 账号](https://dash.cloudflare.com)（用于 D1 数据库和 Workers 部署）
+- 一个可用的 **MySQL** 实例（连接信息配置到 `DATABASE_URL`）
+- （部署时）[EdgeOne Makers CLI](https://edgeone.ai)（`npm install -g edgeone`，版本 ≥ 1.6.0）
 
 ### 安装
 
@@ -99,40 +101,44 @@ pnpm install
 
 ### 环境变量
 
-在项目根目录创建 `.dev.vars` 文件（用于本地开发）：
+复制 `.env.example` 为 `.env` 并填入真实值：
 
 ```env
+DATABASE_URL=mysql://user:password@host:3306/database
 AI_API_KEY=your_openai_compatible_api_key
 AUTH_SECRET=your_jwt_signing_secret_at_least_32_chars
+# 可选：AI_BASE_URL / AI_MODEL 覆盖默认值
 ```
 
-> `AI_BASE_URL` 和 `AI_MODEL` 默认值可在 `wrangler.toml` 的 `[vars]` 中覆盖。
+> 生产环境的密钥通过 EdgeOne Makers 控制台的**环境变量**注入（`edgeone makers env set <KEY> <VALUE>`），或使用 `NUXT_` 前缀环境变量驱动 runtimeConfig。
 
 ### 数据库
 
-Sentence Gymnasium 使用 Cloudflare D1 作为数据库。本地开发使用 D1 的本地模拟。
+Sentence Gymnasium 使用 **MySQL** 作为数据库。
 
 ```bash
-# 初始化数据库（从 Prisma schema 生成迁移 SQL）
+# 生成迁移 SQL（从 Prisma schema diff，无需影子库权限）
 pnpm db:migrate:generate
 
-# 应用到本地 D1
-pnpm db:apply:local
+# 应用到目标 MySQL（DATABASE_URL）
+pnpm db:apply
 
 # 生成 Prisma Client
 pnpm db:generate
 ```
 
-> 生产环境：创建远程 D1 数据库后运行 `pnpm db:apply:remote` 并更新 `wrangler.toml` 中的 `database_id`。
+> 首次部署前先在目标 MySQL 上执行一次 `pnpm db:apply` 建表。增量 schema 变更时，用
+> `prisma migrate diff --from-schema-datasource --to-schema-datamodel ./prisma/schema.prisma --script`
+> 生成增量 SQL 后同样用 `prisma db execute` 应用。
 
 ### 开发
 
 ```bash
-# 启动开发服务器（带本地 D1 + Cloudflare 环境模拟）
+# 启动开发服务器
 pnpm dev
 ```
 
-开发服务器默认运行在 `http://localhost:3000`。`nitro-cloudflare-dev` 模块会自动读取 `wrangler.toml` 和 `.dev.vars`。
+开发服务器默认运行在 `http://localhost:3000`。运行时从 `.env` / `process.env` 读取配置。
 
 ---
 
@@ -209,8 +215,7 @@ pnpm dev
 Sentence-Gymnasium/
 ├── app.config.ts              # 应用配置（Nuxt UI 主题色等）
 ├── app.vue                    # Nuxt 根组件
-├── nuxt.config.ts             # Nuxt 主配置（模块、i18n、Nitro 等）
-├── wrangler.toml              # Cloudflare Workers 配置
+├── nuxt.config.ts             # Nuxt 主配置（模块、i18n、Nitro node-server 等）
 ├── package.json
 ├── pnpm-workspace.yaml
 ├── tsconfig.json
@@ -263,16 +268,15 @@ Sentence-Gymnasium/
 │   ├── schema.prisma          # 数据模型：User / GeneratedQuestion / Attempt
 │   └── prisma/                #（Prisma CLI 工作目录）
 │
-├── migrations/                # D1 迁移 SQL
+├── migrations/                # MySQL 迁移 SQL
 │   ├── 0001_init.sql
-│   ├── 0002_streak.sql
-│   └── 0003_level.sql
+│   └── ...
 │
 ├── public/                    # 静态资源（logo.svg 等）
 │
 ├── server/
 │   ├── api/
-│   │   ├── health.get.ts      # 健康检查（D1 连通性验证）
+│   │   ├── health.get.ts      # 健康检查（MySQL 连通性验证）
 │   │   ├── history.get.ts     # 训练记录（分页 + 筛选）
 │   │   ├── ranking.get.ts     # 排行榜
 │   │   ├── stats.get.ts       # 仪表板统计
@@ -281,8 +285,12 @@ Sentence-Gymnasium/
 │   │   │   ├── logout.post.ts
 │   │   │   ├── register.post.ts
 │   │   │   └── session.get.ts
-│   │   ├── credits/
-│   │   │   └── recharge.post.ts
+│   │   ├── credits/           # 充值（Waffo Pancake）与订单
+│   │   │   ├── checkout.post.ts
+│   │   │   ├── packages.get.ts
+│   │   │   └── orders/[id].get.ts
+│   │   ├── webhooks/
+│   │   │   └── waffo.post.ts  # Waffo 支付回调（验签 + 幂等入账）
 │   │   ├── practice/
 │   │   │   ├── generate.post.ts
 │   │   │   └── judge.post.ts
@@ -294,14 +302,13 @@ Sentence-Gymnasium/
 │   │   │   └── judge.post.ts
 │   │   └── ai/
 │   │       └── health.get.ts  # AI API 连通性检查
-│   ├── plugins/
-│   │   └── cloudflare-env.ts  # 将 Cloudflare env vars 注入 runtimeConfig
 │   ├── types/
 │   │   └── ai.ts              # AI 类型定义（Category / Question / JudgeResult 等）
 │   └── utils/
-│       ├── ai.ts              # AI 服务封装（OpenAI SDK + edge fetch）
+│       ├── ai.ts              # AI 服务封装（OpenAI SDK）
 │       ├── auth.ts            # JWT 签发/验证 + cookie 管理
-│       ├── prisma.ts          # 请求级 PrismaClient 工厂
+│       ├── prisma.ts          # 模块级单例 PrismaClient 工厂（MySQL）
+│       ├── recharge-config.ts # 充值套餐定义（Waffo 产品映射）
 │       └── prompts.ts         # 三种模式的 AI 出题/判题 prompt 模板
 │
 ├── stores/
@@ -315,25 +322,25 @@ Sentence-Gymnasium/
 
 ## 部署
 
-### 部署到 Cloudflare Workers
+### 部署到 EdgeOne Makers
 
 ```bash
-# 1. 创建远程 D1 数据库
-npx wrangler d1 create sentence_gym
-# → 复制输出的 database_id 到 wrangler.toml
+# 1. 安装 CLI（≥ 1.6.0）并登录（中国站）
+npm install -g edgeone@latest
+PAGES_SOURCE=skills edgeone login --site china
 
-# 2. 应用数据库迁移
-pnpm db:apply:remote
+# 2. 在 Makers 控制台配置环境变量（或 `edgeone makers env set`）
+#    DATABASE_URL / NUXT_AI_API_KEY / NUXT_AI_BASE_URL / NUXT_AI_MODEL /
+#    NUXT_AUTH_SECRET / NUXT_PUBLIC_TURNSTILE_SITE_KEY / NUXT_TURNSTILE_SECRET_KEY /
+#    WAFFO_MERCHANT_ID / WAFFO_PRIVATE_KEY
 
-# 3. 设置 Secrets
-npx wrangler secret put AI_API_KEY
-npx wrangler secret put AUTH_SECRET
-
-# 4. 构建并部署
-pnpm deploy
+# 3. 构建并部署（首次部署会自动构建，产出 .output + cloud-functions）
+PAGES_SOURCE=skills edgeone makers deploy -n sentence-gymnasium
 ```
 
-> 部署前请确保 `wrangler.toml` 中的 `database_id` 已更新为远程 D1 数据库的 ID。
+> 部署成功后输出的访问 URL 必须**完整保留**（含 `?eo_token=...` 查询参数），否则页面会返回 401。
+> EdgeOne Makers CLI **原生支持 Nuxt SSR**：部署时自动注入 Nitro 配置，将构建产物输出到
+> `.edgeone/cloud-functions/ssr-node/` 并以 Cloud Function 方式运行，无需手写函数入口。
 
 ---
 

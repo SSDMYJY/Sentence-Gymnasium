@@ -77,9 +77,44 @@
 	"health": {
 		"step": "Step 1",
 		"title": "ヘルスチェック",
-		"body": "Nuxt SSR → Cloudflare D1 binding → Prisma の経路を検証。下に {okCode} と表示されれば正常です。",
+		"body": "Nuxt SSR → Prisma (MySQL) の経路を検証。下に {okCode} と表示されれば正常です。",
 		"endpoint": "GET /api/health",
-		"stack": "Nuxt 3 SSR · Cloudflare Workers · D1 · Prisma"
+		"stack": "Nuxt 4 SSR · Node.js · MySQL · Prisma"
+	},
+	"recharge": {
+		"title": "エネルギーをチャージ",
+		"subtitle": "エネルギーをチャージしてトレーニングを続けましょう。決済は Waffo Pancake が安全に処理します。",
+		"currentBalance": "現在の残高：",
+		"selectPack": "パッケージを選択",
+		"creditsUnit": "エネルギー",
+		"noPacks": "チャージできるパッケージがありません。後でもう一度お試しください。",
+		"paymentMethod": "支払い方法",
+		"paymentMethodHint": "決済は Waffo の安全なチェックアウトページで完了します。以下の方法がすべて利用可能です。",
+		"methods": {
+			"all": "すべて",
+			"card": "カード",
+			"alipay": "Alipay",
+			"wechat": "WeChat Pay"
+		},
+		"payNow": "{amount} を支払う",
+		"processing": "処理中…",
+		"secureNote": "🔒 Waffo Pancake による安全な決済",
+		"checkoutFailed": "決済の開始に失敗しました。もう一度お試しください。",
+		"error": "エラーが発生しました。もう一度お試しください。"
+	},
+	"rechargeSuccess": {
+		"processing": "決済処理中…",
+		"processingHint": "開いたばかりのウィンドウで決済を完了してください。完了するとこのページは自動的に更新されます。",
+		"completed": "決済が完了しました！",
+		"completedHint": "{credits} エネルギーを追加しました。",
+		"failed": "決済が完了していません",
+		"failedHint": "決済が完了しませんでした。もう一度お試しください。",
+		"notFound": "注文が見つかりません",
+		"refresh": "状態を更新",
+		"retry": "再度チャージ",
+		"goPractice": "トレーニングを開始",
+		"goDashboard": "ダッシュボードへ",
+		"toast": "エネルギーを追加しました！残高が更新されました。"
 	},
 	"footer": {
 		"copyright": "Sentence Gymnasium © 2026 · All rights reserved"

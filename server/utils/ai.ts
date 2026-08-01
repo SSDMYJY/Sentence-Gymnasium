@@ -1,6 +1,6 @@
 // AI 服务封装
 // 统一通过 OpenAI 兼容接口调用，强制 JSON 返回。
-// 在 Cloudflare Workers edge runtime 下运行，使用 fetch API。
+// 在 Node.js 运行时（EdgeOne Makers Cloud Functions）下运行，使用 fetch API。
 
 import OpenAI from 'openai'
 import type { H3Event } from 'h3'
@@ -30,52 +30,22 @@ interface AIConfig {
   model: string
 }
 
-/** 从 runtimeConfig 获取 AI 配置 */
-function getAIConfig(event: H3Event): AIConfig {
+/** 从 runtimeConfig 获取 AI 配置（NUXT_AI_API_KEY / NUXT_AI_BASE_URL / NUXT_AI_MODEL 环境变量自动注入） */
+function getAIConfig(_event: H3Event): AIConfig {
   const config = useRuntimeConfig()
-  // 在 Cloudflare Workers 上，secrets 通过 event.context.cloudflare.env 注入。
-  // 本地 dev 时，nitro-cloudflare-dev 将 .dev.vars 注入到同一位置。
-  const env = event.context.cloudflare?.env as Record<string, string> | undefined
 
-  const apiKey = env?.AI_API_KEY || config.aiApiKey
-  const baseUrl = env?.AI_BASE_URL || config.aiBaseUrl
-  const model = env?.AI_MODEL || config.aiModel
+  const apiKey = config.aiApiKey
+  const baseUrl = config.aiBaseUrl
+  const model = config.aiModel
 
   if (!apiKey) {
     throw createError({
       statusCode: 500,
-      statusMessage: 'AI API key is not configured. Set AI_API_KEY in .dev.vars or Cloudflare secrets.',
+      statusMessage: 'AI API key is not configured. Set NUXT_AI_API_KEY (or AI_API_KEY) in your environment.',
     })
   }
 
   return { apiKey, baseUrl, model }
-}
-
-/**
- * 自定义 fetch 包装器，用于跨运行时兼容（Cloudflare Workers + 本地 dev 的 undici fetch）。
- * OpenAI SDK 的 Node.js shim 会做两件 fetch 不需要的事：
- * 1. 注入 agentkeepalive 实例作为 `agent` 选项（Node http 模块概念，fetch 不识别）
- * 2. 手动计算并设置 `content-length` header —— 在 cloudflare-module dev 环境中，
- *    undici fetch 对 string body + 手动 content-length 的组合会抛出
- *    "invalid content-length header" (UND_ERR_INVALID_ARG)。
- * fetch 标准实现会根据 body 自动计算 content-length，因此这里安全地移除这两项。
- */
-function edgeFetch(input: string | URL | Request, init?: any): Promise<Response> {
-  if (init) {
-    delete init.agent
-    const headers = init.headers
-    if (headers) {
-      if (headers instanceof Headers) {
-        headers.delete('content-length')
-      } else if (Array.isArray(headers)) {
-        init.headers = headers.filter(([k]: string[]) => k.toLowerCase() !== 'content-length')
-      } else if (typeof headers === 'object') {
-        delete headers['content-length']
-        delete headers['Content-Length']
-      }
-    }
-  }
-  return globalThis.fetch(input as any, init)
 }
 
 /** 获取 OpenAI 客户端（不复用单例，因为配置可能随请求变化） */
@@ -83,7 +53,6 @@ function createClient(config: AIConfig): OpenAI {
   return new OpenAI({
     apiKey: config.apiKey,
     baseURL: config.baseUrl,
-    fetch: edgeFetch as any,
   })
 }
 

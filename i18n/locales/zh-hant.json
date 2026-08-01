@@ -77,9 +77,44 @@
 	"health": {
 		"step": "Step 1",
 		"title": "鏈路自檢",
-		"body": "驗證 Nuxt SSR → Cloudflare D1 binding → Prisma 鏈路是否接通。下方應返回 {okCode}。",
+		"body": "驗證 Nuxt SSR → Prisma (MySQL) 鏈路是否接通。下方應返回 {okCode}。",
 		"endpoint": "GET /api/health",
-		"stack": "Nuxt 3 SSR · Cloudflare Workers · D1 · Prisma"
+		"stack": "Nuxt 4 SSR · Node.js · MySQL · Prisma"
+	},
+	"recharge": {
+		"title": "充值能量",
+		"subtitle": "充值能量，繼續訓練。付款由 Waffo Pancake 安全處理。",
+		"currentBalance": "目前餘額：",
+		"selectPack": "選擇方案",
+		"creditsUnit": "能量",
+		"noPacks": "暫無可充值方案，請稍後再試。",
+		"paymentMethod": "付款方式",
+		"paymentMethodHint": "付款將在 Waffo 安全收銀頁完成，以下付款方式皆受支援。",
+		"methods": {
+			"all": "全部方式",
+			"card": "信用卡",
+			"alipay": "支付寶",
+			"wechat": "微信支付"
+		},
+		"payNow": "付款 {amount}",
+		"processing": "處理中…",
+		"secureNote": "🔒 由 Waffo Pancake 提供安全付款",
+		"checkoutFailed": "發起付款失敗，請重試。",
+		"error": "發生錯誤，請重試。"
+	},
+	"rechargeSuccess": {
+		"processing": "付款處理中…",
+		"processingHint": "請在剛開啟的視窗內完成付款。完成後本頁會自動更新。",
+		"completed": "付款成功！",
+		"completedHint": "已向你的帳戶新增 {credits} 能量。",
+		"failed": "付款未完成",
+		"failedHint": "付款未完成，可以重新嘗試。",
+		"notFound": "訂單不存在",
+		"refresh": "重新整理狀態",
+		"retry": "重新充值",
+		"goPractice": "開始訓練",
+		"goDashboard": "返回儀表板",
+		"toast": "能量已入帳！餘額已更新。"
 	},
 	"footer": {
 		"copyright": "Sentence Gymnasium © 2026 · 版權所有"

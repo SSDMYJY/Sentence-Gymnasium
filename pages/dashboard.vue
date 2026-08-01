@@ -195,18 +195,17 @@
       </div>
     </section>
 
-    <!-- 充值按钮 / Recharge button -->
+    <!-- 充值入口 / Recharge entry -->
     <div class="mt-8 text-center">
       <UButton
         variant="outline"
-        :loading="recharging"
+        :to="localePath('/recharge')"
         class="border-line-strong text-tertiary hover:border-accent hover:text-primary"
-        @click="onRecharge"
       >
         <template #leading>
           <UIcon name="i-lucide-zap" class="text-accent-soft" />
         </template>
-        {{ recharging ? t('dashboard.recharge.loading') : t('dashboard.recharge.button') }}
+        {{ t('dashboard.recharge.button') }}
       </UButton>
     </div>
   </div>
@@ -372,26 +371,6 @@ function formatDate(iso: string): string {
   const d = new Date(iso)
   // 返回 月/日/年 / Return MM/DD/YYYY
   return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`
-}
-
-// 充值中标志 / Recharging flag
-const recharging = ref(false)
-// 充值处理函数 / Recharge handler
-const onRecharge = async () => {
-  // 防止重复 / Guard against duplicate
-  if (recharging.value) return
-  recharging.value = true
-  try {
-    // 调用充值接口 / Call the recharge API
-    const updated = await $fetch<SessionUser>('/api/credits/recharge', { method: 'POST' })
-    // 更新用户信息 / Update the user
-    store.setUser(updated)
-    // 重新加载数据 / Reload data
-    await loadData()
-  } finally {
-    // 结束充值 / Stop recharging
-    recharging.value = false
-  }
 }
 
 // Set daily goal

@@ -19,10 +19,11 @@
 					<LanguageSwitcher />
 					<ThemeToggle />
 					<template v-if="user">
-						<div class="credits-badge hidden items-center gap-1 px-3 py-1 text-xs sm:flex">
+						<NuxtLink :to="localePath('/recharge')" :title="t('recharge.title')"
+							class="credits-badge hidden items-center gap-1 px-3 py-1 text-xs sm:flex">
 							<span class="inline-block h-1.5 w-1.5 rounded-full bg-accent-soft" aria-hidden="true" />
 							<span class="credits-text">{{ user.credits }}</span>
-						</div>
+						</NuxtLink>
 						<UButton variant="ghost" :loading="loggingOut"
 							class="hidden sm:inline-flex cursor-pointer btn-ghost" @click="onLogout">
 							{{ t('auth.logout') }}
@@ -63,13 +64,14 @@
 						{{ item.label }}
 					</NuxtLink>
 					<div class="mobile-menu-divider mt-2 pt-3">
-						<div class="flex items-center justify-between px-3 py-2 text-sm">
+						<NuxtLink :to="localePath('/recharge')" class="flex items-center justify-between px-3 py-2 text-sm"
+							@click="mobileMenuOpen = false">
 							<span class="mobile-menu-label flex items-center gap-1.5">
 								<UIcon name="i-lucide-zap" class="text-accent-soft" />
 								{{ t('dashboard.stats.energy') }}
 							</span>
 							<span class="mobile-menu-value">{{ user.credits }}</span>
-						</div>
+						</NuxtLink>
 						<UButton variant="ghost" :loading="loggingOut"
 							class="mt-1 w-full justify-start mobile-logout-btn" @click="onLogout">
 							<template #leading>
@@ -114,6 +116,7 @@
 </template>
 
 <script setup lang="ts">
+import { $fetch } from 'ofetch'
 const { t } = useI18n()
 const localePath = useLocalePath()
 const route = useRoute()
@@ -186,7 +189,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-	window.removeEventListener('scroll', onScroll, { passive: true })
+	window.removeEventListener('scroll', onScroll)
 })
 
 watch(() => route.path, () => {

@@ -138,25 +138,26 @@
                         <span class="text-accent-soft">06</span> Data Storage and International Transfers
                     </h2>
                     <p class="mt-3 text-sm leading-relaxed text-tertiary">
-                        Your information is stored and processed exclusively on infrastructure provided by <strong
-                            class="text-tertiary">Cloudflare, Inc.</strong> and its affiliated services, including but
-                        not limited to Cloudflare Workers, Cloudflare Pages, Cloudflare D1, Cloudflare R2, and
-                        Cloudflare KV (collectively, the "Cloudflare Platform"). All aspects of the Service — including
-                        application hosting, data storage, edge caching, and serverless computing — are deployed on the
-                        Cloudflare Platform.
+                        Your information is stored and processed on infrastructure provided by <strong
+                            class="text-tertiary">Tencent Cloud / EdgeOne Makers</strong> (application hosting and
+                        edge delivery) together with a cloud-hosted <strong class="text-tertiary">MySQL</strong>
+                        database, operated in accordance with applicable data protection laws. Payments are processed
+                        by <strong class="text-tertiary">Waffo Pancake</strong>, a third-party payment processor; we do
+                        not store your full payment card details. Human-verification (CAPTCHA) is provided by <strong
+                            class="text-tertiary">Cloudflare Turnstile</strong>.
                     </p>
                     <p class="mt-3 text-sm leading-relaxed text-tertiary">
-                        Due to the global nature of Cloudflare's network, your data may be processed and cached in edge
-                        locations around the world to optimize performance and availability. By using the Service, you
-                        acknowledge and consent to the transfer, storage, and processing of your information on
-                        Cloudflare's global infrastructure, which may include data centers located outside your country
-                        of residence.
+                        Due to the global nature of edge networks, portions of your data may be processed or cached in
+                        locations optimized for performance and availability. By using the Service, you acknowledge and
+                        consent to the transfer, storage, and processing of your information on such infrastructure,
+                        which may include data centers located outside your country of residence.
                     </p>
                     <p class="mt-3 text-sm leading-relaxed text-tertiary">
-                        Cloudflare acts as a data processor on our behalf. Our use of Cloudflare's services is governed
-                        by Cloudflare's Data Processing Addendum and Privacy Policy. We have implemented appropriate
-                        contractual safeguards to ensure that your personal data receives adequate protection in
-                        accordance with this Privacy Policy, regardless of where it is processed.
+                        Our infrastructure providers act as data processors on our behalf. Where third-party providers
+                        (such as payment processors and the Turnstile service) process your data, their use is governed
+                        by their respective privacy policies and data processing agreements. We have implemented
+                        appropriate contractual safeguards to ensure that your personal data receives adequate
+                        protection in accordance with this Privacy Policy, regardless of where it is processed.
                     </p>
                 </section>
 
