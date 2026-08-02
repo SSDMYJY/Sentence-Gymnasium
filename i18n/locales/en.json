@@ -186,7 +186,7 @@
 			"noData": "No recent attempts"
 		},
 		"recharge": {
-			"button": "Recharge +20",
+			"button": "Recharge Credits",
 			"done": "Recharged +20",
 			"loading": "Processing…"
 		},
