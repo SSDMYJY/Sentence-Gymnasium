@@ -4,7 +4,11 @@
 // the same String-column semantics, so no type changes were needed.
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  // Cloudflare Pages / Workers build images use RHEL-based runtimes with
+  // either OpenSSL 1.1.x or 3.0.x. Generate engines for all of them so the
+  // deployed bundle always finds a compatible Query Engine at runtime.
+  binaryTargets = ["native", "rhel-openssl-1.1.x", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
