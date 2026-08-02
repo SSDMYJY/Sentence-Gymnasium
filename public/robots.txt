@@ -1,6 +1,6 @@
 # Sentence Gymnasium · 句子健身房
 # robots.txt — Generated 2026
-# https://sentence-gymnasium.ai
+# https://sentencegym.waterspo.top
 
 User-agent: *
 Allow: /
@@ -17,13 +17,13 @@ Disallow: /health
 Crawl-delay: 1
 
 # Full sitemap with all locale variants
-Sitemap: https://sentence-gymnasium.ai/sitemap.xml
+Sitemap: https://sentencegym.waterspo.top/sitemap.xml
 
 # Language-specific sitemaps (also listed in sitemap index)
-Sitemap: https://sentence-gymnasium.ai/sitemap-zh-hans.xml
-Sitemap: https://sentence-gymnasium.ai/sitemap-en.xml
-Sitemap: https://sentence-gymnasium.ai/sitemap-ja.xml
-Sitemap: https://sentence-gymnasium.ai/sitemap-zh-hant.xml
+Sitemap: https://sentencegym.waterspo.top/sitemap-zh-hans.xml
+Sitemap: https://sentencegym.waterspo.top/sitemap-en.xml
+Sitemap: https://sentencegym.waterspo.top/sitemap-ja.xml
+Sitemap: https://sentencegym.waterspo.top/sitemap-zh-hant.xml
 
 # ===== Search Engine Verifications =====
 # Google Search Console verification (via meta tag in head)

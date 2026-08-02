@@ -224,7 +224,7 @@ export function buildOrganization(opts: {
       height: 512,
     },
     image: `${siteUrl}/logo.svg`,
-    email: 'hello@sentence-gymnasium.ai',
+    email: 'hello@sentencegym.waterspo.top',
     foundingDate: '2026',
     areaServed: GEO_REGIONS.map((r) => ({
       '@type': 'Country',
@@ -239,7 +239,7 @@ export function buildOrganization(opts: {
       '@type': 'ContactPoint',
       contactType: 'customer service',
       availableLanguage: ['Chinese', 'English', 'Japanese'],
-      email: 'support@sentence-gymnasium.ai',
+      email: 'support@sentencegym.waterspo.top',
       areaServed: 'Worldwide',
     },
     knowsAbout: [

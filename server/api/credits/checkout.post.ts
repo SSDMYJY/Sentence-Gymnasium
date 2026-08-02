@@ -1,5 +1,7 @@
 // POST /api/credits/checkout — 创建充值订单 + Waffo 托管支付会话
 // 金额/积分一律以服务端套餐目录为准，不信任客户端传入的金额。
+// 使用认证式收银台（authenticated）：以内部 userId 作为 buyerIdentity 绑定订单归属，
+// 防止试用滥用与订单脱钩，并为后续自助服务提供基础。
 // successUrl 固定使用 Waffo 已验证的站点域名（runtimeConfig.public.siteUrl），
 // 避免用户经其他域名访问时支付回跳被 Waffo 网关以 404 "domain endpoints match fail" 拒绝。
 import { createError } from 'h3'
@@ -33,9 +35,10 @@ export default defineEventHandler(async (event) => {
     },
   })
 
-  // 2. 创建 Waffo 支付会话
-  // 关键：successUrl 必须使用 Waffo 已验证的站点域名（默认 https://sentence-gymnasium.ai，
-  // 该域名已通过 waffo-verify meta 标签完成验证），而不是当前请求的 origin。
+  // 2. 创建 Waffo 支付会话（认证式收银台）
+  // 关键：successUrl 必须使用 Waffo 已验证的站点域名（生产环境为
+  // https://sentencegym.waterspo.top，由 EdgeOne Makers 环境变量 NUXT_PUBLIC_SITE_URL 注入），
+  // 而不是当前请求的 origin。
   // 否则当用户经其他域名（EdgeOne 预览域名 / localhost 等）访问时，
   // Waffo 网关会在支付完成后的回跳域名校验阶段返回 404 "domain endpoints match fail"，
   // 导致无法正确回到本应用的结果页。
@@ -46,9 +49,13 @@ export default defineEventHandler(async (event) => {
 
   let session: { sessionId?: string; checkoutUrl?: string } | undefined
   try {
-    session = await client.checkout.createSession({
+    // 认证式收银台：buyerIdentity 写入 JWT，绑定订单归属；
+    // 其余字段（orderMerchantExternalId / metadata / successUrl 等）由 SDK 原样转发到 create-session，
+    // 返回的 checkoutUrl 已追加 #token=... 片段。
+    session = await client.checkout.authenticated.create({
       productId: pack.productId,
       currency: pack.currency,
+      buyerIdentity: user.id,
       buyerEmail: user.email ?? undefined,
       successUrl,
       // 把我们的订单 id 作为业务外部标识，Webhook 凭它定位订单

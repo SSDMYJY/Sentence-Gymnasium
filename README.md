@@ -131,16 +131,18 @@ WAFFO_MERCHANT_ID=... WAFFO_PRIVATE_KEY=... pnpm waffo:setup
 
 写入的 key：`waffo.merchantId` / `waffo.privateKey` / `waffo.product.pack_100` 等。
 
-> **支付回跳域名（关键）**：`successUrl` 固定使用 `NUXT_PUBLIC_SITE_URL`（默认
-> `https://sentence-gymnasium.ai`），该域名必须在 Waffo Dashboard 完成站点验证
-> （`Settings → General → Website` 填写并验证，站内已部署 `waffo-verify` meta 标签）。
+> **支付回跳域名（关键）**：`successUrl` 固定使用 `NUXT_PUBLIC_SITE_URL`（生产环境为
+> `https://sentencegym.waterspo.top`），该域名必须在 Waffo Dashboard 完成站点验证
+> （`Settings → General → Website` 填写并验证）。
 > 若回跳域名与商户已验证域名不一致，Waffo 网关会在支付完成后返回
 > `404 domain endpoints match fail`，用户无法回到结果页。建议同时把
-> `Settings → General → Checkout Return URL` 配置为 `https://sentence-gymnasium.ai/recharge/success`。
+> `Settings → General → Checkout Return URL` 配置为 `https://sentencegym.waterspo.top/recharge/success`。
 >
 > **Webhook 注册**：在 Waffo Dashboard → Store Settings → Webhooks 为对应环境
-> （测试/生产）注册回调地址 `https://sentence-gymnasium.ai/api/webhooks/waffo`，
+> （测试/生产）注册回调地址 `https://sentencegym.waterspo.top/api/webhooks/waffo`，
 > 订阅 `order.completed` / `refund.succeeded` 事件；否则支付成功后 credits 不会自动到账。
+> ⚠️ 注意 webhook URL 必须完整准确（曾因注册为 `sentence.waterspo.top`（缺 `gym`）导致
+> 投递全部失败、credits 无法到账）。
 
 ---
 

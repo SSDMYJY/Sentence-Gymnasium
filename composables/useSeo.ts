@@ -52,7 +52,7 @@ export function useSeo(input: SeoInput) {
   const config = useRuntimeConfig()
 
   const currentLocale = (locale.value || 'zh-hans') as SeoLocale
-  const siteUrl = (config.public?.siteUrl as string) || 'https://sentence-gymnasium.ai'
+  const siteUrl = (config.public?.siteUrl as string) || 'https://sentencegym.waterspo.top'
 
   const rawTitle = pick(input.title, currentLocale) || ''
   const pageTitle = rawTitle ? `${rawTitle} ${BRAND_SUFFIX[currentLocale]}` : undefined

@@ -70,7 +70,7 @@ export default defineNuxtConfig({
       secretKey: process.env.NUXT_TURNSTILE_SECRET_KEY || ''
     },
     public: {
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://sentence-gymnasium.ai',
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://sentencegym.waterspo.top',
       siteName: {
         'zh-hans': '句子健身房',
         'zh-hant': '句子健身房',
