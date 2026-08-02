@@ -146,6 +146,23 @@ import type { GrammarTag } from '~/server/types/ai'
 // 启用 auth 路由守卫 / Enable the auth route guard
 definePageMeta({ middleware: 'auth' })
 
+// ===== SEO：登录后页面，noindex =====
+useSeo({
+  title: {
+    'zh-hans': '语法特训 · 日语英语专项突破',
+    'zh-hant': '語法特訓 · 日語英語專項突破',
+    'en':      'Grammar Focus · Japanese & English Drills',
+    'ja':      '文法特訓 · 日本語・英語の徹底演習',
+  },
+  description: {
+    'zh-hans': '按语法点专项训练：日语 te-form、助词、敬语；英语现在完成时、被动、条件句、关系从句等。填空/选择/改错三种题型。',
+    'zh-hant': '按語法點專項訓練：日語 te-form、助詞、敬語；英語現在完成時、被動、條件句、關係從句等。',
+    'en':      'Grammar drills by tag: Japanese te-form, particles, honorifics; English present perfect, passive, conditionals, relative clauses. Fill-blank / multiple choice / error correction.',
+    'ja':      '文法タグ別演習：日本語のて形・助詞・敬語、英語の現在完了・受動態・条件文・関係代名詞。穴埋め・選択・誤り訂正の 3 形式。',
+  },
+  noindex: true,
+})
+
 // 获取 i18n 与当前语言 / Obtain i18n and current locale
 const { t, locale } = useI18n()
 // 获取用户 store / Obtain the user store

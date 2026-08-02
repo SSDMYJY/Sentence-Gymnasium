@@ -109,6 +109,24 @@
 
 <script setup lang="ts">
 definePageMeta({ middleware: 'auth' })
+
+// ===== SEO：登录后页面，noindex =====
+useSeo({
+  title: {
+    'zh-hans': '错题复习',
+    'zh-hant': '錯題複習',
+    'en':      'Mistake Review',
+    'ja':      '復習モード',
+  },
+  description: {
+    'zh-hans': '基于艾宾浩斯遗忘曲线的错题复习系统，定时提醒你回顾做错的题目，掌握薄弱点。',
+    'zh-hant': '基於艾賓浩斯遺忘曲線的錯題複習系統，定時提醒你回顧做錯的題目，掌握薄弱點。',
+    'en':      'Spaced-repetition mistake review based on Ebbinghaus forgetting curve. Review your wrong answers on schedule to close weak points.',
+    'ja':      'エビングハウスの忘却曲線に基づく間隔反復復習。誤答した問題を計画的に振り返り、弱点を克服。',
+  },
+  noindex: true,
+})
+
 const { t } = useI18n()
 const localePath = useLocalePath()
 

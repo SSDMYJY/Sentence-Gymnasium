@@ -101,6 +101,23 @@ import type { LangCode, PracticeDifficulty } from '~/server/types/ai'
 // 启用 auth 路由守卫 / Enable the auth route guard
 definePageMeta({ middleware: 'auth' })
 
+// ===== SEO：登录后页面，noindex =====
+useSeo({
+  title: {
+    'zh-hans': '句子改写 · 日语英语同义表达训练',
+    'zh-hant': '句子改寫 · 日語英語同義表達訓練',
+    'en':      'Paraphrase Training · Rewrite Japanese & English',
+    'ja':      '言い換え練習 · 日本語・英語の同義表現',
+  },
+  description: {
+    'zh-hans': 'AI 出题的句子改写训练，日语和英语源文本，AI 评分原意保留度与自然度，适合中高级学习者。',
+    'zh-hant': 'AI 出題的句子改寫訓練，日語和英語源文本，AI 評分原意保留度與自然度。',
+    'en':      'AI-generated paraphrasing drills for Japanese and English source text. AI rates fidelity and naturalness — great for intermediate+ learners.',
+    'ja':      'AI が出題する言い換えドリル。日本語・英語の原文から同義表現を作成。AI が忠実度と自然さを評価。',
+  },
+  noindex: true,
+})
+
 // 获取 i18n 与当前语言 / Obtain i18n and current locale
 const { t, locale } = useI18n()
 // 获取用户 store / Obtain the user store

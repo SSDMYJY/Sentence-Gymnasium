@@ -58,6 +58,40 @@
 </template>
 
 <script setup lang="ts">
+// ===== SEO：公开但权重较低，允许 index =====
+const { currentLocale, siteUrl, canonicalHref } = useSeo({
+  title: {
+    'zh-hans': '登录 · 开始你的语言训练',
+    'zh-hant': '登入 · 開始你的語言訓練',
+    'en':      'Sign in · Start Your Language Training',
+    'ja':      'ログイン · 言語トレーニングを開始',
+  },
+  description: {
+    'zh-hans': '登录句子健身房，立即开始 AI 多语言句子训练。新用户赠送 20 Credits 免费体验。',
+    'zh-hant': '登入句子健身房，立即開始 AI 多語言句子訓練。新用戶贈送 20 Credits 免費體驗。',
+    'en':      'Sign in to Sentence Gymnasium and start AI-powered multilingual sentence training. New users get 20 free credits.',
+    'ja':      'センテンスジムにログインして AI 多言語トレーニングを開始。新規ユーザーは 20 クレジット無料。',
+  },
+  keywords: {
+    'zh-hans': '句子健身房登录,在线日语课登录,AI英语训练注册',
+    'en':      'Sentence Gymnasium sign in,login to language learning,AI English practice sign in',
+    'ja':      'センテンスジム ログイン,言語学習 ログイン,AI英語学習 サインイン',
+  },
+  ogType: 'website',
+})
+const config = useRuntimeConfig()
+const siteNameByLocale = (config.public?.siteName as Record<string, string>)?.[currentLocale] || 'Sentence Gymnasium'
+useJsonLd([
+  buildBreadcrumb({
+    siteUrl,
+    locale: currentLocale,
+    crumbs: [
+      { name: siteNameByLocale, url: siteUrl },
+      { name: 'Login', url: canonicalHref },
+    ],
+  }),
+])
+
 // 获取 i18n 翻译与是否存在某 key 的工具 / Obtain i18n translate and key-existence helpers
 const { t, te } = useI18n()
 // 获取本地化路径工具 / Obtain the localized-path helper

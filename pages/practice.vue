@@ -118,6 +118,23 @@ import {
 // 启用 auth 路由守卫 / Enable the auth route guard
 definePageMeta({ middleware: 'auth' })
 
+// ===== SEO：登录后页面，爬虫不可达，noindex =====
+useSeo({
+  title: {
+    'zh-hans': '翻译练习 · 中日英互译',
+    'zh-hant': '翻譯練習 · 中日英互譯',
+    'en':      'Translation Practice · EN-JP-ZH',
+    'ja':      '翻訳練習 · 日中英三言語',
+  },
+  description: {
+    'zh-hans': '登录后开始 AI 翻译练习：4 个语言方向（日英/英日/中译日/中译英）、3 级难度、多组生活场景。',
+    'zh-hant': '登入後開始 AI 翻譯練習：4 個語言方向、3 級難度、多組生活場景。',
+    'en':      'Sign in to start AI translation drills across 4 language pairs, 3 difficulty levels, and real-life scenarios.',
+    'ja':      'ログインして AI 翻訳ドリルを開始。4 言語ペア・3 難易度・実生活シチュエーション。',
+  },
+  noindex: true,
+})
+
 // 获取 i18n 与当前语言 / Obtain i18n and current locale
 const { t, locale } = useI18n()
 // 获取用户 store / Obtain the user store

@@ -280,6 +280,35 @@
 // 关闭该页面的 i18n 自动注入（使用纯英文法律文本）/ Disable i18n auto-injection for this page (uses English-only legal text)
 definePageMeta({ i18n: false })
 
+// ===== SEO：法律页，低权重，允许 index =====
+const { currentLocale, siteUrl, canonicalHref } = useSeo({
+  title: {
+    'zh-hans': '服务条款 · Terms and Conditions',
+    'zh-hant': '服務條款 · Terms and Conditions',
+    'en':      'Terms and Conditions · Sentence Gymnasium',
+    'ja':      '利用規約 · Sentence Gymnasium',
+  },
+  description: {
+    'zh-hans': '句子健身房（Sentence Gymnasium）服务条款，涵盖用户义务、知识产权、免责声明、争议解决等。',
+    'zh-hant': '句子健身房（Sentence Gymnasium）服務條款，涵蓋用戶義務、智慧財產權、免責聲明、爭議解決等。',
+    'en':      'Terms and Conditions of Sentence Gymnasium — user obligations, intellectual property, disclaimers, and dispute resolution.',
+    'ja':      'センテンスジム利用規約 — ユーザーの責務、知的財産権、免責事項、紛争解決について。',
+  },
+  ogType: 'website',
+})
+const config = useRuntimeConfig()
+const siteNameByLocale = (config.public?.siteName as Record<string, string>)?.[currentLocale] || 'Sentence Gymnasium'
+useJsonLd([
+  buildBreadcrumb({
+    siteUrl,
+    locale: currentLocale,
+    crumbs: [
+      { name: siteNameByLocale, url: siteUrl },
+      { name: 'Terms and Conditions', url: canonicalHref },
+    ],
+  }),
+])
+
 // 获取本地化路径工具（用于返回首页链接）/ Obtain the localized-path helper (for the back-home link)
 const localePath = useLocalePath()
 </script>

@@ -100,6 +100,26 @@
 // 引入用户类型 / Import the user type
 import type { SessionUser } from '~/stores/user'
 
+// 启用 auth 路由守卫 / Enable the auth route guard
+definePageMeta({ middleware: 'auth' })
+
+// ===== SEO：登录后页面，noindex =====
+useSeo({
+  title: {
+    'zh-hans': '训练排行榜',
+    'zh-hant': '訓練排行榜',
+    'en':      'Leaderboard',
+    'ja':      'ランキング',
+  },
+  description: {
+    'zh-hans': '查看句子健身房训练排行榜：做题总量、正确率、经验值，和全球学习者一起进步。',
+    'zh-hant': '查看句子健身房訓練排行榜：做題總量、正確率、經驗值，和全球學習者一起進步。',
+    'en':      'Sentence Gymnasium leaderboard — track total attempts, accuracy and experience with learners worldwide.',
+    'ja':      'センテンスジムのランキング — 回答数・正解率・経験値を世界の学習者と競います。',
+  },
+  noindex: true,
+})
+
 // 获取 i18n / Obtain i18n
 const { t } = useI18n()
 // 获取用户 store / Obtain the user store

@@ -52,6 +52,23 @@
 <script setup lang="ts">
 definePageMeta({ middleware: 'auth' })
 
+// ===== SEO：支付结果页（临时性），noindex =====
+useSeo({
+  title: {
+    'zh-hans': '支付结果',
+    'zh-hant': '支付結果',
+    'en':      'Payment Status',
+    'ja':      '支払いステータス',
+  },
+  description: {
+    'zh-hans': '句子健身房充值支付处理中或完成页面。',
+    'zh-hant': '句子健身房充值支付處理中或完成頁面。',
+    'en':      'Sentence Gymnasium recharge payment processing or completion page.',
+    'ja':      'センテンスジム クレジット購入の支払い処理ページ。',
+  },
+  noindex: true,
+})
+
 const { t } = useI18n()
 const localePath = useLocalePath()
 const route = useRoute()

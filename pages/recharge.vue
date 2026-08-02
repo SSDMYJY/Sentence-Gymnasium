@@ -94,6 +94,28 @@ import type { SessionUser } from '~/stores/user'
 
 definePageMeta({ middleware: 'auth' })
 
+// ===== SEO：登录后充值页，noindex + Product schema（让 GEO 价格信息可用）=====
+const { currentLocale, siteUrl, canonicalHref } = useSeo({
+  title: {
+    'zh-hans': '充值能量 · Credits',
+    'zh-hant': '充值能量 · Credits',
+    'en':      'Recharge Credits',
+    'ja':      'クレジット購入',
+  },
+  description: {
+    'zh-hans': '购买句子健身房训练能量（Credits），支持支付宝、微信、信用卡。安全支付由 Waffo Pancake 托管处理。',
+    'zh-hant': '購買句子健身房訓練能量（Credits），支援支付寶、微信、信用卡。安全支付由 Waffo Pancake 託管處理。',
+    'en':      'Purchase Sentence Gymnasium training credits. Pay with Alipay, WeChat Pay or credit card. Secure checkout hosted by Waffo Pancake.',
+    'ja':      'センテンスジムのトレーニングクレジットを購入。Alipay・WeChat Pay・クレジットカード対応。Waffo Pancake の安全な決済。',
+  },
+  noindex: true,
+})
+const config = useRuntimeConfig()
+const siteNameByLocale = (config.public?.siteName as Record<string, string>)?.[currentLocale] || 'Sentence Gymnasium'
+useJsonLd([
+  buildProduct({ siteUrl, locale: currentLocale, providerName: siteNameByLocale }),
+])
+
 const { t } = useI18n()
 const localePath = useLocalePath()
 const toast = useToast()

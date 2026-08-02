@@ -218,6 +218,23 @@ import type { SessionUser } from '~/stores/user'
 // 启用 auth 路由守卫 / Enable the auth route guard
 definePageMeta({ middleware: 'auth' })
 
+// ===== SEO：登录后仪表板，noindex =====
+useSeo({
+  title: {
+    'zh-hans': '训练仪表板',
+    'zh-hant': '訓練儀表板',
+    'en':      'Training Dashboard',
+    'ja':      'トレーニングダッシュボード',
+  },
+  description: {
+    'zh-hans': '句子健身房个人训练仪表板：能量、连胜、正确率、等级经验、今日目标、本周训练统计一览。',
+    'zh-hant': '句子健身房個人訓練儀表板：能量、連勝、正確率、等級經驗、今日目標、本週訓練統計一覽。',
+    'en':      'Your Sentence Gymnasium training dashboard — credits, streak, accuracy, XP and level, daily goal, weekly stats.',
+    'ja':      'センテンスジム個人ダッシュボード — クレジット・連続日数・正解率・XPとレベル・今日の目標・週間統計。',
+  },
+  noindex: true,
+})
+
 // 获取 i18n / Obtain i18n
 const { t } = useI18n()
 // 获取本地化路径工具 / Obtain the localized-path helper
@@ -319,7 +336,7 @@ const maxWeeklyCount = computed(() => {
 function formatDayLabel(dateStr: string): string {
   const d = new Date(dateStr + 'T00:00:00')
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-  return days[d.getDay()]
+  return days[d.getDay()] as string
 }
 
 // Weak areas

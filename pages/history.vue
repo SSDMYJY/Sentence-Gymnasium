@@ -181,6 +181,23 @@
 // 启用 auth 路由守卫 / Enable the auth route guard
 definePageMeta({ middleware: 'auth' })
 
+// ===== SEO：登录后页面，noindex =====
+useSeo({
+  title: {
+    'zh-hans': '训练记录',
+    'zh-hant': '訓練記錄',
+    'en':      'Training History',
+    'ja':      'トレーニング履歴',
+  },
+  description: {
+    'zh-hans': '查看你在句子健身房的全部训练历史记录，分页筛选翻译、改写、语法特训做题详情。',
+    'zh-hant': '查看你在句子健身房的全部訓練歷史記錄，分頁篩選翻譯、改寫、語法特訓做題詳情。',
+    'en':      'All your training records in Sentence Gymnasium — filter and page through translation, paraphrasing and grammar drill attempts.',
+    'ja':      'センテンスジムでの全トレーニング履歴。翻訳・言い換え・文法ドリルの回答記録をページング・フィルタできます。',
+  },
+  noindex: true,
+})
+
 // 获取 i18n 与当前语言 / Obtain i18n and current locale
 const { t, locale } = useI18n()
 // 获取本地化路径工具 / Obtain the localized-path helper

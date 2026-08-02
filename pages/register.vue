@@ -70,6 +70,40 @@
 </template>
 
 <script setup lang="ts">
+// ===== SEO：公开注册页，允许 index =====
+const { currentLocale, siteUrl, canonicalHref } = useSeo({
+  title: {
+    'zh-hans': '注册 · 免费获取 20 Credits 体验金',
+    'zh-hant': '註冊 · 免費獲取 20 Credits 體驗金',
+    'en':      'Sign up · Get 20 Free Credits',
+    'ja':      '新規登録 · 20 クレジット無料プレゼント',
+  },
+  description: {
+    'zh-hans': '立即注册句子健身房，免费领取 20 Credits 体验金，开启 AI 中日英三语句子训练之旅。无需信用卡，注册即送。',
+    'zh-hant': '立即註冊句子健身房，免費領取 20 Credits 體驗金，開啟 AI 中日英三語句子訓練之旅。',
+    'en':      'Sign up to Sentence Gymnasium and get 20 free credits. Start AI-powered Chinese-Japanese-English sentence training today. No credit card required.',
+    'ja':      'センテンスジムに新規登録で 20 クレジット無料プレゼント。AI を活用した中国語・日本語・英語のセンテンストレーニングを今すぐ開始。クレジットカード不要。',
+  },
+  keywords: {
+    'zh-hans': '免费日语学习网站,在线英语注册,AI学习平台试用,JLPT备考免费',
+    'en':      'free Japanese learning sign up,free English AI practice,register language learning app,IELTS TOEFL free trial',
+    'ja':      '無料 日本語学習 登録,英語学習 AI 無料体験,言語学習アプリ 新規登録,JLPT 無料',
+  },
+  ogType: 'website',
+})
+const config = useRuntimeConfig()
+const siteNameByLocale = (config.public?.siteName as Record<string, string>)?.[currentLocale] || 'Sentence Gymnasium'
+useJsonLd([
+  buildBreadcrumb({
+    siteUrl,
+    locale: currentLocale,
+    crumbs: [
+      { name: siteNameByLocale, url: siteUrl },
+      { name: 'Register', url: canonicalHref },
+    ],
+  }),
+])
+
 // 获取 i18n 翻译与是否存在某 key 的工具 / Obtain i18n translate and key-existence helpers
 const { t, te } = useI18n()
 // 获取本地化路径工具 / Obtain the localized-path helper

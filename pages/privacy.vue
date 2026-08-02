@@ -318,6 +318,35 @@
 // 关闭该页面的 i18n 自动注入（使用纯英文法律文本）/ Disable i18n auto-injection for this page (uses English-only legal text)
 definePageMeta({ i18n: false })
 
+// ===== SEO：法律页，低权重，允许 index =====
+const { currentLocale, siteUrl, canonicalHref } = useSeo({
+  title: {
+    'zh-hans': '隐私政策 · Privacy Policy',
+    'zh-hant': '隱私政策 · Privacy Policy',
+    'en':      'Privacy Policy · Sentence Gymnasium',
+    'ja':      'プライバシーポリシー · Sentence Gymnasium',
+  },
+  description: {
+    'zh-hans': '句子健身房（Sentence Gymnasium）隐私政策，涵盖用户数据收集、使用、存储、共享及 GDPR / CCPA 合规说明。',
+    'zh-hant': '句子健身房（Sentence Gymnasium）隱私政策，涵蓋用戶數據蒐集、使用、儲存、共享及 GDPR / CCPA 合規說明。',
+    'en':      'Sentence Gymnasium Privacy Policy — data collection, usage, storage, sharing, and GDPR/CCPA compliance.',
+    'ja':      'センテンスジム プライバシーポリシー — データの収集・利用・保存・共有および GDPR / CCPA への対応について。',
+  },
+  ogType: 'website',
+})
+const config = useRuntimeConfig()
+const siteNameByLocale = (config.public?.siteName as Record<string, string>)?.[currentLocale] || 'Sentence Gymnasium'
+useJsonLd([
+  buildBreadcrumb({
+    siteUrl,
+    locale: currentLocale,
+    crumbs: [
+      { name: siteNameByLocale, url: siteUrl },
+      { name: 'Privacy Policy', url: canonicalHref },
+    ],
+  }),
+])
+
 // 获取本地化路径工具（用于返回首页链接）/ Obtain the localized-path helper (for the back-home link)
 const localePath = useLocalePath()
 </script>

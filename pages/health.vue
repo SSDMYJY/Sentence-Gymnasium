@@ -32,6 +32,23 @@
 </template>
 
 <script setup lang="ts">
+// ===== SEO：内部工具页，noindex =====
+useSeo({
+  title: {
+    'zh-hans': '健康检查',
+    'zh-hant': '健康檢查',
+    'en':      'Health Check',
+    'ja':      'ヘルスチェック',
+  },
+  description: {
+    'zh-hans': '句子健身房内部健康检查页面：验证 Nuxt SSR → Prisma MySQL 链路。',
+    'zh-hant': '句子健身房內部健康檢查頁面：驗證 Nuxt SSR → Prisma MySQL 鏈路。',
+    'en':      'Internal Sentence Gymnasium health check — verify Nuxt SSR → Prisma MySQL chain.',
+    'ja':      'センテンスジム内部ヘルスチェック — Nuxt SSR → Prisma MySQL の疎通確認。',
+  },
+  noindex: true,
+})
+
 // 获取 i18n / Obtain i18n
 const { t } = useI18n()
 

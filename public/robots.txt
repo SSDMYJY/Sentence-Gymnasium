@@ -1,0 +1,54 @@
+# Sentence Gymnasium · 句子健身房
+# robots.txt — Generated 2026
+# https://sentence-gymnasium.ai
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /*/recharge
+Disallow: /*/recharge/success
+Disallow: /*/dashboard
+Disallow: /*/history
+Disallow: /*/bookmarks
+Disallow: /*/review
+Disallow: /health
+
+# Crawl-delay for well-behaved crawlers (non-binding)
+Crawl-delay: 1
+
+# Full sitemap with all locale variants
+Sitemap: https://sentence-gymnasium.ai/sitemap.xml
+
+# Language-specific sitemaps (also listed in sitemap index)
+Sitemap: https://sentence-gymnasium.ai/sitemap-zh-hans.xml
+Sitemap: https://sentence-gymnasium.ai/sitemap-en.xml
+Sitemap: https://sentence-gymnasium.ai/sitemap-ja.xml
+Sitemap: https://sentence-gymnasium.ai/sitemap-zh-hant.xml
+
+# ===== Search Engine Verifications =====
+# Google Search Console verification (via meta tag in head)
+# Bing Webmaster Tools (via meta tag in head)
+# Baidu Webmaster (via meta tag in head)
+
+# ===== Regional Crawlers =====
+User-agent: Baiduspider
+Allow: /
+Disallow: /api/
+Disallow: /*/recharge
+Disallow: /*/dashboard
+
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+
+User-agent: Yandex
+Allow: /
+Disallow: /api/
+
+User-agent: Bytespider
+Allow: /
+Disallow: /api/
+
+User-agent: Applebot
+Allow: /
+Disallow: /api/

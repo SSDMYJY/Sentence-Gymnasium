@@ -98,6 +98,24 @@
 
 <script setup lang="ts">
 definePageMeta({ middleware: 'auth' })
+
+// ===== SEO：登录后页面，noindex =====
+useSeo({
+  title: {
+    'zh-hans': '我的收藏',
+    'zh-hant': '我的收藏',
+    'en':      'My Bookmarks',
+    'ja':      'ブックマーク',
+  },
+  description: {
+    'zh-hans': '收藏你在训练中遇到的重点词汇、句型和表达，支持按语言和分类筛选。',
+    'zh-hant': '收藏你在訓練中遇到的重點詞彙、句型和表達，支持按語言和分類篩選。',
+    'en':      'Save key vocabulary, phrases and expressions from your training. Filter by language and category.',
+    'ja':      'トレーニング中の重要語彙・フレーズ・表現をブックマーク。言語とカテゴリで絞り込み。',
+  },
+  noindex: true,
+})
+
 const { t } = useI18n()
 const localePath = useLocalePath()
 
