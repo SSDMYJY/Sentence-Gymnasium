@@ -98,7 +98,7 @@
 		},
 		"payNow": "付款 {amount}",
 		"processing": "處理中…",
-		"secureNote": "🔒 由 Waffo Pancake 提供安全付款",
+		"secureNote": "由 Waffo Pancake 提供安全付款",
 		"checkoutFailed": "發起付款失敗，請重試。",
 		"error": "發生錯誤，請重試。"
 	},

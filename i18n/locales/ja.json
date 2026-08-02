@@ -98,7 +98,7 @@
 		},
 		"payNow": "{amount} を支払う",
 		"processing": "処理中…",
-		"secureNote": "🔒 Waffo Pancake による安全な決済",
+		"secureNote": "Waffo Pancake による安全な決済",
 		"checkoutFailed": "決済の開始に失敗しました。もう一度お試しください。",
 		"error": "エラーが発生しました。もう一度お試しください。"
 	},

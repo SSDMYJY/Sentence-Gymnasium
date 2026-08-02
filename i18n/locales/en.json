@@ -98,7 +98,7 @@
 		},
 		"payNow": "Pay {amount}",
 		"processing": "Processing…",
-		"secureNote": "🔒 Secured by Waffo Pancake",
+		"secureNote": "Secured by Waffo Pancake",
 		"checkoutFailed": "Failed to start payment. Please try again.",
 		"error": "Something went wrong. Please try again."
 	},
