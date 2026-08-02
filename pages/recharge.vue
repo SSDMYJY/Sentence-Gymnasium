@@ -160,6 +160,12 @@ async function onPay() {
       method: 'POST',
       body: { packId: selectedPack.value.id },
     })
+    // 防御：服务端未返回有效支付链接（如 Waffo 会话创建失败被吞掉）时，
+    // 不要跳转到会一直轮询"处理中"的结果页，而是直接提示失败。
+    if (!res?.checkoutUrl || !res?.orderId) {
+      toast.error(t('recharge.checkoutFailed'))
+      return
+    }
     // 新标签页打开托管支付页，保留本站页面状态
     window.open(res.checkoutUrl, '_blank', 'noopener,noreferrer')
     await navigateTo(localePath(`/recharge/success?orderId=${res.orderId}`))

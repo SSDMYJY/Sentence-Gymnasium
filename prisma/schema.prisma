@@ -114,6 +114,8 @@ model Order {
 
   @@index([userId, createdAt])
   @@index([status])
+  @@index([waffoEventId])
+  @@index([waffoOrderId])
   @@map("orders")
 }
 

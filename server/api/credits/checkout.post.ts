@@ -1,5 +1,7 @@
 // POST /api/credits/checkout — 创建充值订单 + Waffo 托管支付会话
 // 金额/积分一律以服务端套餐目录为准，不信任客户端传入的金额。
+// successUrl 固定使用 Waffo 已验证的站点域名（runtimeConfig.public.siteUrl），
+// 避免用户经其他域名访问时支付回跳被 Waffo 网关以 404 "domain endpoints match fail" 拒绝。
 import { createError } from 'h3'
 import { getPack } from '../../utils/recharge-config'
 import { useWaffo } from '../../utils/waffo'
@@ -32,14 +34,23 @@ export default defineEventHandler(async (event) => {
   })
 
   // 2. 创建 Waffo 支付会话
+  // 关键：successUrl 必须使用 Waffo 已验证的站点域名（默认 https://sentence-gymnasium.ai，
+  // 该域名已通过 waffo-verify meta 标签完成验证），而不是当前请求的 origin。
+  // 否则当用户经其他域名（EdgeOne 预览域名 / localhost 等）访问时，
+  // Waffo 网关会在支付完成后的回跳域名校验阶段返回 404 "domain endpoints match fail"，
+  // 导致无法正确回到本应用的结果页。
+  const siteUrl = (useRuntimeConfig().public?.siteUrl as string | undefined)?.replace(/\/+$/, '')
   const origin = getRequestURL(event).origin
-  let session
+  const baseUrl = siteUrl || origin // 兜底：无站点配置时退化为请求 origin
+  const successUrl = `${baseUrl}/recharge/success?orderId=${order.id}`
+
+  let session: { sessionId?: string; checkoutUrl?: string } | undefined
   try {
     session = await client.checkout.createSession({
       productId: pack.productId,
       currency: pack.currency,
       buyerEmail: user.email ?? undefined,
-      successUrl: `${origin}/recharge/success?orderId=${order.id}`,
+      successUrl,
       // 把我们的订单 id 作为业务外部标识，Webhook 凭它定位订单
       orderMerchantExternalId: order.id,
       metadata: { userId: user.id, packId: pack.id, credits: String(pack.credits) },
@@ -51,7 +62,16 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 502, statusMessage: 'checkout_failed' })
   }
 
-  // 3. 记录 session id
+  // 3. 校验会话结果：Waffo 网关错误（如 domain endpoints match fail）会返回不含
+  //    data 的错误信封（SDK 的 unwrapAction 不抛错），必须显式校验；校验失败即
+  //    回滚订单并报错，避免遗留无法支付的 pending 订单或把无效 checkoutUrl 交给前端。
+  if (!session?.sessionId || !session?.checkoutUrl) {
+    await prisma.order.delete({ where: { id: order.id } }).catch(() => {})
+    console.error('[checkout] Waffo returned an invalid checkout session:', JSON.stringify(session))
+    throw createError({ statusCode: 502, statusMessage: 'checkout_failed' })
+  }
+
+  // 4. 记录 session id
   await prisma.order.update({
     where: { id: order.id },
     data: { checkoutSessionId: session.sessionId },
