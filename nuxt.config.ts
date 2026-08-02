@@ -68,7 +68,8 @@ export default defineNuxtConfig({
       meta: [
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { name: 'description', content: 'AI 驱动的多语言句子翻译 / 改写 / 语法特训练习平台' },
-      { name: 'theme-color', content: '#0a0a0b' }],
+      { name: 'theme-color', content: '#0a0a0b' },
+      { name: 'waffo-verify', content: '0aee6549557b17c087f3f95978d5e010' }],
 
       link: [
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
