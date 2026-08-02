@@ -264,6 +264,18 @@
                         necessary, and the remaining provisions shall continue in full force and effect.
                     </p>
                 </section>
+
+                <!-- 15 Contact Us / 15 联系我们 -->
+                <section>
+                    <h2 class="font-display text-lg font-semibold text-primary">
+                        <span class="text-accent-soft">15</span> Contact Us
+                    </h2>
+                    <p class="mt-3 text-sm leading-relaxed text-tertiary">
+                        If you have any questions, concerns, or feedback regarding these Terms or the Service, please
+                        contact us at <strong>sg-support@waterspo.top</strong>. We will endeavor to respond to your
+                        inquiry within a reasonable timeframe.
+                    </p>
+                </section>
             </div>
 
             <!-- 返回首页 / Back to home -->
