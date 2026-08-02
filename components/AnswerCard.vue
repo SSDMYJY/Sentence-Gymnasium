@@ -131,7 +131,7 @@ async function onBookmark() {
     // Extract first meaningful word from correct answer or question text
     const raw = props.judgeResult?.correctAnswer || props.questionText
     const word = raw.split(/\s+/)[0]?.replace(/[^a-zA-Z\u4e00-\u9fff\u3040-\u309f\u30a0-\u30ff-]/g, '').trim() || raw
-    await $fetch('/api/bookmarks', {
+    await useApi('/api/bookmarks', {
       method: 'POST',
       body: {
         word,

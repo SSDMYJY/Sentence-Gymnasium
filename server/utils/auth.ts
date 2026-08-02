@@ -1,6 +1,6 @@
 import { SignJWT, jwtVerify } from 'jose'
 import bcrypt from 'bcryptjs'
-import { getCookie, setCookie, deleteCookie, createError } from 'h3'
+import { getCookie, setCookie, deleteCookie, createError, getRequestProtocol } from 'h3'
 import type { H3Event } from 'h3'
 import { usePrisma } from './prisma'
 
@@ -29,9 +29,28 @@ export interface SessionUser {
 const COOKIE_NAME = 'sg_session'
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7 // 7 days
 
+/** 已警告过默认密钥（避免刷屏） */
+let warnedDefaultSecret = false
+
 function getSecret(): Uint8Array {
-  const raw = useRuntimeConfig().authSecret || 'dev-only-secret-please-change'
-  return new TextEncoder().encode(raw)
+  const raw = useRuntimeConfig().authSecret || ''
+  if (!raw && !warnedDefaultSecret) {
+    warnedDefaultSecret = true
+    // 未配置 AUTH_SECRET：会话签/验使用公开的兜底密钥，存在被伪造的风险。
+    // 保持值不变（避免每次冷启动生成随机密钥导致既有会话全部失效），仅提示配置。
+    console.warn('[auth] AUTH_SECRET 未配置，使用不安全的默认密钥，请在生产环境设置 AUTH_SECRET')
+  }
+  return new TextEncoder().encode(raw || 'dev-only-secret-please-change')
+}
+
+/**
+ * 当前请求是否为 HTTPS。
+ * 用真实请求协议（优先读取反向代理的 x-forwarded-proto）而非 NODE_ENV 决定 Secure 标志：
+ * 边缘/云函数部署下 origin 看到的 event.url 常为内部 http 地址，若固定按 production 加
+ * Secure 或忽略代理协议头，用户经 http 访问时浏览器会拒绝存储该 cookie → 后续请求全部 401。
+ */
+function isHttpsRequest(event: H3Event): boolean {
+  return getRequestProtocol(event, { xForwardedProto: true }) === 'https'
 }
 
 /** 签发 JWT 并通过 Set-Cookie 写入响应。 */
@@ -48,15 +67,19 @@ export async function setSessionCookie(event: H3Event, user: SessionUser): Promi
   setCookie(event, COOKIE_NAME, token, {
     httpOnly: true,
     sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production',
+    secure: isHttpsRequest(event),
     path: '/',
     maxAge: COOKIE_MAX_AGE,
   })
 }
 
-/** 清除会话 cookie。 */
+/** 清除会话 cookie（属性与写入时一致，浏览器才会真正删除）。 */
 export function clearSessionCookie(event: H3Event): void {
-  deleteCookie(event, COOKIE_NAME, { path: '/' })
+  deleteCookie(event, COOKIE_NAME, {
+    path: '/',
+    secure: isHttpsRequest(event),
+    sameSite: 'lax',
+  })
 }
 
 /** 读取并验证 JWT，返回 userId / email 或 null。 */
@@ -120,6 +143,10 @@ export async function getSessionUser(event: H3Event): Promise<SessionUser | null
 export async function requireAuth(event: H3Event): Promise<SessionUser> {
   const user = await getSessionUser(event)
   if (!user) {
+    // 服务端留痕：区分「未携带 cookie」与「cookie 存在但 JWT 失效/过期」，
+    // 便于排查"明明登录了却 401"的会话问题。日志不泄露 token 内容。
+    const hasCookie = Boolean(getCookie(event, COOKIE_NAME))
+    console.warn(`[auth] 401 Unauthorized: ${event.path} cookiePresent=${hasCookie}`)
     throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
   }
   return user

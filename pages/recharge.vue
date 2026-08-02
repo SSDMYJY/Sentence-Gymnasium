@@ -144,7 +144,7 @@ const paymentMethods = computed(() => [
 // 首次加载套餐 / Load packs
 const headers = import.meta.server ? useRequestHeaders(['cookie']) : undefined
 try {
-  const data = await $fetch<{ packs: PackOption[] }>('/api/credits/packages', { headers })
+  const data = await useApi<{ packs: PackOption[] }>('/api/credits/packages', { headers })
   packs.value = data.packs
   selectedPack.value = data.packs[0] ?? null
 } catch {
@@ -156,7 +156,7 @@ async function onPay() {
   if (!selectedPack.value || paying.value) return
   paying.value = true
   try {
-    const res = await $fetch<{ checkoutUrl: string; orderId: string }>('/api/credits/checkout', {
+    const res = await useApi<{ checkoutUrl: string; orderId: string }>('/api/credits/checkout', {
       method: 'POST',
       body: { packId: selectedPack.value.id },
     })
@@ -170,6 +170,8 @@ async function onPay() {
     window.open(res.checkoutUrl, '_blank', 'noopener,noreferrer')
     await navigateTo(localePath(`/recharge/success?orderId=${res.orderId}`))
   } catch (err: any) {
+    // 401 已由 useApi 处理并跳转登录页，跳过提示 / 401 handled by useApi (redirect to login)
+    if (err?.data?.__redirected) return
     const msg = err?.data?.statusMessage
     toast.error(msg === 'checkout_failed' ? t('recharge.checkoutFailed') : t('recharge.error'))
   } finally {

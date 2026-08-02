@@ -167,8 +167,8 @@ async function loadData() {
   loading.value = true
   try {
     const [nextData, statsData] = await Promise.all([
-      $fetch<{ items: ReviewItem[] }>('/api/review/next', { headers }),
-      $fetch<ReviewStats>('/api/review/stats', { headers }),
+      useApi<{ items: ReviewItem[] }>('/api/review/next', { headers }),
+      useApi<ReviewStats>('/api/review/stats', { headers }),
     ])
     items.value = nextData.items
     reviewStats.value = statsData
@@ -196,7 +196,7 @@ async function onJudge(item: ReviewItem) {
     const isExactMatch = answer.toLowerCase() === item.question.correctAnswer.toLowerCase()
     const score = isExactMatch ? 10 : 5
 
-    await $fetch('/api/review/judge', {
+    await useApi('/api/review/judge', {
       method: 'POST',
       body: { attemptId: item.id, score },
     })
@@ -205,7 +205,7 @@ async function onJudge(item: ReviewItem) {
     dueCount.value = Math.max(0, dueCount.value - 1)
     // Refresh stats
     try {
-      reviewStats.value = await $fetch<ReviewStats>('/api/review/stats', { headers })
+      reviewStats.value = await useApi<ReviewStats>('/api/review/stats', { headers })
     } catch {}
   } finally {
     judging.value[item.id] = false
@@ -215,7 +215,7 @@ async function onJudge(item: ReviewItem) {
 async function onSkip(attemptId: string) {
   // Skip by setting score to 0 (bad) → reset to level 1
   try {
-    await $fetch('/api/review/judge', {
+    await useApi('/api/review/judge', {
       method: 'POST',
       body: { attemptId, score: 0 },
     })

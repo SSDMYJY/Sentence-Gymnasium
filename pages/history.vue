@@ -315,7 +315,7 @@ async function loadData() {
       params.set('category', selectedCategory.value)
     }
     // 请求历史接口 / Fetch history API
-    const data = await $fetch<{ entries: HistoryEntry[]; pagination: Pagination }>(
+    const data = await useApi<{ entries: HistoryEntry[]; pagination: Pagination }>(
       `/api/history?${params.toString()}`
     )
     entries.value = data.entries

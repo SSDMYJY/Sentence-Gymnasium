@@ -318,7 +318,7 @@ async function onGenerate() {
 
 	try {
 		// 调用出题接口 / Call the generate API
-		const data = await $fetch<QuestionData>('/api/practice/generate', {
+		const data = await useApi<QuestionData>('/api/practice/generate', {
 			method: 'POST',
 			body: {
 				languagePair: selectedPair.value,
@@ -332,6 +332,8 @@ async function onGenerate() {
 		store.setUser({ ...user.value, credits: data.credits })
 		phase.value = 'answering'
 	} catch (err: any) {
+		// 401 已由 useApi 处理并跳转登录页，跳过提示 / 401 handled by useApi (redirect to login)
+		if (err?.data?.__redirected) return
 		// 失败回空闲 / Revert to idle on failure
 		phase.value = 'idle'
 		// 积分不足提示 / Out-of-credits message
@@ -359,7 +361,7 @@ async function onJudge() {
 
 	try {
 		// 调用判题接口 / Call the judge API
-		const data = await $fetch<JudgeResultData>('/api/practice/judge', {
+		const data = await useApi<JudgeResultData>('/api/practice/judge', {
 			method: 'POST',
 			body: {
 				questionId: currentQuestion.value.questionId,
@@ -388,6 +390,8 @@ async function onJudge() {
 		}
 		phase.value = 'result'
 	} catch (err: any) {
+		// 401 已由 useApi 处理并跳转登录页，跳过提示 / 401 handled by useApi (redirect to login)
+		if (err?.data?.__redirected) return
 		// 失败回答题 / Revert to answering on failure
 		phase.value = 'answering'
 		toast.error(err?.statusMessage || t('practice.judgeError'))

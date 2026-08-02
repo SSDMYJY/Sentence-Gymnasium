@@ -162,7 +162,7 @@ async function loadBookmarks() {
     if (search.value) params.set('search', search.value)
     if (sourceLangFilter.value) params.set('sourceLang', sourceLangFilter.value)
     if (categoryFilter.value) params.set('category', categoryFilter.value)
-    const data = await $fetch<{ items: Bookmark[]; total: number; page: number; totalPages: number }>(`/api/bookmarks?${params}`, { headers })
+    const data = await useApi<{ items: Bookmark[]; total: number; page: number; totalPages: number }>(`/api/bookmarks?${params}`, { headers })
     bookmarks.value = data.items
     total.value = data.total
     totalPages.value = data.totalPages
@@ -188,7 +188,7 @@ function goTo(p: number) {
 
 async function onDelete(id: string) {
   try {
-    await $fetch(`/api/bookmarks/${id}`, { method: 'DELETE' })
+    await useApi(`/api/bookmarks/${id}`, { method: 'DELETE' })
     bookmarks.value = bookmarks.value.filter(b => b.id !== id)
     total.value--
     if (bookmarks.value.length === 0 && page.value > 1) {

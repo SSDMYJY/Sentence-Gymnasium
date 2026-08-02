@@ -10,7 +10,7 @@
  * 每种语言 4 个 locale，每页带 xhtml:link rel="alternate" hreflang。
  */
 
-import { defineEventHandler, setHeader, getRequestProtocol, getRequestHost } from 'h3'
+import { defineEventHandler, setHeader } from 'h3'
 
 type Locale = { code: string; iso: string; dir?: 'ltr' | 'rtl' }
 
@@ -91,9 +91,11 @@ function buildUrlBlock(
 }
 
 export default defineEventHandler((event) => {
-  const protocol = getRequestProtocol(event)
-  const host = getRequestHost(event)
-  const baseUrl = `${protocol}://${host}`
+  // 一律使用配置的正式站点域名（NUXT_PUBLIC_SITE_URL / 默认 sentencegym.waterspo.top）。
+  // 不能从请求头推导：云函数 origin 收到的 Host 是内部 pages-scf 域名、协议是 http，
+  // 直接推导会生成外部无法访问的 sitemap 链接。
+  const config = useRuntimeConfig()
+  const baseUrl = String(config.public.siteUrl || 'https://sentencegym.waterspo.top').replace(/\/+$/, '')
 
   // 使用构建时间或最近修改时间作为 lastmod
   const lastmodIso = new Date().toISOString().split('T')[0] as string

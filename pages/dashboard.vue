@@ -288,13 +288,13 @@ async function loadData() {
   const headers = import.meta.server ? useRequestHeaders(['cookie']) : undefined
   try {
     // 获取统计数据 / Fetch stats
-    statsResp.value = await $fetch<StatsResp>('/api/stats', { headers })
+    statsResp.value = await useApi<StatsResp>('/api/stats', { headers })
     // 获取历史数据 / Fetch history
-    const history = await $fetch<{ entries: HistoryEntry[] }>('/api/history', { headers })
+    const history = await useApi<{ entries: HistoryEntry[] }>('/api/history', { headers })
     historyEntries.value = history.entries
     // Fetch review stats
     try {
-      const reviewStats = await $fetch<{ dueCount: number }>('/api/review/stats', { headers })
+      const reviewStats = await useApi<{ dueCount: number }>('/api/review/stats', { headers })
       reviewDueCount.value = reviewStats.dueCount
     } catch {}
   } catch {
@@ -395,7 +395,7 @@ async function onSetGoal(goal: number) {
   showGoalPopover.value = false
   try {
     const headers = import.meta.server ? useRequestHeaders(['cookie']) : undefined
-    const updated = await $fetch<SessionUser>('/api/stats/goal', {
+    const updated = await useApi<SessionUser>('/api/stats/goal', {
       method: 'PUT',
       body: { dailyGoal: goal },
       headers,

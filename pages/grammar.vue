@@ -285,7 +285,7 @@ async function onGenerate() {
 
 	try {
 		// 调用出题接口 / Call the generate API
-		const data = await $fetch<QuestionData>('/api/grammar/generate', {
+		const data = await useApi<QuestionData>('/api/grammar/generate', {
 			method: 'POST',
 			body: {
 				language: selectedLang.value,
@@ -297,6 +297,8 @@ async function onGenerate() {
 		currentQuestion.value = data
 		phase.value = 'answering'
 	} catch (err: any) {
+		// 401 已由 useApi 处理并跳转登录页，跳过提示 / 401 handled by useApi (redirect to login)
+		if (err?.data?.__redirected) return
 		// 失败回空闲 / Revert to idle on failure
 		phase.value = 'idle'
 		// 错误信息提示 / Error toast
@@ -322,7 +324,7 @@ async function onJudge() {
 
 	try {
 		// 调用判题接口 / Call the judge API
-		const data = await $fetch<JudgeResultData>('/api/grammar/judge', {
+		const data = await useApi<JudgeResultData>('/api/grammar/judge', {
 			method: 'POST',
 			body: {
 				questionId: currentQuestion.value.questionId,
@@ -351,6 +353,8 @@ async function onJudge() {
 		}
 		phase.value = 'result'
 	} catch (err: any) {
+		// 401 已由 useApi 处理并跳转登录页，跳过提示 / 401 handled by useApi (redirect to login)
+		if (err?.data?.__redirected) return
 		// 失败回答题 / Revert to answering on failure
 		phase.value = 'answering'
 		toast.error(err?.statusMessage || t('grammar.judgeError'))

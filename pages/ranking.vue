@@ -145,7 +145,7 @@ const ranking = ref<RankingItem[]>([])
 async function loadData() {
   try {
     // 请求榜单接口 / Fetch the ranking API
-    const data = await $fetch<{ ranking: RankingItem[] }>('/api/ranking')
+    const data = await useApi<{ ranking: RankingItem[] }>('/api/ranking')
     ranking.value = data.ranking
   } catch {
     // 失败置空 / Reset on failure

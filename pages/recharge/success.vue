@@ -91,7 +91,7 @@ async function refresh() {
   refreshing.value = true
   try {
     const headers = import.meta.server ? useRequestHeaders(['cookie']) : undefined
-    const order = await $fetch<{ status: string; credits: number }>(`/api/credits/orders/${orderId.value}`, { headers })
+    const order = await useApi<{ status: string; credits: number }>(`/api/credits/orders/${orderId.value}`, { headers })
     status.value = order.status as OrderStatus
     credits.value = order.credits
     if (order.status === 'completed' && !credited) {
