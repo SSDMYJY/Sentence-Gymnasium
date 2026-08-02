@@ -74,6 +74,8 @@ export interface GrammarQuestion {
   questionText: string
   /** 正确答案 */
   correctAnswer: string
+  /** 题目语言 */
+  language: 'ja' | 'en'
   /** 语法标签 */
   grammarTag: GrammarTag
   /** 题型：填空 / 选择 / 改错 */

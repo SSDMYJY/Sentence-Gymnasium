@@ -245,6 +245,7 @@ Return ONLY this JSON shape:
 {
   "questionText": "<the exercise sentence in ${langName}, with ___ for fill-blank>",
   "correctAnswer": "<the correct answer in ${langName}>",
+  "language": "${language}",
   "grammarTag": "${grammarTag}",
   "questionType": "${questionType}",
   "explanation": "<brief explanation of the grammar rule in Chinese>"

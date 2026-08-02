@@ -20,9 +20,11 @@ export default defineEventHandler(async (event) => {
   const prisma = usePrisma(event)
 
   const body = await readBody<{
+    language?: 'ja' | 'en'
     grammarTag?: GrammarTag
     questionType?: QuestionType
   }>(event)
+  const language = body?.language ?? 'ja'
   const grammarTag = body?.grammarTag
   const questionType = body?.questionType ?? 'fill-blank'
 
@@ -31,6 +33,12 @@ export default defineEventHandler(async (event) => {
     throw createError({
       statusCode: 400,
       statusMessage: `Invalid grammarTag. Valid: ${VALID_TAGS.join(', ')}`,
+    })
+  }
+  if (language !== 'ja' && language !== 'en') {
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Invalid language. Valid: ja, en',
     })
   }
   if (!VALID_TYPES.includes(questionType)) {
@@ -45,6 +53,7 @@ export default defineEventHandler(async (event) => {
   try {
     generated = await generateQuestion(event, {
       category: 'grammar',
+      language,
       grammarTag,
       questionType,
       difficulty: 2,
@@ -63,6 +72,16 @@ export default defineEventHandler(async (event) => {
 
   const q = generated.data
 
+  if (q.language !== language) {
+    throw createError({
+      statusCode: 502,
+      statusMessage: `AI returned the wrong language. Expected ${language}, got ${q.language || 'unknown'}`,
+    })
+  }
+  if (!q.questionText?.trim() || !q.correctAnswer?.trim()) {
+    throw createError({ statusCode: 502, statusMessage: 'AI returned an incomplete grammar question' })
+  }
+
   // 存储题目（不扣减能量）
   let question
   try {
@@ -74,6 +93,7 @@ export default defineEventHandler(async (event) => {
         correctAnswer: q.correctAnswer,
         options: q.options ? JSON.stringify(q.options) : null,
         extraData: JSON.stringify({
+          language: q.language,
           questionType: q.questionType,
           explanation: q.explanation ?? null,
         }),

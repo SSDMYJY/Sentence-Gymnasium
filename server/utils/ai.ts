@@ -56,6 +56,39 @@ function createClient(config: AIConfig): OpenAI {
   })
 }
 
+/** 提取 OpenAI 兼容接口返回的文本内容，兼容 string 和 content parts 两种格式。 */
+export function extractAIContent(message: unknown): string {
+  if (!message || typeof message !== 'object') return ''
+
+  const content = (message as { content?: unknown }).content
+  if (typeof content === 'string') return content.trim()
+  if (!Array.isArray(content)) return ''
+
+  return content
+    .map((part) => {
+      if (typeof part === 'string') return part
+      if (part && typeof part === 'object' && typeof (part as { text?: unknown }).text === 'string') {
+        return (part as { text: string }).text
+      }
+      return ''
+    })
+    .join('')
+    .trim()
+}
+
+/** 从完整 completion 中安全提取文本，兼容 choices 缺失或为空的网关响应。 */
+export function extractCompletionContent(completion: unknown): string {
+  if (!completion || typeof completion !== 'object') return ''
+
+  const choices = (completion as { choices?: unknown }).choices
+  if (!Array.isArray(choices)) return ''
+
+  const firstChoice = choices[0]
+  if (!firstChoice || typeof firstChoice !== 'object') return ''
+
+  return extractAIContent((firstChoice as { message?: unknown }).message)
+}
+
 // ---------- 核心：调用 AI 并强制 JSON 返回 ----------
 
 /**
@@ -78,19 +111,24 @@ export async function callAI<T = unknown>(
 IMPORTANT: Respond with ONLY a valid JSON object. Do not include any text before or after the JSON. Do not wrap it in markdown code fences.`
 
   try {
-    const completion = await client.chat.completions.create({
-      model: config.model,
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: request.user },
-      ],
-      temperature,
-      max_tokens: maxTokens,
-      // OpenAI 兼容接口的 JSON 模式
-      response_format: { type: 'json_object' },
-    })
+    const requestCompletion = (useJsonMode: boolean) => client.chat.completions.create({
+        model: config.model,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: request.user },
+        ],
+        temperature,
+        max_tokens: maxTokens,
+        ...(useJsonMode ? { response_format: { type: 'json_object' as const } } : {}),
+      })
 
-    const raw = completion.choices[0]?.message?.content ?? ''
+    let completion = await requestCompletion(true)
+    let raw = extractCompletionContent(completion)
+    // 部分兼容网关不支持 JSON mode 或偶发返回空 content，去掉 response_format 重试一次。
+    if (!raw) {
+      completion = await requestCompletion(false)
+      raw = extractCompletionContent(completion)
+    }
 
     if (!raw) {
       throw createError({
