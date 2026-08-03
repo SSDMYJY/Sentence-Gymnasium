@@ -97,7 +97,8 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({ middleware: 'auth' })
+// ssr:false：纯客户端渲染，避免客户端导航时向云函数请求 SSR payload（冷启动 2~4s）
+definePageMeta({ middleware: 'auth', ssr: false })
 
 // ===== SEO：登录后页面，noindex =====
 useSeo({
@@ -157,12 +158,15 @@ const categoryOptions = [
 async function loadBookmarks() {
   loading.value = true
   try {
-    const headers = import.meta.server ? useRequestHeaders(['cookie']) : undefined
     const params = new URLSearchParams({ page: String(page.value), pageSize: String(pageSize) })
     if (search.value) params.set('search', search.value)
     if (sourceLangFilter.value) params.set('sourceLang', sourceLangFilter.value)
     if (categoryFilter.value) params.set('category', categoryFilter.value)
-    const data = await useApi<{ items: Bookmark[]; total: number; page: number; totalPages: number }>(`/api/bookmarks?${params}`, { headers })
+    const data = await useCachedApi<{ items: Bookmark[]; total: number; page: number; totalPages: number }>(
+      `bookmarks:${params}`,
+      () => useApi<{ items: Bookmark[]; total: number; page: number; totalPages: number }>(`/api/bookmarks?${params}`),
+      20_000,
+    )
     bookmarks.value = data.items
     total.value = data.total
     totalPages.value = data.totalPages
@@ -189,6 +193,7 @@ function goTo(p: number) {
 async function onDelete(id: string) {
   try {
     await useApi(`/api/bookmarks/${id}`, { method: 'DELETE' })
+    clearCachedApi('bookmarks:')
     bookmarks.value = bookmarks.value.filter(b => b.id !== id)
     total.value--
     if (bookmarks.value.length === 0 && page.value > 1) {
@@ -205,6 +210,7 @@ function formatDate(iso: string): string {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
 
-// Initial load
-await loadBookmarks()
+onMounted(() => {
+  loadBookmarks()
+})
 </script>

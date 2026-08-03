@@ -8,6 +8,13 @@
       <p class="mt-2 text-tertiary">{{ t('dashboard.subtitle') }}</p>
     </header>
 
+    <!-- 加载中 / Loading -->
+    <div v-if="loading" class="ds-card p-12 text-center">
+      <div class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-line-strong border-t-accent" />
+      <p class="mt-4 text-sm text-tertiary">{{ t('history.loading') }}</p>
+    </div>
+
+    <template v-else>
     <!-- Daily Goal Progress Ring + Top Stats -->
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-4">
       <!-- Daily Goal Ring -->
@@ -208,6 +215,7 @@
         {{ t('dashboard.recharge.button') }}
       </UButton>
     </div>
+    </template>
   </div>
 </template>
 
@@ -216,7 +224,8 @@
 import type { SessionUser } from '~/stores/user'
 
 // 启用 auth 路由守卫 / Enable the auth route guard
-definePageMeta({ middleware: 'auth' })
+// ssr:false：纯客户端渲染，避免客户端导航时向云函数请求 SSR payload（冷启动 2~4s）
+definePageMeta({ middleware: 'auth', ssr: false })
 
 // ===== SEO：登录后仪表板，noindex =====
 useSeo({
@@ -276,6 +285,7 @@ interface HistoryEntry {
 const statsResp = ref<StatsResp | null>(null)
 // 历史条目列表 / History entries
 const historyEntries = ref<HistoryEntry[]>([])
+const loading = ref(true)
 // Goal popover
 const showGoalPopover = ref(false)
 const goalOptions = [3, 5, 10, 15]
@@ -284,28 +294,27 @@ const reviewDueCount = ref(0)
 
 // 加载统计与历史 / Load stats and history
 async function loadData() {
-  // 服务端转发 cookie，用于识别会话 / Forward cookie on server to identify the session
-  const headers = import.meta.server ? useRequestHeaders(['cookie']) : undefined
+  loading.value = true
   try {
-    // 获取统计数据 / Fetch stats
-    statsResp.value = await useApi<StatsResp>('/api/stats', { headers })
-    // 获取历史数据 / Fetch history
-    const history = await useApi<{ entries: HistoryEntry[] }>('/api/history', { headers })
+    const [stats, history, reviewStats] = await Promise.all([
+      useCachedApi<StatsResp>('dashboard:stats', () => useApi<StatsResp>('/api/stats'), 60_000),
+      useCachedApi<{ entries: HistoryEntry[] }>('dashboard:history', () => useApi<{ entries: HistoryEntry[] }>('/api/history'), 60_000),
+      useCachedApi<{ dueCount: number }>('dashboard:reviewStats', () => useApi<{ dueCount: number }>('/api/review/stats'), 60_000).catch(() => null),
+    ])
+    statsResp.value = stats
     historyEntries.value = history.entries
-    // Fetch review stats
-    try {
-      const reviewStats = await useApi<{ dueCount: number }>('/api/review/stats', { headers })
-      reviewDueCount.value = reviewStats.dueCount
-    } catch {}
+    if (reviewStats) reviewDueCount.value = reviewStats.dueCount
   } catch {
-    // 失败则置空 / Reset on failure
     statsResp.value = null
     historyEntries.value = []
+  } finally {
+    loading.value = false
   }
 }
 
-// 首次加载 / Initial load
-await loadData()
+onMounted(() => {
+  loadData()
+})
 
 // 正确率 / Accuracy rate
 const accRate = computed(() => {
@@ -394,11 +403,9 @@ function formatDate(iso: string): string {
 async function onSetGoal(goal: number) {
   showGoalPopover.value = false
   try {
-    const headers = import.meta.server ? useRequestHeaders(['cookie']) : undefined
     const updated = await useApi<SessionUser>('/api/stats/goal', {
       method: 'PUT',
       body: { dailyGoal: goal },
-      headers,
     })
     store.setUser(updated)
     if (statsResp.value) {

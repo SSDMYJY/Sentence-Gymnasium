@@ -108,7 +108,8 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({ middleware: 'auth' })
+// ssr:false：纯客户端渲染，避免客户端导航时向云函数请求 SSR payload（冷启动 2~4s）
+definePageMeta({ middleware: 'auth', ssr: false })
 
 // ===== SEO：登录后页面，noindex =====
 useSeo({
@@ -161,19 +162,16 @@ const reviewStats = ref<ReviewStats | null>(null)
 const newAnswers = ref<Record<string, string>>({})
 const judging = ref<Record<string, boolean>>({})
 
-const headers = import.meta.server ? useRequestHeaders(['cookie']) : undefined
-
 async function loadData() {
   loading.value = true
   try {
     const [nextData, statsData] = await Promise.all([
-      useApi<{ items: ReviewItem[] }>('/api/review/next', { headers }),
-      useApi<ReviewStats>('/api/review/stats', { headers }),
+      useCachedApi<{ items: ReviewItem[] }>('review:next', () => useApi<{ items: ReviewItem[] }>('/api/review/next'), 20_000),
+      useCachedApi<ReviewStats>('review:stats', () => useApi<ReviewStats>('/api/review/stats'), 20_000),
     ])
     items.value = nextData.items
     reviewStats.value = statsData
     dueCount.value = statsData.dueCount
-    // Initialize new answers
     for (const item of nextData.items) {
       newAnswers.value[item.id] = ''
       judging.value[item.id] = false
@@ -191,8 +189,6 @@ async function onJudge(item: ReviewItem) {
   if (!answer) return
   judging.value[item.id] = true
   try {
-    // Send score based on correctness
-    // We use a simple approach: if answer matches correct answer, score=10, else we ask AI
     const isExactMatch = answer.toLowerCase() === item.question.correctAnswer.toLowerCase()
     const score = isExactMatch ? 10 : 5
 
@@ -200,12 +196,11 @@ async function onJudge(item: ReviewItem) {
       method: 'POST',
       body: { attemptId: item.id, score },
     })
-    // Remove from list
+    clearCachedApi('review:')
     items.value = items.value.filter(i => i.id !== item.id)
     dueCount.value = Math.max(0, dueCount.value - 1)
-    // Refresh stats
     try {
-      reviewStats.value = await useApi<ReviewStats>('/api/review/stats', { headers })
+      reviewStats.value = await useCachedApi<ReviewStats>('review:stats', () => useApi<ReviewStats>('/api/review/stats'), 20_000)
     } catch {}
   } finally {
     judging.value[item.id] = false
@@ -213,16 +208,18 @@ async function onJudge(item: ReviewItem) {
 }
 
 async function onSkip(attemptId: string) {
-  // Skip by setting score to 0 (bad) → reset to level 1
   try {
     await useApi('/api/review/judge', {
       method: 'POST',
       body: { attemptId, score: 0 },
     })
+    clearCachedApi('review:')
     items.value = items.value.filter(i => i.id !== attemptId)
     dueCount.value = Math.max(0, dueCount.value - 1)
   } catch {}
 }
 
-await loadData()
+onMounted(() => {
+  loadData()
+})
 </script>

@@ -8,6 +8,13 @@
       <p class="mt-2 text-tertiary">{{ t('ranking.subtitle') }}</p>
     </header>
 
+    <!-- 加载中 / Loading -->
+    <div v-if="loading" class="ds-card p-12 text-center">
+      <div class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-line-strong border-t-accent" />
+      <p class="mt-4 text-sm text-tertiary">{{ t('history.loading') }}</p>
+    </div>
+
+    <template v-else>
     <!-- 当前用户排名卡片 / Current user's rank card -->
     <div v-if="currentUserRank" class="mb-8 ds-card p-5">
       <div class="flex items-center justify-between">
@@ -93,6 +100,7 @@
         <p class="text-muted">{{ t('ranking.noData') }}</p>
       </div>
     </div>
+    </template>
   </div>
 </template>
 
@@ -101,7 +109,8 @@
 import type { SessionUser } from '~/stores/user'
 
 // 启用 auth 路由守卫 / Enable the auth route guard
-definePageMeta({ middleware: 'auth' })
+// ssr:false：纯客户端渲染，避免客户端导航时向云函数请求 SSR payload（冷启动 2~4s）
+definePageMeta({ middleware: 'auth', ssr: false })
 
 // ===== SEO：登录后页面，noindex =====
 useSeo({
@@ -140,21 +149,24 @@ interface RankingItem {
 
 // 榜单列表 / Ranking list
 const ranking = ref<RankingItem[]>([])
+const loading = ref(true)
 
 // 加载榜单数据 / Load ranking data
 async function loadData() {
+  loading.value = true
   try {
-    // 请求榜单接口 / Fetch the ranking API
-    const data = await useApi<{ ranking: RankingItem[] }>('/api/ranking')
+    const data = await useCachedApi<{ ranking: RankingItem[] }>('ranking', () => useApi<{ ranking: RankingItem[] }>('/api/ranking'), 120_000)
     ranking.value = data.ranking
   } catch {
-    // 失败置空 / Reset on failure
     ranking.value = []
+  } finally {
+    loading.value = false
   }
 }
 
-// 首次加载 / Initial load
-await loadData()
+onMounted(() => {
+  loadData()
+})
 
 // 当前用户排名（在榜单中的位置）/ Current user's rank position in the list
 const currentUserRank = computed(() => {
