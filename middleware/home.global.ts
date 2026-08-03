@@ -16,7 +16,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
   // 获取用户状态 store / Obtain the user store
   const store = useUserStore()
   // 客户端且已拉取：直接用 store 状态。 / On client with prior fetch: use store state directly.
-  if (!(process.client && store.fetched)) {
+  if (!(import.meta.client && store.fetched)) {
     // 否则主动拉取一次会话 / Otherwise actively fetch the session once
     await store.fetch()
   }
