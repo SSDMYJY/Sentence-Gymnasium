@@ -3,7 +3,7 @@
 // 同步跳转不可靠（用户可能关闭页面或网络中断），订单状态以异步通知 /api/webhooks/alipay 为准；
 // 本端点仅验签后重定向到结果页，由结果页轮询订单状态（异步通知到位后即显示成功）。
 import { getQuery, sendRedirect, getCookie } from 'h3'
-import { useAlipay } from '../../utils/alipay'
+import { useAlipay } from '../../../utils/alipay'
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event) as Record<string, string>

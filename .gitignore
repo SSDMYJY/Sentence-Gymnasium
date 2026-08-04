@@ -149,7 +149,6 @@ vite.config.ts.timestamp-*
 prisma/prisma/dev.db
 
 # Tencent Cloud EdgeOne
-.env
 .edgeone/*
 .tef_dist/*
   

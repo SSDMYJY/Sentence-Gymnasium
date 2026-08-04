@@ -8,7 +8,7 @@
 //   2) 条件更新 updateMany（status != completed 才入账），并发重复通知只入账一次
 // 入账：订单状态与用户 credits 在同一事务内原子更新，任一步失败整体回滚并返回 "fail" 让支付宝重试。
 import { readBody, setResponseHeader } from 'h3'
-import { useAlipay } from '../utils/alipay'
+import { useAlipay } from '../../utils/alipay'
 
 export default defineEventHandler(async (event) => {
   // 支付宝通知为 form-urlencoded；readBody 返回已解码的对象

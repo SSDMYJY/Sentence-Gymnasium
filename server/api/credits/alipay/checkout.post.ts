@@ -5,8 +5,8 @@
 //   - 异步通知 → /api/webhooks/alipay（支付宝服务端回调，验签后更新订单状态并发放积分）
 // 金额/积分一律以服务端套餐目录为准，不信任客户端传入的金额。
 import { createError } from 'h3'
-import { getPackDef } from '../../utils/recharge-config'
-import { useAlipay, generateOutTradeNo, usdToCny } from '../../utils/alipay'
+import { getPackDef } from '../../../utils/recharge-config'
+import { useAlipay, generateOutTradeNo, usdToCny } from '../../../utils/alipay'
 
 export default defineEventHandler(async (event) => {
   const user = await requireAuth(event)
