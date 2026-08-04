@@ -133,21 +133,15 @@ const packs = ref<PackOption[]>([])
 const selectedPack = ref<PackOption | null>(null)
 const paying = ref(false)
 const selectedMethod = ref('all')
-// 支付宝直连是否可用（由套餐接口返回；仅配置好 alipay.* 参数后才展示该选项）
+// 支付宝直连是否可用（由套餐接口返回）；未配置时选「支付宝」会自动回退到 Waffo 托管支付
 const alipayEnabled = ref(false)
 
-const paymentMethods = computed(() => {
-  const methods = [
-    { id: 'all', label: t('recharge.methods.all'), icon: 'i-lucide-wallet' },
-    { id: 'card', label: t('recharge.methods.card'), icon: 'i-lucide-credit-card' },
-  ]
-  // 支付宝直连：仅在后端配置了 alipay.appId 等参数时才出现
-  if (alipayEnabled.value) {
-    methods.push({ id: 'alipay', label: t('recharge.methods.alipay'), icon: 'i-lucide-smartphone' })
-  }
-  methods.push({ id: 'wechat', label: t('recharge.methods.wechat'), icon: 'i-lucide-message-circle' })
-  return methods
-})
+const paymentMethods = computed(() => [
+  { id: 'all', label: t('recharge.methods.all'), icon: 'i-lucide-wallet' },
+  { id: 'card', label: t('recharge.methods.card'), icon: 'i-lucide-credit-card' },
+  { id: 'alipay', label: t('recharge.methods.alipay'), icon: 'i-lucide-smartphone' },
+  { id: 'wechat', label: t('recharge.methods.wechat'), icon: 'i-lucide-message-circle' },
+])
 
 // 首次加载套餐 / Load packs
 const headers = import.meta.server ? useRequestHeaders(['cookie']) : undefined
