@@ -47,7 +47,7 @@
       </div>
     </section>
 
-    <!-- 支付方式（展示性选择，实际支付在 Waffo 托管页完成） / Payment method (display-only) -->
+    <!-- 支付方式（选择「支付宝」直连 alipay.trade.page.pay；其余走 Waffo 托管页） / Payment method -->
     <section class="mb-8">
       <h2 class="mb-4 font-display text-lg font-semibold text-primary">{{ t('recharge.paymentMethod') }}</h2>
       <div class="rounded-2xl border border-white/10 bg-ink-900/50 p-4">
@@ -133,40 +133,57 @@ const packs = ref<PackOption[]>([])
 const selectedPack = ref<PackOption | null>(null)
 const paying = ref(false)
 const selectedMethod = ref('all')
+// 支付宝直连是否可用（由套餐接口返回；仅配置好 alipay.* 参数后才展示该选项）
+const alipayEnabled = ref(false)
 
-const paymentMethods = computed(() => [
-  { id: 'all', label: t('recharge.methods.all'), icon: 'i-lucide-wallet' },
-  { id: 'card', label: t('recharge.methods.card'), icon: 'i-lucide-credit-card' },
-  { id: 'alipay', label: t('recharge.methods.alipay'), icon: 'i-lucide-smartphone' },
-  { id: 'wechat', label: t('recharge.methods.wechat'), icon: 'i-lucide-message-circle' },
-])
+const paymentMethods = computed(() => {
+  const methods = [
+    { id: 'all', label: t('recharge.methods.all'), icon: 'i-lucide-wallet' },
+    { id: 'card', label: t('recharge.methods.card'), icon: 'i-lucide-credit-card' },
+  ]
+  // 支付宝直连：仅在后端配置了 alipay.appId 等参数时才出现
+  if (alipayEnabled.value) {
+    methods.push({ id: 'alipay', label: t('recharge.methods.alipay'), icon: 'i-lucide-smartphone' })
+  }
+  methods.push({ id: 'wechat', label: t('recharge.methods.wechat'), icon: 'i-lucide-message-circle' })
+  return methods
+})
 
 // 首次加载套餐 / Load packs
 const headers = import.meta.server ? useRequestHeaders(['cookie']) : undefined
 try {
-  const data = await useApi<{ packs: PackOption[] }>('/api/credits/packages', { headers })
+  const data = await useApi<{ packs: PackOption[]; alipay?: boolean }>('/api/credits/packages', { headers })
   packs.value = data.packs
   selectedPack.value = data.packs[0] ?? null
+  alipayEnabled.value = data.alipay ?? false
 } catch {
   packs.value = []
 }
 
-// 发起支付：创建订单 + Waffo 托管会话，新窗口打开，然后进入结果页轮询
+// 发起支付：创建订单 + 支付会话，然后进入结果页轮询
 async function onPay() {
   if (!selectedPack.value || paying.value) return
   paying.value = true
   try {
-    const res = await useApi<{ checkoutUrl: string; orderId: string }>('/api/credits/checkout', {
+    // 支付宝直连：调用 alipay.trade.page.pay，整页跳转至支付宝收银台
+    // 其余方式（全部 / 信用卡 / 微信）走 Waffo 托管收银台，新标签页打开
+    const useDirectAlipay = selectedMethod.value === 'alipay' && alipayEnabled.value
+    const endpoint = useDirectAlipay ? '/api/credits/alipay/checkout' : '/api/credits/checkout'
+    const res = await useApi<{ checkoutUrl: string; orderId: string }>(endpoint, {
       method: 'POST',
       body: { packId: selectedPack.value.id },
     })
-    // 防御：服务端未返回有效支付链接（如 Waffo 会话创建失败被吞掉）时，
-    // 不要跳转到会一直轮询"处理中"的结果页，而是直接提示失败。
+    // 防御：服务端未返回有效支付链接时直接提示失败，不跳转到一直轮询的结果页
     if (!res?.checkoutUrl || !res?.orderId) {
       toast.error(t('recharge.checkoutFailed'))
       return
     }
-    // 新标签页打开托管支付页，保留本站页面状态
+    if (useDirectAlipay) {
+      // 支付宝电脑网站支付：整页跳转至支付宝收银台，支付完成后通过 returnUrl 回跳到结果页
+      window.location.href = res.checkoutUrl
+      return
+    }
+    // Waffo：新标签页打开托管支付页，当前页进入结果页轮询
     window.open(res.checkoutUrl, '_blank', 'noopener,noreferrer')
     await navigateTo(localePath(`/recharge/success?orderId=${res.orderId}`))
   } catch (err: any) {

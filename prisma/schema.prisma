@@ -94,12 +94,13 @@ model Bookmark {
   @@map("bookmarks")
 }
 
-// Waffo Pancake 充值订单。status: pending → completed | failed | refunded
+// 充值订单（支持 Waffo Pancake 与支付宝电脑网站支付）。
+// status: pending → completed | failed | refunded
 model Order {
   id                String   @id @default(cuid())
   userId            String
   packId            String // internal pack id (e.g. 'pack_100')
-  productId         String // Waffo PROD_xxx
+  productId         String // Waffo PROD_xxx / Alipay FAST_INSTANT_TRADE_PAY
   credits           Int // credits granted on completion
   amount            String // display amount e.g. "2.99"
   currency          String   @default("USD")
@@ -108,6 +109,10 @@ model Order {
   waffoOrderId      String? // Waffo ORD_xxx (set by webhook)
   waffoEventId      String? // Waffo delivery event id (idempotency dedup)
   buyerEmail        String?
+  // ---- Alipay 电脑网站支付 ----
+  outTradeNo        String?  @unique // 业务订单号（alipay out_trade_no），全局唯一
+  alipayTradeNo     String? // 支付宝交易号 trade_no（异步通知回填）
+  alipayNotifyId    String? // 异步通知 notify_id（幂等去重）
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
   user              User     @relation(fields: [userId], references: [id])
@@ -116,6 +121,8 @@ model Order {
   @@index([status])
   @@index([waffoEventId])
   @@index([waffoOrderId])
+  @@index([alipayTradeNo])
+  @@index([alipayNotifyId])
   @@map("orders")
 }
 

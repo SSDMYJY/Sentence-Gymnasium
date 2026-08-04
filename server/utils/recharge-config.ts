@@ -1,8 +1,10 @@
-// 充值套餐目录（Waffo Pancake onetime 产品映射）。
-// productId 从数据库 app_config 表读取（key: waffo.product.pack_100 等），
+// 充值套餐目录（Waffo Pancake onetime 产品映射 + 支付宝电脑网站支付）。
+// Waffo productId 从数据库 app_config 表读取（key: waffo.product.pack_100 等），
 // 由 `scripts/waffo-setup.ts` / `scripts/seed-waffo-config.ts` 写入。
-// 未配置 productId 的套餐不会出现在目录中（页面与接口自动过滤）。
+// 支付宝无需 per-pack 产品 ID：配置好 alipay.appId 等参数后所有套餐均可用。
+// 展示目录（getPublicPacks）会合并两个渠道：有 Waffo productId 或 Alipay 已配置的套餐都会出现。
 import { getConfigValue } from './config'
+import { isAlipayConfigured } from './alipay'
 
 export interface CreditPack {
   id: string
@@ -41,7 +43,33 @@ export async function getPack(id: string): Promise<CreditPack | undefined> {
   return (await getPacks()).find((p) => p.id === id)
 }
 
+/** 基础套餐定义（不含 provider 专属 productId），供支付宝等无需外部产品的渠道使用 */
+export interface PackDef {
+  id: string
+  credits: number
+  price: string
+  currency: string
+}
+
+/** 同步查基础套餐定义（无需数据库读取，PACK_DEFS 为静态目录） */
+export function getPackDef(id: string): PackDef | undefined {
+  const def = PACK_DEFS.find((p) => p.id === id)
+  if (!def) return undefined
+  return { id: def.id, credits: def.credits, price: def.price, currency: 'USD' }
+}
+
 /** 前端可展示的套餐信息（不含内部 productId） */
 export async function getPublicPacks(): Promise<CreditPackOption[]> {
-  return (await getPacks()).map(({ id, credits, price, currency }) => ({ id, credits, price, currency }))
+  const waffoPacks = await getPacks()
+  const result: CreditPackOption[] = waffoPacks.map(({ id, credits, price, currency }) => ({ id, credits, price, currency }))
+  // 支付宝配置后，所有套餐均可用（无需 per-pack 产品 ID），合并未在 Waffo 目录中出现的套餐
+  if (await isAlipayConfigured()) {
+    const seen = new Set(result.map((p) => p.id))
+    for (const def of PACK_DEFS) {
+      if (!seen.has(def.id)) {
+        result.push({ id: def.id, credits: def.credits, price: def.price, currency: 'USD' })
+      }
+    }
+  }
+  return result
 }

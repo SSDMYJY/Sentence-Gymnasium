@@ -12,6 +12,7 @@
     "db:apply": "prisma db execute --file ./migrations/0001_init.sql --schema ./prisma/schema.prisma",
     "waffo:seed": "tsx scripts/seed-waffo-config.ts",
     "waffo:setup": "tsx scripts/waffo-setup.ts",
+    "alipay:seed": "tsx scripts/seed-alipay-config.ts",
     "deploy": "edgeone makers deploy"
   },
   "dependencies": {
@@ -23,6 +24,7 @@
     "@pinia/nuxt": "^0.5.5",
     "@prisma/client": "^6.19.3",
     "@waffo/pancake-ts": "^0.16.1",
+    "alipay-sdk": "^4.14.0",
     "bcryptjs": "^2.4.3",
     "gsap": "^3.15.0",
     "jose": "^6.2.5",
